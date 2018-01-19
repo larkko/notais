@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QWidget>
-#include <RtMidi.h>
+
+#include "midiinput.hh"
 
 class Main_window : public QWidget
 {
@@ -9,5 +10,5 @@ class Main_window : public QWidget
   public:
     Main_window();
   private:
-    RtMidiIn m_midi_in;
+    MIDI_input m_midi_input;
 };
