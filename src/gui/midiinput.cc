@@ -18,9 +18,20 @@ MIDI_input::MIDI_input()
             std::vector<unsigned char> * message,
             void * user_data)
             {
-                std::cout << "Got something" << std::endl;
-            }
+                MIDI_input * input = static_cast<MIDI_input *>(user_data);
+                Event event = input->as_event(message);
+            },
+            /*user_data pointer for callback*/
+            this
         );
         m_midi_in.ignoreTypes(false,false,false);
     }
+}
+
+MIDI_input::Event MIDI_input::as_event(std::vector<unsigned char> * message)
+{
+    bool down = message->at(0) == 144;
+    int key = message->at(1);
+    float velocity = (float)(message->at(2)) / 255.0f;
+    return {down, key, velocity};
 }
