@@ -1,7 +1,8 @@
 #include "midiinput.hh"
 
-MIDI_input::MIDI_input()
-    : m_midi_in(RtMidiIn())
+MIDI_input::MIDI_input(std::function<void (Event)> callback)
+    : callback(callback),
+      m_midi_in(RtMidiIn())
 {
     int port_count = m_midi_in.getPortCount();
     if(port_count == 0)
@@ -18,8 +19,10 @@ MIDI_input::MIDI_input()
             std::vector<unsigned char> * message,
             void * user_data)
             {
+                (void)timestamp;
                 MIDI_input * input = static_cast<MIDI_input *>(user_data);
                 Event event = input->as_event(message);
+                input->callback(event);
             },
             /*user_data pointer for callback*/
             this

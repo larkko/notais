@@ -3,6 +3,8 @@ TEMPLATE = app
 
 QT = core gui widgets
 
+CONFIG += c++14
+
 LIBS += -lrtmidi
 
 SOURCES += src/main.cc
