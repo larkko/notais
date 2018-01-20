@@ -10,6 +10,8 @@ LIBS += -lrtmidi
 SOURCES += src/main.cc
 HEADERS += src/gui/midiinput.hh
 SOURCES += src/gui/midiinput.cc
+HEADERS += src/gui/keyboard.hh
+SOURCES += src/gui/keyboard.cc
 HEADERS += src/gui/mainwindow.hh
 SOURCES += src/gui/mainwindow.cc
 
