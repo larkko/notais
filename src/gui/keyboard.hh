@@ -5,6 +5,7 @@
 class Keyboard
 {
   public:
+    Keyboard();
     float at(int key);
     void set(int key, float value);
   private:
