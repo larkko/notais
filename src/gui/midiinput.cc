@@ -33,8 +33,15 @@ MIDI_input::MIDI_input(std::function<void (Event)> callback)
 
 MIDI_input::Event MIDI_input::as_event(std::vector<unsigned char> * message)
 {
-    bool down = message->at(0) == 144;
-    int key = message->at(1);
-    float velocity = (float)(message->at(2)) / 255.0f;
-    return {down, key, velocity};
+    if(message->size() >= 3)
+    {
+        bool down = message->at(0) == 144;
+        int key = message->at(1);
+        float velocity = (float)(message->at(2)) / 128.0f;
+        return {down, key, velocity};
+    }
+    else
+    {
+        return {false, 0, 0.0f};
+    }
 }
