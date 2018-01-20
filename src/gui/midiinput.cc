@@ -35,9 +35,13 @@ MIDI_input::Event MIDI_input::as_event(std::vector<unsigned char> * message)
 {
     if(message->size() >= 3)
     {
-        bool down = message->at(0) == 144;
+        /*MIDI "note on" event when first byte is 1001**** */
+        bool down = (message->at(0) & 0b11110000) == 0b10010000;
+        /*The key being struct is at byte number two*/
         int key = message->at(1);
-        float velocity = (float)(message->at(2)) / 128.0f;
+        /*The velocity of the strike is the 7 least significant bits
+          of the third byte (normalized to a float [0,1] here).*/
+        float velocity = (float)(message->at(2)) / (float)0b01111111;
         return {down, key, velocity};
     }
     else
