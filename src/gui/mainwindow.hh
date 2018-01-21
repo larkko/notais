@@ -4,6 +4,7 @@
 
 #include "midiinput.hh"
 #include "keyboard.hh"
+#include "audiooutput.hh"
 
 class Main_window : public QWidget
 {
@@ -13,4 +14,5 @@ class Main_window : public QWidget
   private:
     MIDI_input m_midi_input;
     Keyboard m_keyboard;
+    Audio_output m_audio_out;
 };
