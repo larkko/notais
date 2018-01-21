@@ -10,6 +10,8 @@ class Audio_output
     Audio_output();
     void start();
     void stop();
+    bool is_active();
   private:
     RtAudio m_out;
+    bool m_active;
 };

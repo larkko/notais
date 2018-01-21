@@ -10,12 +10,18 @@ Main_window::Main_window()
             if(e.down)
             {
                 m_keyboard.set(e.key, e.velocity);
-                m_audio_out.start();
+                if(!m_audio_out.is_active())
+                {
+                    m_audio_out.start();
+                }
             }
             else
             {
                 m_keyboard.set(e.key, 0.0f);
-                m_audio_out.stop();
+                if(m_audio_out.is_active())
+                {
+                    m_audio_out.stop();
+                }
             }
         }
     ))

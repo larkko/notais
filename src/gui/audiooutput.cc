@@ -3,7 +3,8 @@
 #include <cmath>
 
 Audio_output::Audio_output()
-    : m_out(RtAudio())
+    : m_out(RtAudio()),
+      m_active(false)
 {
 }
 
@@ -51,6 +52,7 @@ void Audio_output::start()
             /*User data*/
             (void *)this);
         m_out.startStream();
+        m_active = true;
     }
     catch(RtAudioError & error)
     {
@@ -73,11 +75,14 @@ void Audio_output::stop()
     {
         m_out.closeStream();
     }
+
+    m_active = false;
 }
 
-
-
-
+bool Audio_output::is_active()
+{
+    return m_active;
+}
 
 
 
