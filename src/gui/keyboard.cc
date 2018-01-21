@@ -18,6 +18,19 @@ void Keyboard::set(int key, float value)
     }
 }
 
+bool Keyboard::is_active()
+{
+    bool active = false;
+    for(float velocity : m_keys)
+    {
+        if(velocity != 0.0f)
+        {
+            active = true;
+        }
+    }
+    return active;
+}
+
 bool Keyboard::contains(int key)
 {
     return key >= 0 && key < size;

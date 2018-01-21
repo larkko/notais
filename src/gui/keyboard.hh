@@ -8,6 +8,7 @@ class Keyboard
     Keyboard();
     float at(int key);
     void set(int key, float value);
+    bool is_active();
   private:
     bool contains(int key);
     /*The number of keys in possible to express in a MIDI message

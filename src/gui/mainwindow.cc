@@ -18,7 +18,7 @@ Main_window::Main_window()
             else
             {
                 m_keyboard.set(e.key, 0.0f);
-                if(m_audio_out.is_active())
+                if(m_audio_out.is_active() && !m_keyboard.is_active())
                 {
                     m_audio_out.stop();
                 }
