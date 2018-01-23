@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <tuple>
 
 #include <RtAudio.h>
 
@@ -14,6 +15,12 @@ class Audio_output
     void stop();
     bool is_active();
   private:
+    static constexpr unsigned int m_sample_rate = 44100;
+    static constexpr unsigned int m_buffer_size = 256;
+    static constexpr unsigned int m_channel_count = 1;
     RtAudio m_out;
     bool m_active;
+    std::tuple<Audio_data, Audio_data> m_buffers;
+    /*Denotes which buffer is active*/
+    bool m_buffer_flag;
 };

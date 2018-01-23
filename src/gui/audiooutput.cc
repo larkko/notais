@@ -4,8 +4,16 @@
 
 Audio_output::Audio_output()
     : m_out(RtAudio()),
-      m_active(false)
+      m_active(false),
+      m_buffers(std::make_tuple
+      (
+          Audio_data(m_sample_rate, m_channel_count),
+          Audio_data(m_sample_rate, m_channel_count)
+      )),
+      m_buffer_flag(false)
 {
+    std::get<0>(m_buffers).reserve(m_buffer_size);
+    std::get<1>(m_buffers).reserve(m_buffer_size);
 }
 
 void Audio_output::start()
@@ -20,14 +28,14 @@ void Audio_output::start()
       correct one on my system. Switch this to m_out.getDefaultOutputDevice()
       once audio output device selection is implemented*/
     parameters.deviceId = 2;
-    parameters.nChannels = 1;
-    unsigned int sample_rate = 44100;
-    unsigned int buffer_size = 256;
+    parameters.nChannels = m_channel_count;
+
+    unsigned int buffer_size = m_buffer_size;
 
     try
     {
         m_out.openStream(&parameters, NULL, RTAUDIO_FLOAT32,
-                         sample_rate, &buffer_size,
+                         m_sample_rate, &buffer_size,
             [](void * output_buffer,
                void * input_buffer,
                unsigned int buffer_frame_count,
