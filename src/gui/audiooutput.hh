@@ -4,6 +4,8 @@
 
 #include <RtAudio.h>
 
+#include "../lib/audio/audiodata.hh"
+
 class Audio_output
 {
   public:
