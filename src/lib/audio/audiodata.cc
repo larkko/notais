@@ -41,6 +41,16 @@ void Audio_data::reset()
     }
 }
 
+size_t Audio_data::sample_rate()
+{
+    return m_sample_rate;
+}
+
+size_t Audio_data::channel_count()
+{
+    return m_channel_count;
+}
+
 size_t Audio_data::sample_index(size_t nth, size_t channel)
 {
     return channel + (nth * m_channel_count);

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "mainwindow.hh"
+#include "../lib/audio/oscillator.hh"
 
 Main_window::Main_window()
     : m_midi_input(MIDI_input
