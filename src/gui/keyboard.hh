@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstddef>
+#include <chrono>
 
 class Keyboard
 {
@@ -10,8 +11,14 @@ class Keyboard
 
     struct Keypress
     {
-        Keypress(float velocity = 0.0f);
+        Keypress
+        (
+            float velocity = 0.0f,
+            std::chrono::time_point<std::chrono::steady_clock> hit_time
+                = std::chrono::steady_clock::now()
+        );
         float velocity;
+        std::chrono::time_point<std::chrono::steady_clock> hit_time;
     };
 
     Keypress at(int key);

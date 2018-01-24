@@ -5,8 +5,13 @@ Keyboard::Keyboard()
 {
 }
 
-Keyboard::Keypress::Keypress(float velocity)
-    : velocity(velocity)
+Keyboard::Keypress::Keypress
+(
+    float velocity,
+    std::chrono::time_point<std::chrono::steady_clock> hit_time
+)
+    : velocity(velocity),
+      hit_time(hit_time)
 {
 }
 
