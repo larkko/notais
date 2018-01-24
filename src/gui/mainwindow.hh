@@ -16,4 +16,5 @@ class Main_window : public QWidget
     MIDI_input m_midi_input;
     Keyboard m_keyboard;
     Audio_output m_audio_out;
+    std::unique_ptr<Audio_source> m_active_instrument;
 };
