@@ -92,8 +92,17 @@ bool Audio_output::is_active()
     return m_active;
 }
 
+Audio_data & Audio_output::active_buffer()
+{
+    return m_buffer_flag ? std::get<0>(m_buffers)
+                         : std::get<1>(m_buffers);
+}
 
-
+Audio_data & Audio_output::back_buffer()
+{
+    return m_buffer_flag ? std::get<1>(m_buffers)
+                         : std::get<0>(m_buffers);
+}
 
 
 
