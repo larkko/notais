@@ -15,9 +15,11 @@ Keyboard::Keypress::Keypress
 {
 }
 
-double Keyboard::Keypress::time_since_hit()
+double Keyboard::Keypress::time_since_hit
+(
+    std::chrono::time_point<std::chrono::steady_clock> now
+)
 {
-    auto now = std::chrono::steady_clock::now();
     std::chrono::duration<double> duration = now - hit_time;
     return duration.count();
 }
