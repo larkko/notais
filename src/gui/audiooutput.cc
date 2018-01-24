@@ -5,15 +5,9 @@
 Audio_output::Audio_output()
     : m_out(RtAudio()),
       m_active(false),
-      m_buffers(std::make_tuple
-          (
-              Audio_data(m_sample_rate, m_channel_count),
-              Audio_data(m_sample_rate, m_channel_count)
-          )),
-      m_buffer_flag(false)
+      m_buffer(Audio_data(m_sample_rate, m_channel_count))
 {
-    std::get<0>(m_buffers).reserve(m_buffer_size);
-    std::get<1>(m_buffers).reserve(m_buffer_size);
+    m_buffer.reserve(m_buffer_size);
 }
 
 void Audio_output::start()
@@ -92,25 +86,6 @@ bool Audio_output::is_active()
 {
     return m_active;
 }
-
-Audio_data & Audio_output::active_buffer()
-{
-    return m_buffer_flag ? std::get<0>(m_buffers)
-                         : std::get<1>(m_buffers);
-}
-
-Audio_data & Audio_output::back_buffer()
-{
-    return m_buffer_flag ? std::get<1>(m_buffers)
-                         : std::get<0>(m_buffers);
-}
-
-void Audio_output::switch_buffers()
-{
-    m_buffer_flag = !m_buffer_flag;
-}
-
-
 
 
 
