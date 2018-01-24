@@ -87,6 +87,11 @@ bool Audio_output::is_active()
     return m_active;
 }
 
+Audio_data & Audio_output::buffer()
+{
+    return m_buffer;
+}
+
 
 
 
