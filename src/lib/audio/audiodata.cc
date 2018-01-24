@@ -51,6 +51,16 @@ size_t Audio_data::channel_count()
     return m_channel_count;
 }
 
+size_t Audio_data::sample_count()
+{
+    return m_samples.size();
+}
+
+size_t Audio_data::frame_count()
+{
+    return sample_count() / channel_count();
+}
+
 size_t Audio_data::sample_index(size_t nth, size_t channel)
 {
     return channel + (nth * m_channel_count);

@@ -14,6 +14,7 @@ void Oscillator::get_samples
 (
     Audio_data & destination,
     float frequency,
+    float volume,
     size_t sample_count,
     size_t offset_in_source,
     size_t offset_in_destination
@@ -28,7 +29,7 @@ void Oscillator::get_samples
         switch(m_type)
         {
             case Oscillator::Type::Sine:
-                sample = sin(sine_multiplier * static_cast<float>(i));
+                sample = volume * sin(sine_multiplier * static_cast<float>(i));
                 break;
             default:
                 break;

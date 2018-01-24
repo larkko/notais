@@ -31,6 +31,11 @@ bool Keyboard::is_active()
     return active;
 }
 
+bool Keyboard::key_is_active(int key)
+{
+    return contains(key) && m_keys[key] > 0.0f;
+}
+
 size_t Keyboard::size()
 {
     return m_keys.size();

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 
 #include "mainwindow.hh"
 #include "../lib/audio/oscillator.hh"
@@ -28,9 +29,23 @@ Main_window::Main_window()
     )),
     m_audio_out(Audio_output
     (
-        [](Audio_data & destination)
+        [&](Audio_data & destination)
         {
-            
+            for(int key = 0; key < m_keyboard.size(); ++key)
+            {
+                if(m_keyboard.key_is_active(key))
+                {
+                    m_active_instrument->get_samples
+                    (
+                        destination,
+                        440.0f, //frequency
+                        m_keyboard.at(key), //volume
+                        destination.frame_count(),
+                        0, //source offset
+                        0 //destination offset
+                    );
+                }
+            }
         }
     )),
     m_active_instrument

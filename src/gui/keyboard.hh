@@ -10,6 +10,7 @@ class Keyboard
     float at(int key);
     void set(int key, float value);
     bool is_active();
+    bool key_is_active(int key);
     size_t size();
   private:
     bool contains(int key);
