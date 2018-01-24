@@ -47,6 +47,7 @@ void Audio_output::start()
                 {
                     std::cout << "Error in stream callback" << std::endl;
                 }
+
                 float * buffer = (float *)output_buffer;
                 for(unsigned int i = 0; i < buffer_frame_count; ++i)
                 {
