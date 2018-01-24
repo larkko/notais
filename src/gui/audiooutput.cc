@@ -6,10 +6,10 @@ Audio_output::Audio_output()
     : m_out(RtAudio()),
       m_active(false),
       m_buffers(std::make_tuple
-      (
-          Audio_data(m_sample_rate, m_channel_count),
-          Audio_data(m_sample_rate, m_channel_count)
-      )),
+          (
+              Audio_data(m_sample_rate, m_channel_count),
+              Audio_data(m_sample_rate, m_channel_count)
+          )),
       m_buffer_flag(false)
 {
     std::get<0>(m_buffers).reserve(m_buffer_size);
