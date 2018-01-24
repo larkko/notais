@@ -7,8 +7,15 @@ class Keyboard
 {
   public:
     Keyboard();
-    float at(int key);
-    void set(int key, float value);
+
+    struct Keypress
+    {
+        Keypress(float velocity = 0.0f);
+        float velocity;
+    };
+
+    Keypress at(int key);
+    void set(int key, Keypress press);
     bool is_active();
     bool key_is_active(int key);
     size_t size();
@@ -17,5 +24,5 @@ class Keyboard
     /*The number of keys in possible to express in a MIDI message
       can be used as our keyboard size here.*/
     static constexpr int m_size = 128;
-    std::array<float, m_size> m_keys;
+    std::array<Keypress, m_size> m_keys;
 };

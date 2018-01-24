@@ -39,7 +39,7 @@ Main_window::Main_window()
                     (
                         destination,
                         440.0f, //frequency
-                        m_keyboard.at(key), //volume
+                        m_keyboard.at(key).velocity, //volume
                         destination.frame_count(),
                         0, //source offset
                         0 //destination offset

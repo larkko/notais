@@ -1,29 +1,34 @@
 #include "keyboard.hh"
 
 Keyboard::Keyboard()
-    : m_keys(std::array<float, m_size>())
+    : m_keys(std::array<Keyboard::Keypress, m_size>())
 {
 }
 
-float Keyboard::at(int key)
+Keyboard::Keypress::Keypress(float velocity)
+    : velocity(velocity)
 {
-    return contains(key) ? m_keys[key] : 0.0f;
 }
 
-void Keyboard::set(int key, float value)
+Keyboard::Keypress Keyboard::at(int key)
+{
+    return contains(key) ? m_keys[key] : Keyboard::Keypress(0.0f);
+}
+
+void Keyboard::set(int key, Keyboard::Keypress press)
 {
     if(contains(key))
     {
-        m_keys[key] = value;
+        m_keys[key] = press;
     }
 }
 
 bool Keyboard::is_active()
 {
     bool active = false;
-    for(float velocity : m_keys)
+    for(Keyboard::Keypress press : m_keys)
     {
-        if(velocity != 0.0f)
+        if(press.velocity != 0.0f)
         {
             active = true;
         }
@@ -33,7 +38,7 @@ bool Keyboard::is_active()
 
 bool Keyboard::key_is_active(int key)
 {
-    return contains(key) && m_keys[key] > 0.0f;
+    return contains(key) && m_keys[key].velocity > 0.0f;
 }
 
 size_t Keyboard::size()
@@ -43,5 +48,5 @@ size_t Keyboard::size()
 
 bool Keyboard::contains(int key)
 {
-    return key >= 0 && key < size();
+    return key >= 0 && key < static_cast<int>(size());
 }
