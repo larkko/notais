@@ -42,14 +42,26 @@ void Audio_output::start()
                     std::cout << "Error in stream callback" << std::endl;
                 }
 
+                Audio_output * out = static_cast<Audio_output *>(user_data);
+
+                /*Put buffer contents into output buffer*/
                 float * buffer = (float *)output_buffer;
+                for(unsigned int i = 0; i < buffer_frame_count; ++i)
+                {
+                    float val = out->buffer().sample_at(i, 0);
+                    *buffer++ = val;
+                }
+
+                out->buffer().reset();
+
+                /*Put new content in buffer*/
                 for(unsigned int i = 0; i < buffer_frame_count; ++i)
                 {
                     float freq = 440.0f;
                     float val = 0.1f * sin(2.0f*3.1415f*freq*(stream_time + (float)i/44100.0f));
-                    
-                    *buffer++ = val;
+                    out->buffer().set_sample(i, 0, val);
                 }
+
                 return 0;
             },
             /*User data*/
