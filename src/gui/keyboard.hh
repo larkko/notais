@@ -17,6 +17,7 @@ class Keyboard
             std::chrono::time_point<std::chrono::steady_clock> hit_time
                 = std::chrono::steady_clock::now()
         );
+        double time_since_hit();
         float velocity;
         std::chrono::time_point<std::chrono::steady_clock> hit_time;
     };

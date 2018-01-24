@@ -15,6 +15,13 @@ Keyboard::Keypress::Keypress
 {
 }
 
+double Keyboard::Keypress::time_since_hit()
+{
+    auto now = std::chrono::steady_clock::now();
+    std::chrono::duration<double> duration = now - hit_time;
+    return duration.count();
+}
+
 Keyboard::Keypress Keyboard::at(int key)
 {
     return contains(key) ? m_keys[key] : Keyboard::Keypress(0.0f);
