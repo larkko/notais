@@ -26,6 +26,13 @@ Main_window::Main_window()
             }
         }
     )),
+    m_audio_out(Audio_output
+    (
+        [](Audio_data & destination)
+        {
+            
+        }
+    )),
     m_active_instrument
     (
         std::make_unique<Oscillator>(Oscillator(Oscillator::Type::Sine))

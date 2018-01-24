@@ -2,8 +2,9 @@
 
 #include <cmath>
 
-Audio_output::Audio_output()
-    : m_out(RtAudio()),
+Audio_output::Audio_output(std::function<void (Audio_data &)> callback)
+    : buffer_fill_callback(callback),
+      m_out(RtAudio()),
       m_active(false),
       m_buffer(Audio_data(m_sample_rate, m_channel_count))
 {
