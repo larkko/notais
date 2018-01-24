@@ -1,7 +1,7 @@
 #include "keyboard.hh"
 
 Keyboard::Keyboard()
-    : m_keys(std::array<float, size>())
+    : m_keys(std::array<float, m_size>())
 {
 }
 
@@ -31,7 +31,12 @@ bool Keyboard::is_active()
     return active;
 }
 
+size_t Keyboard::size()
+{
+    return m_keys.size();
+}
+
 bool Keyboard::contains(int key)
 {
-    return key >= 0 && key < size;
+    return key >= 0 && key < size();
 }
