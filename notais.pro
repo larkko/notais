@@ -10,6 +10,7 @@ LIBS += -lrtmidi -lm -lrtaudio
 SOURCES += src/main.cc
 HEADERS += src/lib/audio/audiodata.hh
 SOURCES += src/lib/audio/audiodata.cc
+HEADERS += src/lib/audio/audiosource.hh
 HEADERS += src/gui/midiinput.hh
 SOURCES += src/gui/midiinput.cc
 HEADERS += src/gui/keyboard.hh

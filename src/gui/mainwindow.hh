@@ -5,6 +5,7 @@
 #include "midiinput.hh"
 #include "keyboard.hh"
 #include "audiooutput.hh"
+#include "../lib/audio/audiosource.hh"
 
 class Main_window : public QWidget
 {
