@@ -104,7 +104,10 @@ Audio_data & Audio_output::back_buffer()
                          : std::get<0>(m_buffers);
 }
 
-
+void Audio_output::switch_buffers()
+{
+    m_buffer_flag = !m_buffer_flag;
+}
 
 
 

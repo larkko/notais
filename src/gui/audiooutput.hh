@@ -16,6 +16,7 @@ class Audio_output
     bool is_active();
     Audio_data & active_buffer();
     Audio_data & back_buffer();
+    void switch_buffers();
   private:
     static constexpr unsigned int m_sample_rate = 44100;
     static constexpr unsigned int m_buffer_size = 256;
