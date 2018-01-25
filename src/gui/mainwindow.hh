@@ -20,4 +20,5 @@ class Main_window : public QWidget
     Audio_output m_audio_out;
     std::unique_ptr<Audio_source> m_active_instrument;
     std::unique_ptr<Tuning> m_active_tuning;
+    Keyboard_widget * m_keyboard_widget;
 };

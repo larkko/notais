@@ -62,4 +62,19 @@ Main_window::Main_window()
         std::make_unique<Equal_temperament>(Equal_temperament(12, 2, 8.175798))
     )
 {
+    m_keyboard_widget = new Keyboard_widget(m_keyboard, this);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
