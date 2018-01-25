@@ -4,6 +4,7 @@
 
 #include "midiinput.hh"
 #include "keyboard.hh"
+#include "keyboardwidget.hh"
 #include "audiooutput.hh"
 #include "../lib/audio/audiosource.hh"
 #include "../lib/tuning/tuning.hh"
