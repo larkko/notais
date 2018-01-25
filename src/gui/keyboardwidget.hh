@@ -10,5 +10,6 @@ class Keyboard_widget : public QWidget
   public:
     Keyboard_widget(Keyboard & keyboard, QWidget * parent = nullptr);
   private:
+    void paintEvent(QPaintEvent * event) override;
     Keyboard & m_keyboard;
 };
