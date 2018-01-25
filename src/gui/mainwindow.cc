@@ -40,7 +40,7 @@ Main_window::Main_window()
                     (
                         destination,
                         m_active_tuning->frequency_at(key), //frequency
-                        m_keyboard.at(key).velocity, //volume
+                        0.3f*m_keyboard.at(key).velocity, //volume
                         destination.frame_count(),
                         m_keyboard.at(key).elapsed_time, //source offset
                         0 //destination offset

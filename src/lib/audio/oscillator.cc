@@ -39,7 +39,7 @@ void Oscillator::get_samples
         }
         for(size_t c = 0; c < destination.channel_count(); ++c)
         {
-            destination.set_sample(i + offset_in_destination, c, sample);
+            destination.add_to_sample(i + offset_in_destination, c, sample);
         }
     }
 }
