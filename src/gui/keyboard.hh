@@ -11,19 +11,9 @@ class Keyboard
 
     struct Keypress
     {
-        Keypress
-        (
-            float velocity = 0.0f,
-            std::chrono::time_point<std::chrono::steady_clock> hit_time
-                = std::chrono::steady_clock::now()
-        );
-        double time_since_hit
-        (
-            std::chrono::time_point<std::chrono::steady_clock> now
-                = std::chrono::steady_clock::now()
-        );
+        Keypress(float velocity = 0.0f, size_t elapsed_time = 0);
         float velocity;
-        std::chrono::time_point<std::chrono::steady_clock> hit_time;
+        size_t elapsed_time;
     };
 
     Keypress at(int key);
@@ -31,6 +21,7 @@ class Keyboard
     bool is_active();
     bool key_is_active(int key);
     size_t size();
+    void advance_time(size_t amount);
   private:
     bool contains(int key);
     /*The number of keys in possible to express in a MIDI message

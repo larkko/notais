@@ -11,7 +11,7 @@ Main_window::Main_window()
         {
             if(e.down)
             {
-                m_keyboard.set(e.key, e.velocity);
+                m_keyboard.set(e.key, Keyboard::Keypress(e.velocity));
                 if(!m_audio_out.is_active())
                 {
                     m_audio_out.start();
@@ -19,7 +19,7 @@ Main_window::Main_window()
             }
             else
             {
-                m_keyboard.set(e.key, 0.0f);
+                m_keyboard.set(e.key, Keyboard::Keypress(0.0f));
                 if(m_audio_out.is_active() && !m_keyboard.is_active())
                 {
                     m_audio_out.stop();
@@ -41,11 +41,12 @@ Main_window::Main_window()
                         440.0f, //frequency
                         m_keyboard.at(key).velocity, //volume
                         destination.frame_count(),
-                        0, //source offset
+                        m_keyboard.at(key).elapsed_time, //source offset
                         0 //destination offset
                     );
                 }
             }
+            m_keyboard.advance_time(destination.frame_count());
         }
     )),
     m_active_instrument

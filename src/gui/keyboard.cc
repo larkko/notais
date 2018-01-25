@@ -5,23 +5,10 @@ Keyboard::Keyboard()
 {
 }
 
-Keyboard::Keypress::Keypress
-(
-    float velocity,
-    std::chrono::time_point<std::chrono::steady_clock> hit_time
-)
+Keyboard::Keypress::Keypress(float velocity, size_t elapsed_time)
     : velocity(velocity),
-      hit_time(hit_time)
+      elapsed_time(elapsed_time)
 {
-}
-
-double Keyboard::Keypress::time_since_hit
-(
-    std::chrono::time_point<std::chrono::steady_clock> now
-)
-{
-    std::chrono::duration<double> duration = now - hit_time;
-    return duration.count();
 }
 
 Keyboard::Keypress Keyboard::at(int key)
@@ -58,6 +45,14 @@ bool Keyboard::key_is_active(int key)
 size_t Keyboard::size()
 {
     return m_keys.size();
+}
+
+void Keyboard::advance_time(size_t amount)
+{
+    for(Keyboard::Keypress & press : m_keys)
+    {
+        press.elapsed_time += amount;
+    }
 }
 
 bool Keyboard::contains(int key)

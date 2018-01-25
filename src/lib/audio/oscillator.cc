@@ -2,6 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include <iostream>
+
 #include "oscillator.hh"
 
 Oscillator::Oscillator(Oscillator::Type type)
@@ -23,13 +25,14 @@ void Oscillator::get_samples
     size_t sample_rate = destination.sample_rate();
     float multiplier = frequency / static_cast<float>(sample_rate);
     float sine_multiplier = multiplier * 2.0f * M_PI;
-    for(size_t i = offset_in_source; i < (offset_in_source + sample_count); ++i)
+    for(size_t i = 0; i < sample_count; ++i)
     {
+        size_t s = i + offset_in_source;
         Audio_data::Sample sample = 0.0f;
         switch(m_type)
         {
             case Oscillator::Type::Sine:
-                sample = volume * sin(sine_multiplier * static_cast<float>(i));
+                sample = volume * sin(sine_multiplier * s);
                 break;
             default:
                 break;
