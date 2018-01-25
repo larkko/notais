@@ -15,6 +15,8 @@ class Audio_data
     void add_to_sample(size_t index, size_t channel, Sample value);
     /*Sets the data in an Audio_data instance to silence.*/
     void reset();
+    /*Ensures no samples are out of bounds*/
+    void clamp_samples();
     size_t sample_rate();
     size_t channel_count();
     /*Number of individual samples*/

@@ -47,6 +47,7 @@ Main_window::Main_window()
                     );
                 }
             }
+            destination.clamp_samples();
             m_keyboard.advance_time(destination.frame_count());
         }
     )),
@@ -56,7 +57,8 @@ Main_window::Main_window()
     ),
     m_active_tuning
     (
-        /*base frequency is set to the frequency of midi note 0 here*/
+        /*Base frequency is set to the frequency of midi note 0 here.
+          Otherwise this is normal 12EDO tuning.*/
         std::make_unique<Equal_temperament>(Equal_temperament(12, 2, 8.175798))
     )
 {

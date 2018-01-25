@@ -41,6 +41,16 @@ void Audio_data::reset()
     }
 }
 
+void Audio_data::clamp_samples()
+{
+    for(auto & s : m_samples)
+    {
+        s = (s > 1.0f) ? 1.0f
+          : (s < -1.0f) ? -1.0f
+          : s;
+    }
+}
+
 size_t Audio_data::sample_rate()
 {
     return m_sample_rate;
