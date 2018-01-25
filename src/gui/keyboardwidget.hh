@@ -6,6 +6,7 @@
 
 class Keyboard_widget : public QWidget
 {
+  Q_OBJECT
   public:
     Keyboard_widget(Keyboard & keyboard, QWidget * parent = nullptr);
   private:

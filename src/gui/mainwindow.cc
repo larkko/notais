@@ -26,6 +26,7 @@ Main_window::Main_window()
                     m_audio_out.stop();
                 }
             }
+            emit keyboard_state_changed();
         }
     )),
     m_audio_out(Audio_output
