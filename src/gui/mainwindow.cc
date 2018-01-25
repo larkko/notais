@@ -3,6 +3,7 @@
 
 #include "mainwindow.hh"
 #include "../lib/audio/oscillator.hh"
+#include "../lib/tuning/equaltemperament.hh"
 
 Main_window::Main_window()
     : m_midi_input(MIDI_input
@@ -52,6 +53,11 @@ Main_window::Main_window()
     m_active_instrument
     (
         std::make_unique<Oscillator>(Oscillator(Oscillator::Type::Sine))
+    ),
+    m_active_tuning
+    (
+        /*base frequency is set to the frequency of midi note 0 here*/
+        std::make_unique<Equal_temperament>(Equal_temperament(12, 2, 8.175798))
     )
 {
 }

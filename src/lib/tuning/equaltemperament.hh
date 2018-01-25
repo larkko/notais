@@ -5,9 +5,12 @@
 class Equal_temperament : public Tuning
 {
   public:
-    Equal_temperament(float steps_per_interval,
-                      float interval_size,
-                      float base_frequency);
+    Equal_temperament
+    (
+        float steps_per_interval,
+        float interval_size,
+        float base_frequency
+    );
     float frequency_at(float steps) const override;
   private:
     float step_multiplier() const;

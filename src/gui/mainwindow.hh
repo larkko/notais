@@ -6,6 +6,7 @@
 #include "keyboard.hh"
 #include "audiooutput.hh"
 #include "../lib/audio/audiosource.hh"
+#include "../lib/tuning/tuning.hh"
 
 class Main_window : public QWidget
 {
@@ -17,4 +18,5 @@ class Main_window : public QWidget
     Keyboard m_keyboard;
     Audio_output m_audio_out;
     std::unique_ptr<Audio_source> m_active_instrument;
+    std::unique_ptr<Tuning> m_active_tuning;
 };
