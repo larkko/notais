@@ -64,6 +64,15 @@ Main_window::Main_window()
     )
 {
     m_keyboard_widget = new Keyboard_widget(m_keyboard, this);
+
+    QObject::connect
+    (
+        this,
+        &Main_window::keyboard_state_changed,
+        m_keyboard_widget,
+        static_cast<void (Keyboard_widget::*)()>(&Keyboard_widget::update)
+    );
+
 }
 
 
