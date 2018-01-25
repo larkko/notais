@@ -39,7 +39,7 @@ Main_window::Main_window()
                     m_active_instrument->get_samples
                     (
                         destination,
-                        440.0f, //frequency
+                        m_active_tuning->frequency_at(key), //frequency
                         m_keyboard.at(key).velocity, //volume
                         destination.frame_count(),
                         m_keyboard.at(key).elapsed_time, //source offset
