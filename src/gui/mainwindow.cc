@@ -33,7 +33,7 @@ Main_window::Main_window()
     (
         [&](Audio_data & destination)
         {
-            for(int key = 0; key < m_keyboard.size(); ++key)
+            for(int key = 0; key < static_cast<int>(m_keyboard.size()); ++key)
             {
                 if(m_keyboard.key_is_active(key))
                 {
