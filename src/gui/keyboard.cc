@@ -42,7 +42,7 @@ bool Keyboard::key_is_active(int key)
     return contains(key) && m_keys[key].velocity > 0.0f;
 }
 
-size_t Keyboard::size()
+size_t Keyboard::key_count()
 {
     return m_keys.size();
 }
@@ -57,5 +57,5 @@ void Keyboard::advance_time(size_t amount)
 
 bool Keyboard::contains(int key)
 {
-    return key >= 0 && key < static_cast<int>(size());
+    return key >= 0 && key < static_cast<int>(key_count());
 }

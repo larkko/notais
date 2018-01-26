@@ -20,7 +20,7 @@ class Keyboard
     void set(int key, Keypress press);
     bool is_active();
     bool key_is_active(int key);
-    size_t size();
+    size_t key_count();
     void advance_time(size_t amount);
   private:
     bool contains(int key);
