@@ -8,7 +8,8 @@
 
 Keyboard_widget::Keyboard_widget(Keyboard & keyboard, QWidget * parent)
     : QWidget(parent),
-      m_keyboard(keyboard)
+      m_keyboard(keyboard),
+      m_held_key(-1)
 {
 }
 
@@ -52,7 +53,6 @@ int Keyboard_widget::key_at(QPoint location)
     return -1;
 }
 
-
 void Keyboard_widget::mousePressEvent(QMouseEvent * event)
 {
     int key = key_at(event->pos());
@@ -66,6 +66,17 @@ void Keyboard_widget::mousePressEvent(QMouseEvent * event)
         {
             m_keyboard.set(key, Keyboard::Keypress(1.0f));
         }
+        update();
+    }
+    m_held_key = key;
+}
+
+void Keyboard_widget::mouseReleaseEvent(QMouseEvent * event)
+{
+    if(m_held_key >= 0)
+    {
+        m_keyboard.set(m_held_key, Keyboard::Keypress(0.0f));
+        m_held_key = -1;
         update();
     }
 }

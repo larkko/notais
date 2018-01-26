@@ -16,5 +16,7 @@ class Keyboard_widget : public QWidget
     void paintEvent(QPaintEvent * event) override;
     int key_at(QPoint location);
     void mousePressEvent(QMouseEvent * event) override;
+    void mouseReleaseEvent(QMouseEvent * event) override;
     Keyboard & m_keyboard;
+    int m_held_key;
 };
