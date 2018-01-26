@@ -19,4 +19,6 @@ class Keyboard_widget : public QWidget
     void mouseReleaseEvent(QMouseEvent * event) override;
     Keyboard & m_keyboard;
     int m_held_key;
+  signals:
+    void keyboard_state_changed();
 };

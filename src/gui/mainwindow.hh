@@ -15,6 +15,7 @@ class Main_window : public QWidget
   public:
     Main_window();
   private:
+    void update_audio_state();
     MIDI_input m_midi_input;
     Keyboard m_keyboard;
     Audio_output m_audio_out;

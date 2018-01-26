@@ -15,18 +15,10 @@ Main_window::Main_window()
             if(e.down)
             {
                 m_keyboard.set(e.key, Keyboard::Keypress(e.velocity));
-                if(!m_audio_out.is_active())
-                {
-                    m_audio_out.start();
-                }
             }
             else
             {
                 m_keyboard.set(e.key, Keyboard::Keypress(0.0f));
-                if(m_audio_out.is_active() && !m_keyboard.is_active())
-                {
-                    m_audio_out.stop();
-                }
             }
             emit keyboard_state_changed();
         }
@@ -70,6 +62,7 @@ Main_window::Main_window()
     root_layout->addWidget(m_keyboard_widget);
     this->setLayout(root_layout);
 
+    /*Update keyboard widget when keyboard state changes*/
     QObject::connect
     (
         this,
@@ -78,6 +71,35 @@ Main_window::Main_window()
         static_cast<void (Keyboard_widget::*)()>(&Keyboard_widget::update)
     );
 
+    /*Acknowledge keyboard state changes when updated from keyboard widget*/
+    QObject::connect
+    (
+        m_keyboard_widget,
+        &Keyboard_widget::keyboard_state_changed,
+        this,
+        &Main_window::keyboard_state_changed
+    );
+
+    /*Update audio state whenever keyboard state changes*/
+    QObject::connect
+    (
+        this,
+        &Main_window::keyboard_state_changed,
+        this,
+        &Main_window::update_audio_state
+    );
+}
+
+void Main_window::update_audio_state()
+{
+    if(!m_audio_out.is_active() && m_keyboard.is_active())
+    {
+        m_audio_out.start();
+    }
+    else if(m_audio_out.is_active() && !m_keyboard.is_active())
+    {
+        m_audio_out.stop();
+    }
 }
 
 

@@ -67,6 +67,7 @@ void Keyboard_widget::mousePressEvent(QMouseEvent * event)
             m_keyboard.set(key, Keyboard::Keypress(1.0f));
         }
         update();
+        emit keyboard_state_changed();
     }
     m_held_key = key;
 }
@@ -78,6 +79,7 @@ void Keyboard_widget::mouseReleaseEvent(QMouseEvent * event)
         m_keyboard.set(m_held_key, Keyboard::Keypress(0.0f));
         m_held_key = -1;
         update();
+        emit keyboard_state_changed();
     }
 }
 
