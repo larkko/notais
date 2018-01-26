@@ -17,6 +17,7 @@ void Keyboard_widget::paintEvent(QPaintEvent * event)
     QPainter painter(this);
     for(size_t i = 0; i < m_keyboard.key_count(); ++i)
     {
+        /*Draw keys*/
         Qt::GlobalColor color = m_keyboard.key_is_active(i)
                               ? Qt::cyan
                               : Qt::darkGray;
@@ -24,5 +25,9 @@ void Keyboard_widget::paintEvent(QPaintEvent * event)
         int height = this->height();
         int x = floor(i * width);
         painter.fillRect(x, 0, ceil(width), height, color);
+        /*Draw separator between keys*/
+        Qt::GlobalColor separator_color = Qt::black;
+        painter.setPen(separator_color);
+        painter.drawLine(x, 0, x, height);
     }
 }
