@@ -18,8 +18,8 @@ void Keyboard_widget::paintEvent(QPaintEvent * event)
     for(size_t i = 0; i < m_keyboard.key_count(); ++i)
     {
         Qt::GlobalColor color = m_keyboard.key_is_active(i)
-                              ? Qt::red
-                              : Qt::blue;
+                              ? Qt::cyan
+                              : Qt::darkGray;
         float width = (float)(this->width()) / (float)(m_keyboard.key_count());
         int height = this->height();
         int x = floor(i * width);
