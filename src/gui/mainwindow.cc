@@ -2,6 +2,8 @@
 #include <math.h>
 
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QSlider>
 
 #include "mainwindow.hh"
 #include "../lib/audio/oscillator.hh"
@@ -58,8 +60,13 @@ Main_window::Main_window()
     )
 {
     QVBoxLayout * root_layout = new QVBoxLayout;
+
+    QSlider * volume_slider = new QSlider(Qt::Horizontal);
+    root_layout->addWidget(volume_slider);
+
     Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
     root_layout->addWidget(keyboard_widget);
+
     this->setLayout(root_layout);
 
     /*Update keyboard widget when keyboard state changes*/
