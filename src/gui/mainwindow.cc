@@ -58,8 +58,8 @@ Main_window::Main_window()
     )
 {
     QVBoxLayout * root_layout = new QVBoxLayout;
-    m_keyboard_widget = new Keyboard_widget(m_keyboard);
-    root_layout->addWidget(m_keyboard_widget);
+    Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
+    root_layout->addWidget(keyboard_widget);
     this->setLayout(root_layout);
 
     /*Update keyboard widget when keyboard state changes*/
@@ -67,14 +67,14 @@ Main_window::Main_window()
     (
         this,
         &Main_window::keyboard_state_changed,
-        m_keyboard_widget,
+        keyboard_widget,
         static_cast<void (Keyboard_widget::*)()>(&Keyboard_widget::update)
     );
 
     /*Acknowledge keyboard state changes when updated from keyboard widget*/
     QObject::connect
     (
-        m_keyboard_widget,
+        keyboard_widget,
         &Keyboard_widget::keyboard_state_changed,
         this,
         &Main_window::keyboard_state_changed
