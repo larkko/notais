@@ -17,6 +17,7 @@ class Audio_data
     void reset();
     /*Ensures no samples are out of bounds*/
     void clamp_samples();
+    void multiply_all_samples(float multiplier);
     size_t sample_rate();
     size_t channel_count();
     /*Number of individual samples*/

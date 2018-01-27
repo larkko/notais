@@ -51,6 +51,14 @@ void Audio_data::clamp_samples()
     }
 }
 
+void Audio_data::multiply_all_samples(float multiplier)
+{
+    for(auto & s : m_samples)
+    {
+        s = s * multiplier;
+    }
+}
+
 size_t Audio_data::sample_rate()
 {
     return m_sample_rate;

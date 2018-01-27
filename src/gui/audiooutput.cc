@@ -48,15 +48,21 @@ void Audio_output::start()
 
                 float volume = out->volume();
 
+                Audio_data & data = out->buffer();
+
+                /*Set to appropriate volume and clamp to acceptable bounds*/
+                data.multiply_all_samples(volume);
+                data.clamp_samples();
+
                 /*Put old buffer contents into output buffer*/
                 float * buffer = (float *)output_buffer;
                 for(unsigned int i = 0; i < buffer_frame_count; ++i)
                 {
-                    float val = volume * (out->buffer().sample_at(i, 0));
+                    float val = volume * (data.sample_at(i, 0));
                     *buffer++ = val;
                 }
 
-                out->buffer().reset();
+                data.reset();
 
                 /*Put new content in buffer*/
                 out->buffer_fill_callback(out->buffer());

@@ -44,7 +44,6 @@ Main_window::Main_window()
                     );
                 }
             }
-            destination.clamp_samples();
             m_keyboard.advance_time(destination.frame_count());
         }
     )),
