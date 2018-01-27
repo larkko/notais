@@ -37,7 +37,7 @@ Main_window::Main_window()
                     (
                         destination,
                         m_active_tuning->frequency_at(key), //frequency
-                        0.3f*m_keyboard.at(key).velocity, //volume
+                        m_keyboard.at(key).velocity, //volume
                         destination.frame_count(),
                         m_keyboard.at(key).elapsed_time, //source offset
                         0 //destination offset
@@ -62,12 +62,29 @@ Main_window::Main_window()
     QVBoxLayout * root_layout = new QVBoxLayout;
 
     QSlider * volume_slider = new QSlider(Qt::Horizontal);
+    volume_slider->setMinimum(0);
+    volume_slider->setMaximum(100);
+    volume_slider->setValue(m_audio_out.volume() * volume_slider->maximum());
     root_layout->addWidget(volume_slider);
 
     Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
     root_layout->addWidget(keyboard_widget);
 
     this->setLayout(root_layout);
+
+    /*Update audio output volume when volume slider is used*/
+    QObject::connect
+    (
+        volume_slider,
+        &QSlider::sliderMoved,
+        this,
+        [=]()
+        {
+            float volume = static_cast<float>(volume_slider->value()) /
+                           static_cast<float>(volume_slider->maximum());
+            m_audio_out.set_volume(volume);
+        }
+    );
 
     /*Update keyboard widget when keyboard state changes*/
     QObject::connect
