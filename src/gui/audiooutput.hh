@@ -15,6 +15,8 @@ class Audio_output
     void start();
     void stop();
     bool is_active();
+    void set_volume(float volume);
+    float volume();
     Audio_data & buffer();
     std::function<void (Audio_data &)> const buffer_fill_callback;
   private:
@@ -24,4 +26,5 @@ class Audio_output
     RtAudio m_out;
     bool m_active;
     Audio_data m_buffer;
+    float m_volume;
 };

@@ -6,7 +6,8 @@ Audio_output::Audio_output(std::function<void (Audio_data &)> callback)
     : buffer_fill_callback(callback),
       m_out(RtAudio()),
       m_active(false),
-      m_buffer(Audio_data(m_sample_rate, m_channel_count))
+      m_buffer(Audio_data(m_sample_rate, m_channel_count)),
+      m_volume(0.1f)
 {
     m_buffer.reserve(m_buffer_size);
 }
@@ -45,11 +46,13 @@ void Audio_output::start()
 
                 Audio_output * out = static_cast<Audio_output *>(user_data);
 
+                float volume = out->volume();
+
                 /*Put old buffer contents into output buffer*/
                 float * buffer = (float *)output_buffer;
                 for(unsigned int i = 0; i < buffer_frame_count; ++i)
                 {
-                    float val = out->buffer().sample_at(i, 0);
+                    float val = volume * (out->buffer().sample_at(i, 0));
                     *buffer++ = val;
                 }
 
@@ -93,6 +96,19 @@ void Audio_output::stop()
 bool Audio_output::is_active()
 {
     return m_active;
+}
+
+void Audio_output::set_volume(float volume)
+{
+    if(volume >= 0.0f && volume <= 1.0f)
+    {
+        m_volume = volume;
+    }
+}
+
+float Audio_output::volume()
+{
+    return m_volume;
 }
 
 Audio_data & Audio_output::buffer()
