@@ -57,5 +57,5 @@ void Keyboard::advance_time(size_t amount)
 
 bool Keyboard::contains(int key)
 {
-    return key >= 0 && key < static_cast<int>(key_count());
+    return key >= 0 && key < int(key_count());
 }

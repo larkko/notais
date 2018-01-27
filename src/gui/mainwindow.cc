@@ -29,7 +29,7 @@ Main_window::Main_window()
     (
         [&](Audio_data & destination)
         {
-            for(int key = 0; key < static_cast<int>(m_keyboard.key_count()); ++key)
+            for(int key = 0; key < int(m_keyboard.key_count()); ++key)
             {
                 if(m_keyboard.key_is_active(key))
                 {
@@ -79,8 +79,8 @@ Main_window::Main_window()
         this,
         [=]()
         {
-            float volume = static_cast<float>(volume_slider->value()) /
-                           static_cast<float>(volume_slider->maximum());
+            float volume = float(volume_slider->value()) /
+                           float(volume_slider->maximum());
             m_audio_out.set_volume(volume);
         }
     );
