@@ -142,6 +142,7 @@ void Audio_output::set_sample_rate(size_t sample_rate)
 {
     stop();
     m_sample_rate = sample_rate;
+    reconfigure_buffer();
 }
 
 size_t Audio_output::buffer_frame_count() const
@@ -153,7 +154,7 @@ void Audio_output::set_buffer_frame_count(size_t buffer_frame_count)
 {    
     stop();
     m_buffer_frame_count = buffer_frame_count;
-    m_buffer.reserve(m_buffer_frame_count);
+    reconfigure_buffer();
 }
 
 size_t Audio_output::channel_count() const
@@ -165,6 +166,7 @@ void Audio_output::set_channel_count(size_t channel_count)
 {    
     stop();
     m_channel_count = channel_count;
+    reconfigure_buffer();
 }
 
 Audio_data & Audio_output::buffer()
@@ -172,6 +174,11 @@ Audio_data & Audio_output::buffer()
     return m_buffer;
 }
 
+void Audio_output::reconfigure_buffer()
+{
+    m_buffer = Audio_data(m_sample_rate, m_channel_count);
+    m_buffer.reserve(m_buffer_frame_count);
+}
 
 
 

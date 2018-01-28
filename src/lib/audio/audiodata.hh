@@ -9,7 +9,7 @@ class Audio_data
     typedef float Sample;
     Audio_data(size_t sample_rate, size_t channel_count);
     /*Reserves sample_count samples for each channel*/
-    void reserve(size_t sample_count);
+    void reserve(size_t frame_count);
     Sample sample_at(size_t index, size_t channel) const;
     void set_sample(size_t index, size_t channel, Sample value);
     void add_to_sample(size_t index, size_t channel, Sample value);

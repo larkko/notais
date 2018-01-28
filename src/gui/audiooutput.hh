@@ -33,6 +33,7 @@ class Audio_output
     Audio_data & buffer();
     std::function<void (Audio_data &)> const buffer_fill_callback;
   private:
+    void reconfigure_buffer();
     size_t m_sample_rate;
     size_t m_buffer_frame_count;
     size_t m_channel_count;
