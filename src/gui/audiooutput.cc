@@ -2,14 +2,23 @@
 
 #include <cmath>
 
-Audio_output::Audio_output(std::function<void (Audio_data &)> callback)
+Audio_output::Audio_output
+(
+    size_t sample_rate,
+    size_t buffer_frame_count,
+    size_t channel_count,
+    std::function<void (Audio_data &)> callback
+)
     : buffer_fill_callback(callback),
+      m_sample_rate(sample_rate),
+      m_buffer_frame_count(buffer_frame_count),
+      m_channel_count(channel_count),
       m_out(RtAudio()),
       m_active(false),
       m_buffer(Audio_data(m_sample_rate, m_channel_count)),
       m_volume(0.1f)
 {
-    m_buffer.reserve(m_buffer_size);
+    set_buffer_frame_count(m_buffer_frame_count);
 }
 
 void Audio_output::start()
@@ -26,7 +35,7 @@ void Audio_output::start()
     parameters.deviceId = 2;
     parameters.nChannels = m_channel_count;
 
-    unsigned int buffer_size = m_buffer_size;
+    unsigned int buffer_size = m_buffer_frame_count;
 
     try
     {
@@ -62,8 +71,11 @@ void Audio_output::start()
                 float * buffer = (float *)output_buffer;
                 for(unsigned int i = 0; i < buffer_frame_count; ++i)
                 {
-                    float val = volume * (data.sample_at(i, 0));
-                    *buffer++ = val;
+                    for(unsigned int c = 0; c < out->channel_count(); ++c)
+                    {
+                        float val = volume * (data.sample_at(i, c));
+                        *buffer++ = val;
+                    }
                 }
 
                 data.reset();
@@ -119,6 +131,40 @@ void Audio_output::set_volume(float volume)
 float Audio_output::volume() const
 {
     return m_volume;
+}
+
+size_t Audio_output::sample_rate() const
+{
+    return m_sample_rate;
+}
+
+void Audio_output::set_sample_rate(size_t sample_rate)
+{
+    stop();
+    m_sample_rate = sample_rate;
+}
+
+size_t Audio_output::buffer_frame_count() const
+{
+    return m_buffer_frame_count;
+}
+
+void Audio_output::set_buffer_frame_count(size_t buffer_frame_count)
+{    
+    stop();
+    m_buffer_frame_count = buffer_frame_count;
+    m_buffer.reserve(m_buffer_frame_count);
+}
+
+size_t Audio_output::channel_count() const
+{
+    return m_channel_count;
+}
+
+void Audio_output::set_channel_count(size_t channel_count)
+{    
+    stop();
+    m_channel_count = channel_count;
 }
 
 Audio_data & Audio_output::buffer()

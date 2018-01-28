@@ -27,6 +27,9 @@ Main_window::Main_window()
     )),
     m_audio_out(Audio_output
     (
+        44100, //sample rate
+        256, //buffer frame count
+        2, //channel count
         [&](Audio_data & destination)
         {
             for(int key = 0; key < int(m_keyboard.key_count()); ++key)
