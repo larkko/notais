@@ -39,6 +39,10 @@ void Audio_output::start()
                RtAudioStreamStatus status,
                void * user_data)
             {
+                /*Disregard unused parameters*/
+                (void)input_buffer;
+                (void)stream_time;
+
                 if(status)
                 {
                     std::cout << "Error in stream callback" << std::endl;
@@ -99,7 +103,7 @@ void Audio_output::stop()
     m_active = false;
 }
 
-bool Audio_output::is_active()
+bool Audio_output::is_active() const
 {
     return m_active;
 }
@@ -112,7 +116,7 @@ void Audio_output::set_volume(float volume)
     }
 }
 
-float Audio_output::volume()
+float Audio_output::volume() const
 {
     return m_volume;
 }

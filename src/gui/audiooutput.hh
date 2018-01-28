@@ -14,9 +14,9 @@ class Audio_output
     Audio_output(std::function<void (Audio_data &)> callback);
     void start();
     void stop();
-    bool is_active();
+    bool is_active() const;
     void set_volume(float volume);
-    float volume();
+    float volume() const;
     Audio_data & buffer();
     std::function<void (Audio_data &)> const buffer_fill_callback;
   private:
