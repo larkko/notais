@@ -12,9 +12,9 @@ class Keyboard_widget : public QWidget
   public:
     Keyboard_widget(Keyboard & keyboard, QWidget * parent = nullptr);
   private:
-    QRect key_rect(int key);
+    QRect key_rect(int key) const;
     void paintEvent(QPaintEvent * event) override;
-    int key_at(QPoint location);
+    int key_at(QPoint location) const;
     void mousePressEvent(QMouseEvent * event) override;
     void mouseReleaseEvent(QMouseEvent * event) override;
     Keyboard & m_keyboard;

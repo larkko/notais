@@ -23,7 +23,7 @@ class MIDI_input
 
   private:
     /*Provides the corresponding event struct for the given MIDI message.*/
-    Event as_event(std::vector<unsigned char> * message);
+    Event as_event(std::vector<unsigned char> * message) const;
 
     RtMidiIn m_midi_in;
 };

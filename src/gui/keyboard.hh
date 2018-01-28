@@ -16,14 +16,14 @@ class Keyboard
         size_t elapsed_time;
     };
 
-    Keypress at(int key);
+    Keypress at(int key) const;
     void set(int key, Keypress press);
-    bool is_active();
-    bool key_is_active(int key);
-    size_t key_count();
+    bool is_active() const;
+    bool key_is_active(int key) const;
+    size_t key_count() const;
     void advance_time(size_t amount);
   private:
-    bool contains(int key);
+    bool contains(int key) const;
     /*The number of keys in possible to express in a MIDI message
       can be used as our keyboard size here.*/
     static constexpr int m_size = 128;

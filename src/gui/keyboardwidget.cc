@@ -13,7 +13,7 @@ Keyboard_widget::Keyboard_widget(Keyboard & keyboard, QWidget * parent)
 {
 }
 
-QRect Keyboard_widget::key_rect(int key)
+QRect Keyboard_widget::key_rect(int key) const
 {
     int width = ceil((float)(this->width()) / (float)(m_keyboard.key_count()));
     int height = this->height();
@@ -24,6 +24,8 @@ QRect Keyboard_widget::key_rect(int key)
 
 void Keyboard_widget::paintEvent(QPaintEvent * event)
 {
+    (void)event;
+
     QPainter painter(this);
     for(size_t key = 0; key < m_keyboard.key_count(); ++key)
     {
@@ -40,7 +42,7 @@ void Keyboard_widget::paintEvent(QPaintEvent * event)
     }
 }
 
-int Keyboard_widget::key_at(QPoint location)
+int Keyboard_widget::key_at(QPoint location) const
 {
     for(size_t key = 0; key < m_keyboard.key_count(); ++key)
     {
@@ -74,6 +76,8 @@ void Keyboard_widget::mousePressEvent(QMouseEvent * event)
 
 void Keyboard_widget::mouseReleaseEvent(QMouseEvent * event)
 {
+    (void)event;
+
     if(m_held_key >= 0)
     {
         m_keyboard.set(m_held_key, Keyboard::Keypress(0.0f));

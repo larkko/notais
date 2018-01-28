@@ -18,7 +18,7 @@ void Audio_data::reserve(size_t sample_count)
 }
 
 
-Audio_data::Sample Audio_data::sample_at(size_t index, size_t channel)
+Audio_data::Sample Audio_data::sample_at(size_t index, size_t channel) const
 {
     return m_samples[sample_index(index, channel)];
 }
@@ -59,27 +59,27 @@ void Audio_data::multiply_all_samples(float multiplier)
     }
 }
 
-size_t Audio_data::sample_rate()
+size_t Audio_data::sample_rate() const
 {
     return m_sample_rate;
 }
 
-size_t Audio_data::channel_count()
+size_t Audio_data::channel_count() const
 {
     return m_channel_count;
 }
 
-size_t Audio_data::sample_count()
+size_t Audio_data::sample_count() const
 {
     return m_samples.size();
 }
 
-size_t Audio_data::frame_count()
+size_t Audio_data::frame_count() const
 {
     return sample_count() / channel_count();
 }
 
-size_t Audio_data::sample_index(size_t nth, size_t channel)
+size_t Audio_data::sample_index(size_t nth, size_t channel) const
 {
     return channel + (nth * m_channel_count);
 }

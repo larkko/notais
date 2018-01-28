@@ -31,7 +31,10 @@ MIDI_input::MIDI_input(std::function<void (Event)> callback)
     }
 }
 
-MIDI_input::Event MIDI_input::as_event(std::vector<unsigned char> * message)
+MIDI_input::Event MIDI_input::as_event
+(
+    std::vector<unsigned char> * message
+) const
 {
     if(message->size() >= 3)
     {

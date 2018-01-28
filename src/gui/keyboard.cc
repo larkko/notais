@@ -11,7 +11,7 @@ Keyboard::Keypress::Keypress(float velocity, size_t elapsed_time)
 {
 }
 
-Keyboard::Keypress Keyboard::at(int key)
+Keyboard::Keypress Keyboard::at(int key) const
 {
     return contains(key) ? m_keys[key] : Keyboard::Keypress(0.0f);
 }
@@ -24,7 +24,7 @@ void Keyboard::set(int key, Keyboard::Keypress press)
     }
 }
 
-bool Keyboard::is_active()
+bool Keyboard::is_active() const
 {
     bool active = false;
     for(Keyboard::Keypress press : m_keys)
@@ -37,12 +37,12 @@ bool Keyboard::is_active()
     return active;
 }
 
-bool Keyboard::key_is_active(int key)
+bool Keyboard::key_is_active(int key) const
 {
     return contains(key) && m_keys[key].velocity > 0.0f;
 }
 
-size_t Keyboard::key_count()
+size_t Keyboard::key_count() const
 {
     return m_keys.size();
 }
@@ -55,7 +55,7 @@ void Keyboard::advance_time(size_t amount)
     }
 }
 
-bool Keyboard::contains(int key)
+bool Keyboard::contains(int key) const
 {
     return key >= 0 && key < int(key_count());
 }
