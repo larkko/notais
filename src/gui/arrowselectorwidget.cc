@@ -22,10 +22,19 @@ Arrow_selector_widget::Arrow_selector_widget
     QLabel * description_label = new QLabel("text here");
     QPushButton * next_button = new QPushButton(">");
 
+    QSizePolicy size(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    help_text->setSizePolicy(size);
+    previous_button->setSizePolicy(size);
+    description_label->setSizePolicy(size);
+    next_button->setSizePolicy(size);
+
     layout->addWidget(help_text);
     layout->addWidget(previous_button);
     layout->addWidget(description_label);
-    layout->addWidget(next_button);    
+    layout->addWidget(next_button);
 
     this->setLayout(layout);
+
+    this->setFixedHeight(layout->minimumSize().height());
 }
