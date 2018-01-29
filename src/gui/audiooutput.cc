@@ -183,6 +183,11 @@ void Audio_output::set_device(size_t device_index)
     }
 }
 
+std::string Audio_output::device_description(size_t device_index)
+{
+    return m_out.getDeviceInfo(device_index).name;
+}
+
 Audio_data & Audio_output::buffer()
 {
     return m_buffer;
