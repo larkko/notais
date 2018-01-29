@@ -174,6 +174,11 @@ size_t Audio_output::device_count()
     return m_out.getDeviceCount();
 }
 
+size_t Audio_output::device_index() const
+{
+    return m_device_index;
+}
+
 void Audio_output::set_device(size_t device_index)
 {
     if(device_index < device_count())

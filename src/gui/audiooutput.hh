@@ -31,6 +31,7 @@ class Audio_output
     size_t channel_count() const;
     void set_channel_count(size_t channel_count);
     size_t device_count();
+    size_t device_index() const;
     void set_device(size_t device_index);
     std::string device_description(size_t device_index);
     Audio_data & buffer();
