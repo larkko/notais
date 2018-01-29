@@ -178,6 +178,7 @@ void Audio_output::set_device(size_t device_index)
 {
     if(device_index < device_count())
     {
+        stop();
         m_device_index = device_index;
     }
 }
