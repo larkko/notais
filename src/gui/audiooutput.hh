@@ -4,6 +4,7 @@
 #include <tuple>
 #include <functional>
 #include <cstddef>
+#include <string>
 
 #include <RtAudio.h>
 

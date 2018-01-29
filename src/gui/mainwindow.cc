@@ -6,6 +6,7 @@
 #include <QSlider>
 
 #include "mainwindow.hh"
+#include "arrowselectorwidget.hh"
 #include "../lib/audio/oscillator.hh"
 #include "../lib/tuning/equaltemperament.hh"
 
@@ -68,6 +69,16 @@ Main_window::Main_window()
     volume_slider->setMaximum(100);
     volume_slider->setValue(m_audio_out.volume() * volume_slider->maximum());
     root_layout->addWidget(volume_slider);
+
+    Arrow_selector_widget * audio_device_selector
+    = new Arrow_selector_widget
+    (
+        [](){return "device description";},
+        [](){return 0;},
+        [](){return 0;},
+        [](size_t index){}
+    );
+    root_layout->addWidget(audio_device_selector);
 
     Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
     root_layout->addWidget(keyboard_widget);
