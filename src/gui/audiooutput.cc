@@ -17,9 +17,7 @@ Audio_output::Audio_output
       m_active(false),
       m_buffer(Audio_data(m_sample_rate, m_channel_count)),
       m_volume(0.1f),
-      /*2 is right for my system, change to default once selection widget
-        exists.*/
-      m_device_index(2)
+      m_device_index(m_out.getDefaultOutputDevice())
 {
     set_buffer_frame_count(m_buffer_frame_count);
 }
