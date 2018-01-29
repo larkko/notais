@@ -87,6 +87,11 @@ void Keyboard_widget::mouseReleaseEvent(QMouseEvent * event)
     }
 }
 
+QSize Keyboard_widget::sizeHint() const
+{
+    return QSize(1000, 400);
+}
+
 
 
 

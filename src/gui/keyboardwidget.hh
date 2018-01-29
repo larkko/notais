@@ -17,6 +17,7 @@ class Keyboard_widget : public QWidget
     int key_at(QPoint location) const;
     void mousePressEvent(QMouseEvent * event) override;
     void mouseReleaseEvent(QMouseEvent * event) override;
+    QSize sizeHint() const override;
     Keyboard & m_keyboard;
     int m_held_key;
   signals:

@@ -1,8 +1,8 @@
+#include "arrowselectorwidget.hh"
+
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QLabel>
-
-#include "arrowselectorwidget.hh"
 
 Arrow_selector_widget::Arrow_selector_widget
 (
