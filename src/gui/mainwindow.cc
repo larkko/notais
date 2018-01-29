@@ -73,10 +73,10 @@ Main_window::Main_window()
     Arrow_selector_widget * audio_device_selector
     = new Arrow_selector_widget
     (
-        [](){return "device description";},
-        [](){return 0;},
-        [](){return 0;},
-        [](size_t index){}
+        [&](size_t index){return m_audio_out.device_description(index);},
+        [&](){return m_audio_out.device_index();},
+        [&](){return m_audio_out.device_count();},
+        [&](size_t index){m_audio_out.set_device(index);}
     );
     root_layout->addWidget(audio_device_selector);
 
