@@ -96,13 +96,16 @@ void Audio_output::start()
 
 void Audio_output::stop()
 {
-    try
+    if(m_out.isStreamRunning())
     {
-        m_out.stopStream();
-    }
-    catch(RtAudioError & error)
-    {
-        error.printMessage();
+        try
+        {
+            m_out.stopStream();
+        }
+        catch(RtAudioError & error)
+        {
+            error.printMessage();
+        }
     }
 
     if(m_out.isStreamOpen())
