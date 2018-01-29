@@ -16,7 +16,10 @@ Audio_output::Audio_output
       m_out(RtAudio()),
       m_active(false),
       m_buffer(Audio_data(m_sample_rate, m_channel_count)),
-      m_volume(0.1f)
+      m_volume(0.1f),
+      /*2 is right for my system, change to default once selection widget
+        exists.*/
+      m_device_index(2)
 {
     set_buffer_frame_count(m_buffer_frame_count);
 }
@@ -29,10 +32,7 @@ void Audio_output::start()
     }
 
     RtAudio::StreamParameters parameters;
-    /*This device (which is not the default output device) is the
-      correct one on my system. Switch this to m_out.getDefaultOutputDevice()
-      once audio output device selection is implemented*/
-    parameters.deviceId = 2;
+    parameters.deviceId = m_device_index;
     parameters.nChannels = m_channel_count;
 
     unsigned int buffer_size = m_buffer_frame_count;
@@ -167,6 +167,19 @@ void Audio_output::set_channel_count(size_t channel_count)
     stop();
     m_channel_count = channel_count;
     reconfigure_buffer();
+}
+
+size_t Audio_output::device_count()
+{
+    return m_out.getDeviceCount();
+}
+
+void Audio_output::set_device(size_t device_index)
+{
+    if(device_index < device_count())
+    {
+        m_device_index = device_index;
+    }
 }
 
 Audio_data & Audio_output::buffer()
