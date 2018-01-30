@@ -64,11 +64,14 @@ Main_window::Main_window()
 {
     QVBoxLayout * root_layout = new QVBoxLayout;
 
+    QHBoxLayout * top_bar_layout = new QHBoxLayout;
+    root_layout->addLayout(top_bar_layout);
+
     QSlider * volume_slider = new QSlider(Qt::Horizontal);
     volume_slider->setMinimum(0);
     volume_slider->setMaximum(100);
     volume_slider->setValue(m_audio_out.volume() * volume_slider->maximum());
-    root_layout->addWidget(volume_slider);
+    top_bar_layout->addWidget(volume_slider);
 
     Arrow_selector_widget * audio_device_selector
     = new Arrow_selector_widget
@@ -78,7 +81,7 @@ Main_window::Main_window()
         [&](){return m_audio_out.device_count();},
         [&](size_t index){m_audio_out.set_device(index);}
     );
-    root_layout->addWidget(audio_device_selector);
+    top_bar_layout->addWidget(audio_device_selector);
 
     Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
     root_layout->addWidget(keyboard_widget);
