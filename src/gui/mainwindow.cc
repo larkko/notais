@@ -34,21 +34,24 @@ Main_window::Main_window()
         2, //channel count
         [&](Audio_data & destination)
         {
-            for(int key = 0; key < int(m_keyboard.key_count()); ++key)
-            {
-                if(m_keyboard.key_is_active(key))
+            m_keyboard.for_each
+            ([&](Keyboard::Keypress press, int key)
                 {
-                    m_active_instrument->get_samples
-                    (
-                        destination,
-                        m_active_tuning->frequency_at(key), //frequency
-                        m_keyboard.at(key).velocity, //volume
-                        destination.frame_count(),
-                        m_keyboard.at(key).elapsed_time, //source offset
-                        0 //destination offset
-                    );
-                }
-            }
+                    if(m_keyboard.key_is_active(key))
+                    {
+                        m_active_instrument->get_samples
+                        (
+                            destination,
+                            m_active_tuning->frequency_at(key), //frequency
+                            press.velocity, //volume
+                            destination.frame_count(),
+                            press.elapsed_time, //source offset
+                            0 //destination offset
+                        );
+                    }
+                },
+                Keyboard::Key::Type::Offset
+            );
             m_keyboard.advance_time(destination.frame_count());
         }
     )),

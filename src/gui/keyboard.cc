@@ -11,11 +11,6 @@ Keyboard::Keypress::Keypress(float velocity, size_t elapsed_time)
 {
 }
 
-Keyboard::Keypress Keyboard::at(int key) const
-{
-    return contains(key) ? m_keys[key] : Keyboard::Keypress(0.0f);
-}
-
 void Keyboard::press(int key, float velocity)
 {
     if(contains(key))

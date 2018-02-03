@@ -9,6 +9,17 @@ class Keyboard
   public:
     Keyboard();
 
+    struct Key
+    {
+        enum class Type
+        {
+            Offset,
+            Raw
+        };
+        int key;
+        Type type;
+    };
+
     struct Keypress
     {
         Keypress(float velocity = 0.0f, size_t elapsed_time = 0);
@@ -16,7 +27,10 @@ class Keyboard
         size_t elapsed_time;
     };
 
-    Keypress at(int key) const;
+    /*Performs function for each keypress, with a keypress and key (int) as its
+      parameters. Whether offset is applied to key depends on the type.*/
+    template<typename F>
+    void for_each(F function, Key::Type type);
     void press(int key, float velocity);
     void release(int key);
     bool is_active() const;
@@ -30,3 +44,13 @@ class Keyboard
     static constexpr int m_size = 128;
     std::array<Keypress, m_size> m_keys;
 };
+
+
+template<typename F>
+void Keyboard::for_each(F function, Key::Type type)
+{
+    for(int key = 0; key < int(key_count()); ++key)
+    {
+        function(m_keys[key], key);
+    }
+}
