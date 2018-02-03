@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QVBoxLayout>
 
 class Project_widget : public QWidget
 {
@@ -8,4 +9,6 @@ class Project_widget : public QWidget
   public:
     Project_widget();
   private:
+    QVBoxLayout * m_instrument_list_layout;
+    QVBoxLayout * m_tuning_list_layout;
 };
