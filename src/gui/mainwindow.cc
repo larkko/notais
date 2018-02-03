@@ -7,6 +7,7 @@
 
 #include "mainwindow.hh"
 #include "arrowselectorwidget.hh"
+#include "projectwidget.hh"
 #include "../lib/audio/oscillator.hh"
 #include "../lib/tuning/equaltemperament.hh"
 
@@ -82,6 +83,9 @@ Main_window::Main_window()
         [&](size_t index){m_audio_out.set_device(index);}
     );
     top_bar_layout->addWidget(audio_device_selector);
+
+    Project_widget * project_widget = new Project_widget();
+    root_layout->addWidget(project_widget);
 
     Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
     root_layout->addWidget(keyboard_widget);
