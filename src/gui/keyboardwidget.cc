@@ -30,7 +30,8 @@ void Keyboard_widget::paintEvent(QPaintEvent * event)
     for(size_t key = 0; key < m_keyboard.key_count(); ++key)
     {
         /*Draw keys*/
-        Qt::GlobalColor color = m_keyboard.key_is_active(key)
+        Qt::GlobalColor color = m_keyboard.key_is_active
+                                ({key, Keyboard::Key::Type::Raw})
                               ? Qt::cyan
                               : Qt::darkGray;
         QRect rect = key_rect(key);
@@ -60,7 +61,7 @@ void Keyboard_widget::mousePressEvent(QMouseEvent * event)
     int key = key_at(event->pos());
     if(key >= 0)
     {
-        if(m_keyboard.key_is_active(key))
+        if(m_keyboard.key_is_active({key, Keyboard::Key::Type::Raw}))
         {
             emit key_release_event(key);
         }

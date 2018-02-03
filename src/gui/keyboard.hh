@@ -7,7 +7,7 @@
 class Keyboard
 {
   public:
-    Keyboard();
+    Keyboard(int offset = 0);
 
     struct Key
     {
@@ -31,18 +31,21 @@ class Keyboard
       parameters. Whether offset is applied to key depends on the type.*/
     template<typename F>
     void for_each(F function, Key::Type type);
-    void press(int key, float velocity);
-    void release(int key);
+    void press(Key key, float velocity);
+    void release(Key key);
     bool is_active() const;
-    bool key_is_active(int key) const;
+    bool key_is_active(Key key) const;
     size_t key_count() const;
     void advance_time(size_t amount);
   private:
-    bool contains(int key) const;
+    bool contains(Key key) const;
+    int raw_index(Key key) const;
+    int offset_index(Key key) const;
     /*The number of keys in possible to express in a MIDI message
       can be used as our keyboard size here.*/
     static constexpr int m_size = 128;
     std::array<Keypress, m_size> m_keys;
+    int m_offset;
 };
 
 
@@ -51,6 +54,27 @@ void Keyboard::for_each(F function, Key::Type type)
 {
     for(int key = 0; key < int(key_count()); ++key)
     {
-        function(m_keys[key], key);
+        Key current_key = {key, type};
+        int index = offset_index(current_key);
+        function(m_keys[key], index);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,11 +18,11 @@ Main_window::Main_window()
         {
             if(e.down)
             {
-                m_keyboard.press(e.key, e.velocity);
+                m_keyboard.press({e.key, Keyboard::Key::Type::Raw}, e.velocity);
             }
             else
             {
-                m_keyboard.release(e.key);
+                m_keyboard.release({e.key, Keyboard::Key::Type::Raw});
             }
             emit keyboard_state_changed();
         }
@@ -37,7 +37,8 @@ Main_window::Main_window()
             m_keyboard.for_each
             ([&](Keyboard::Keypress press, int key)
                 {
-                    if(m_keyboard.key_is_active(key))
+                    if(m_keyboard.key_is_active
+                      ({key, Keyboard::Key::Type::Offset}))
                     {
                         m_active_instrument->get_samples
                         (
@@ -125,7 +126,7 @@ Main_window::Main_window()
         this,
         [&](int key, float velocity)
         {
-            m_keyboard.press(key, velocity);
+            m_keyboard.press({key, Keyboard::Key::Type::Raw}, velocity);
             emit keyboard_state_changed();
         }
     );
@@ -137,7 +138,7 @@ Main_window::Main_window()
         this,
         [&](int key)
         {
-            m_keyboard.release(key);
+            m_keyboard.release({key, Keyboard::Key::Type::Raw});
             emit keyboard_state_changed();
         }
     );

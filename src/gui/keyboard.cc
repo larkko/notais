@@ -1,7 +1,8 @@
 #include "keyboard.hh"
 
-Keyboard::Keyboard()
-    : m_keys(std::array<Keyboard::Keypress, m_size>())
+Keyboard::Keyboard(int offset)
+    : m_keys(std::array<Keyboard::Keypress, m_size>()),
+      m_offset(offset)
 {
 }
 
@@ -11,19 +12,21 @@ Keyboard::Keypress::Keypress(float velocity, size_t elapsed_time)
 {
 }
 
-void Keyboard::press(int key, float velocity)
+void Keyboard::press(Key key, float velocity)
 {
     if(contains(key))
     {
-        m_keys[key] = Keypress(velocity);
+        int index = raw_index(key);
+        m_keys[index] = Keypress(velocity);
     }
 }
 
-void Keyboard::release(int key)
+void Keyboard::release(Key key)
 {
     if(contains(key))
     {
-        m_keys[key] = Keypress();
+        int index = raw_index(key);
+        m_keys[index] = Keypress();
     }
 }
 
@@ -40,9 +43,10 @@ bool Keyboard::is_active() const
     return active;
 }
 
-bool Keyboard::key_is_active(int key) const
+bool Keyboard::key_is_active(Key key) const
 {
-    return contains(key) && m_keys[key].velocity > 0.0f;
+    int index = raw_index(key);
+    return contains(key) && m_keys[index].velocity > 0.0f;
 }
 
 size_t Keyboard::key_count() const
@@ -58,7 +62,38 @@ void Keyboard::advance_time(size_t amount)
     }
 }
 
-bool Keyboard::contains(int key) const
+bool Keyboard::contains(Key key) const
 {
-    return key >= 0 && key < int(key_count());
+    int index = raw_index(key);
+    return index >= 0 && index < int(key_count());
 }
+
+int Keyboard::raw_index(Key key) const
+{
+    return (key.type == Key::Type::Raw)
+            ? key.key
+            : key.key + m_offset;
+}
+
+int Keyboard::offset_index(Key key) const
+{
+    return (key.type == Key::Type::Offset)
+            ? key.key
+            : key.key - m_offset;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
