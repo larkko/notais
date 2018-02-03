@@ -12,6 +12,29 @@ Oscillator::Oscillator(Oscillator::Type type)
 
 }
 
+Audio_data::Sample square_saw_at
+(
+    float wave_offset,
+    Oscillator::Type type
+)
+{
+    Audio_data::Sample sample = 0.0f;
+    float resulting_amplitude = 0.0f;
+    /*Exact number doesn't matter, just stack enough to approximate
+      a decent saw/square wave*/
+    int const harmonic_count = 15;
+    /*For square waves, skip every even harmonic*/
+    int const harmonic_step = (type == Oscillator::Type::Saw)
+                            ? 1
+                            : 2; 
+    for(int harmonic = 1; harmonic < harmonic_count; harmonic += harmonic_step)
+    {
+        sample += sin(wave_offset * harmonic);
+        resulting_amplitude += 1.0f / harmonic;
+    }
+    return sample / resulting_amplitude;
+}
+
 void Oscillator::get_samples
 (
     Audio_data & destination,
@@ -28,13 +51,22 @@ void Oscillator::get_samples
     for(size_t i = 0; i < sample_count; ++i)
     {
         size_t s = i + offset_in_source;
+        auto wave_offset = sine_multiplier * s;
         Audio_data::Sample sample = 0.0f;
         switch(m_type)
         {
             case Oscillator::Type::Sine:
-                sample = volume * sin(sine_multiplier * s);
+                sample = volume * sin(wave_offset);
                 break;
-            default:
+            case Oscillator::Type::Saw:
+                sample = volume * square_saw_at(wave_offset,
+                                                Oscillator::Type::Saw);
+                break;
+            case Oscillator::Type::Square:
+                sample = volume * square_saw_at(wave_offset,
+                                                Oscillator::Type::Square);
+                break;
+            default: 
                 break;
         }
         for(size_t c = 0; c < destination.channel_count(); ++c)
