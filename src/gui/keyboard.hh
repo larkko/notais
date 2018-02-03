@@ -48,14 +48,15 @@ class Keyboard
     int m_offset;
 };
 
-
 template<typename F>
 void Keyboard::for_each(F function, Key::Type type)
 {
     for(int key = 0; key < int(key_count()); ++key)
     {
-        Key current_key = {key, type};
-        int index = offset_index(current_key);
+        Key current_key = {key, Key::Type::Raw};
+        int index = (type == Key::Type::Raw)
+                  ? key
+                  : offset_index(current_key);
         function(m_keys[key], index);
     }
 }

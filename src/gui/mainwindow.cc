@@ -27,6 +27,11 @@ Main_window::Main_window()
             emit keyboard_state_changed();
         }
     )),
+    /*Offset of the middle A key in MIDI key numberings. The middle A
+      is commonly used when considering tuning. Furthermore, it's in the middle
+      of the keyboard (max MIDI note value = 127), making it a convenient
+      center point.*/
+    m_keyboard(69),
     m_audio_out(Audio_output
     (
         44100, //sample rate
@@ -62,9 +67,8 @@ Main_window::Main_window()
     ),
     m_active_tuning
     (
-        /*Base frequency is set to the frequency of midi note 0 here.
-          Otherwise this is normal 12EDO tuning.*/
-        std::make_unique<Equal_temperament>(Equal_temperament(12, 2, 8.175798))
+        /*Normal 12EDO tuning.*/
+        std::make_unique<Equal_temperament>(Equal_temperament(12, 2, 440))
     )
 {
     QVBoxLayout * root_layout = new QVBoxLayout;

@@ -72,14 +72,14 @@ int Keyboard::raw_index(Key key) const
 {
     return (key.type == Key::Type::Raw)
             ? key.key
-            : key.key + m_offset;
+            : (key.key + m_offset);
 }
 
 int Keyboard::offset_index(Key key) const
 {
     return (key.type == Key::Type::Offset)
             ? key.key
-            : key.key - m_offset;
+            : (key.key - m_offset);
 }
 
 
