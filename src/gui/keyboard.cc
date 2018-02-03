@@ -16,11 +16,19 @@ Keyboard::Keypress Keyboard::at(int key) const
     return contains(key) ? m_keys[key] : Keyboard::Keypress(0.0f);
 }
 
-void Keyboard::set(int key, Keyboard::Keypress press)
+void Keyboard::press(int key, float velocity)
 {
     if(contains(key))
     {
-        m_keys[key] = press;
+        m_keys[key] = Keypress(velocity);
+    }
+}
+
+void Keyboard::release(int key)
+{
+    if(contains(key))
+    {
+        m_keys[key] = Keypress();
     }
 }
 

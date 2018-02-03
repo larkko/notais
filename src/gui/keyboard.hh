@@ -17,7 +17,8 @@ class Keyboard
     };
 
     Keypress at(int key) const;
-    void set(int key, Keypress press);
+    void press(int key, float velocity);
+    void release(int key);
     bool is_active() const;
     bool key_is_active(int key) const;
     size_t key_count() const;

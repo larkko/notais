@@ -18,11 +18,11 @@ Main_window::Main_window()
         {
             if(e.down)
             {
-                m_keyboard.set(e.key, Keyboard::Keypress(e.velocity));
+                m_keyboard.press(e.key, e.velocity);
             }
             else
             {
-                m_keyboard.set(e.key, Keyboard::Keypress(0.0f));
+                m_keyboard.release(e.key);
             }
             emit keyboard_state_changed();
         }
@@ -122,7 +122,7 @@ Main_window::Main_window()
         this,
         [&](int key, float velocity)
         {
-            m_keyboard.set(key, velocity);
+            m_keyboard.press(key, velocity);
             emit keyboard_state_changed();
         }
     );
@@ -134,7 +134,7 @@ Main_window::Main_window()
         this,
         [&](int key)
         {
-            m_keyboard.set(key, 0.0f);
+            m_keyboard.release(key);
             emit keyboard_state_changed();
         }
     );
