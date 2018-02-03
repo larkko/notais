@@ -115,13 +115,28 @@ Main_window::Main_window()
         static_cast<void (Keyboard_widget::*)()>(&Keyboard_widget::update)
     );
 
-    /*Acknowledge keyboard state changes when updated from keyboard widget*/
     QObject::connect
     (
         keyboard_widget,
-        &Keyboard_widget::keyboard_state_changed,
+        &Keyboard_widget::key_press_event,
         this,
-        &Main_window::keyboard_state_changed
+        [&](int key, float velocity)
+        {
+            m_keyboard.set(key, velocity);
+            emit keyboard_state_changed();
+        }
+    );
+    
+    QObject::connect
+    (
+        keyboard_widget,
+        &Keyboard_widget::key_release_event,
+        this,
+        [&](int key)
+        {
+            m_keyboard.set(key, 0.0f);
+            emit keyboard_state_changed();
+        }
     );
 
     /*Update audio state whenever keyboard state changes*/

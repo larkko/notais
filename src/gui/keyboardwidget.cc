@@ -6,7 +6,7 @@
 
 #include "keyboardwidget.hh"
 
-Keyboard_widget::Keyboard_widget(Keyboard & keyboard, QWidget * parent)
+Keyboard_widget::Keyboard_widget(Keyboard const & keyboard, QWidget * parent)
     : QWidget(parent),
       m_keyboard(keyboard),
       m_held_key(-1)
@@ -62,14 +62,13 @@ void Keyboard_widget::mousePressEvent(QMouseEvent * event)
     {
         if(m_keyboard.key_is_active(key))
         {
-            m_keyboard.set(key, Keyboard::Keypress(0.0f));
+            emit key_release_event(key);
         }
         else
         {
-            m_keyboard.set(key, Keyboard::Keypress(1.0f));
+            emit key_press_event(key, 1.0f);
         }
         update();
-        emit keyboard_state_changed();
     }
     m_held_key = key;
 }
@@ -80,10 +79,9 @@ void Keyboard_widget::mouseReleaseEvent(QMouseEvent * event)
 
     if(m_held_key >= 0)
     {
-        m_keyboard.set(m_held_key, Keyboard::Keypress(0.0f));
+        emit key_release_event(m_held_key);
         m_held_key = -1;
         update();
-        emit keyboard_state_changed();
     }
 }
 

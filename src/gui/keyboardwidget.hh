@@ -10,7 +10,7 @@ class Keyboard_widget : public QWidget
 {
   Q_OBJECT
   public:
-    Keyboard_widget(Keyboard & keyboard, QWidget * parent = nullptr);
+    Keyboard_widget(Keyboard const & keyboard, QWidget * parent = nullptr);
   private:
     QRect key_rect(int key) const;
     void paintEvent(QPaintEvent * event) override;
@@ -18,8 +18,9 @@ class Keyboard_widget : public QWidget
     void mousePressEvent(QMouseEvent * event) override;
     void mouseReleaseEvent(QMouseEvent * event) override;
     QSize sizeHint() const override;
-    Keyboard & m_keyboard;
+    Keyboard const & m_keyboard;
     int m_held_key;
   signals:
-    void keyboard_state_changed();
+    void key_press_event(int key, float velocity);
+    void key_release_event(int key);
 };
