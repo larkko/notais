@@ -34,6 +34,7 @@ class Audio_output
     size_t device_count();
     size_t device_index() const;
     void set_device(size_t device_index);
+    size_t default_device();
     std::string device_description(size_t device_index);
     Audio_data & buffer();
     std::function<void (Audio_data &)> const buffer_fill_callback;

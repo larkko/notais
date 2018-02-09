@@ -17,7 +17,7 @@ Audio_output::Audio_output
       m_active(false),
       m_buffer(Audio_data(m_sample_rate, m_channel_count)),
       m_volume(0.1f),
-      m_device_index(m_out.getDefaultOutputDevice())
+      m_device_index(default_device())
 {
     set_buffer_frame_count(m_buffer_frame_count);
 }
@@ -187,6 +187,18 @@ void Audio_output::set_device(size_t device_index)
         stop();
         m_device_index = device_index;
     }
+}
+
+size_t Audio_output::default_device()
+{
+    for(size_t i = 0; i < device_count(); ++i)
+    {
+        if(device_description(i) == "default")
+        {
+            return i;
+        }
+    }
+    return m_out.getDefaultOutputDevice();
 }
 
 std::string Audio_output::device_description(size_t device_index)
