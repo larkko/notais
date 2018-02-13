@@ -5,14 +5,10 @@
 class Adjustable_audio_source : public Audio_source
 {
   public:
-    void get_samples
+    virtual Audio_data::Sample get_sample
     (
-        Audio_data & destination,
         float frequency,
-        float volume,
-        size_t sample_count,
-        size_t offset_in_source,
-        size_t offset_in_destination
+        double offset
     ) const override;
   private:
 };

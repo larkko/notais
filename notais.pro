@@ -11,6 +11,7 @@ SOURCES += src/main.cc
 HEADERS += src/lib/audio/audiodata.hh
 SOURCES += src/lib/audio/audiodata.cc
 HEADERS += src/lib/audio/audiosource.hh
+SOURCES += src/lib/audio/audiosource.cc
 HEADERS += src/lib/audio/oscillator.hh
 SOURCES += src/lib/audio/oscillator.cc
 HEADERS += src/lib/audio/adjustableaudiosource.hh

@@ -14,7 +14,7 @@ Oscillator::Oscillator(Oscillator::Type type)
 
 Audio_data::Sample square_saw_at
 (
-    float wave_offset,
+    double wave_offset,
     Oscillator::Type type
 )
 {
@@ -35,43 +35,28 @@ Audio_data::Sample square_saw_at
     return sample / resulting_amplitude;
 }
 
-void Oscillator::get_samples
+Audio_data::Sample Oscillator::get_sample
 (
-    Audio_data & destination,
     float frequency,
-    float volume,
-    size_t sample_count,
-    size_t offset_in_source,
-    size_t offset_in_destination
+    double offset
 ) const
 {
-    size_t sample_rate = destination.sample_rate();
-    float multiplier = frequency / static_cast<float>(sample_rate);
-    float sine_multiplier = multiplier * 2.0f * M_PI;
-    for(size_t i = 0; i < sample_count; ++i)
+    double sine_multiplier = 2.0 * M_PI;
+    double wave_offset = offset * frequency * sine_multiplier;
+    Audio_data::Sample sample = 0.0f;
+    switch(m_type)
     {
-        size_t s = i + offset_in_source;
-        auto wave_offset = sine_multiplier * s;
-        Audio_data::Sample sample = 0.0f;
-        switch(m_type)
-        {
-            case Oscillator::Type::Sine:
-                sample = volume * sin(wave_offset);
-                break;
-            case Oscillator::Type::Saw:
-                sample = volume * square_saw_at(wave_offset,
-                                                Oscillator::Type::Saw);
-                break;
-            case Oscillator::Type::Square:
-                sample = volume * square_saw_at(wave_offset,
-                                                Oscillator::Type::Square);
-                break;
-            default: 
-                break;
-        }
-        for(size_t c = 0; c < destination.channel_count(); ++c)
-        {
-            destination.add_to_sample(i + offset_in_destination, c, sample);
-        }
+        case Oscillator::Type::Sine:
+            sample = sin(wave_offset);
+            break;
+        default:
+            sample = square_saw_at(wave_offset, m_type);
+            break;
     }
+    
+    return sample;
 }
+
+
+
+

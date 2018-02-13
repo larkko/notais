@@ -12,15 +12,11 @@ class Oscillator : public Audio_source
         Saw
     };
     Oscillator(Type type);
-    void get_samples
+    Audio_data::Sample get_sample
     (
-        Audio_data & destination,
         float frequency,
-        float volume,
-        size_t sample_count,
-        size_t offset_in_source,
-        size_t offset_in_destination
-    ) const override;
+        double offset
+    ) const final override;
   private:
     Type m_type;
 };
