@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QWidget>
-#include "instrumentlistwidget.hh"
 
 class Project_widget : public QWidget
 {

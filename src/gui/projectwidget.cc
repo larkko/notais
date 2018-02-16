@@ -3,6 +3,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+#include "instrumentlistwidget.hh"
+#include "tuninglistwidget.hh"
+
 Project_widget::Project_widget()
 {
     QHBoxLayout * root_layout = new QHBoxLayout();
@@ -25,6 +28,8 @@ Project_widget::Project_widget()
     tunings_label->setAlignment(Qt::AlignHCenter);
     tunings_label->setFont(label_font);
     tuning_side_layout->addWidget(tunings_label);
+    Tuning_list_widget * tuning_list = new Tuning_list_widget();
+    tuning_side_layout->addWidget(tuning_list); 
 
     root_layout->addLayout(instrument_side_layout);
     root_layout->addLayout(tuning_side_layout);
