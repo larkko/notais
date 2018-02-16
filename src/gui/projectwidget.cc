@@ -5,28 +5,20 @@
 
 #include "instrumentlistwidget.hh"
 #include "tuninglistwidget.hh"
+#include "headingwidget.hh"
 
 Project_widget::Project_widget()
 {
     QHBoxLayout * root_layout = new QHBoxLayout();
 
     QVBoxLayout * instrument_side_layout = new QVBoxLayout();
-    QLabel * instruments_label = new QLabel();
-    instruments_label->setText("Instruments");
-    instruments_label->setAlignment(Qt::AlignHCenter);
-    QFont label_font = instruments_label->font();
-    label_font.setPointSize(13);
-    label_font.setBold(true);
-    instruments_label->setFont(label_font);
+    Heading_widget * instruments_label = new Heading_widget("Instruments");
     instrument_side_layout->addWidget(instruments_label);
     Instrument_list_widget * instrument_list = new Instrument_list_widget();
     instrument_side_layout->addWidget(instrument_list);
 
     QVBoxLayout * tuning_side_layout = new QVBoxLayout();
-    QLabel * tunings_label = new QLabel();
-    tunings_label->setText("Tunings");
-    tunings_label->setAlignment(Qt::AlignHCenter);
-    tunings_label->setFont(label_font);
+    Heading_widget * tunings_label = new Heading_widget("Tunings");
     tuning_side_layout->addWidget(tunings_label);
     Tuning_list_widget * tuning_list = new Tuning_list_widget();
     tuning_side_layout->addWidget(tuning_list); 
