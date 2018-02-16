@@ -63,7 +63,10 @@ Main_window::Main_window()
     )),
     m_active_instrument
     (
-        std::make_unique<Oscillator>(Oscillator(Oscillator::Type::Sine))
+        std::make_unique<Adjustable_audio_source>
+        (
+            std::make_shared<Oscillator>(Oscillator(Oscillator::Type::Sine))
+        )
     ),
     m_active_tuning
     (
