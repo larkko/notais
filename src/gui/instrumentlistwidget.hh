@@ -1,7 +1,20 @@
 #pragma once
 
 #include <QWidget>
-#include <QVBoxLayout>
+
+#include "../lib/audio/adjustableaudiosource.hh"
+
+class Instrument_list_item_widget : public QWidget
+{
+  Q_OBJECT
+  public:
+    Instrument_list_item_widget
+    (
+        std::shared_ptr<Adjustable_audio_source> const & instrument
+    );
+  private:
+    std::shared_ptr<Adjustable_audio_source> m_instrument;
+};
 
 class Instrument_list_widget : public QWidget
 {
@@ -9,5 +22,10 @@ class Instrument_list_widget : public QWidget
   public:
     Instrument_list_widget();
   private:
-    QVBoxLayout * m_instrument_list;
+    QWidget * m_instrument_list;
+  public slots:
+    void update_list
+    (
+        std::vector<std::shared_ptr<Adjustable_audio_source>> const & instruments
+    );
 };
