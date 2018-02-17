@@ -27,4 +27,21 @@ Project_widget::Project_widget()
     root_layout->addLayout(tuning_side_layout);
 
     this->setLayout(root_layout);
+
+    QObject::connect
+    (
+        instrument_list,
+        &Instrument_list_widget::add_instrument,
+        this,
+        &Project_widget::add_instrument
+    );
+
+}
+
+void Project_widget::add_instrument
+(
+    std::shared_ptr<Adjustable_audio_source> instrument
+)
+{
+
 }
