@@ -4,6 +4,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QScrollArea>
 
 #include "../lib/audio/oscillator.hh"
 
@@ -29,7 +30,12 @@ Instrument_list_widget::Instrument_list_widget()
 
     m_instrument_list = new QWidget();
     m_instrument_list->setLayout(new QVBoxLayout());
-    layout->addWidget(m_instrument_list);
+    
+    QScrollArea * instrument_list_area = new QScrollArea();
+    instrument_list_area->setWidgetResizable(true);
+    instrument_list_area->setWidget(m_instrument_list);
+
+    layout->addWidget(instrument_list_area);
 
     QHBoxLayout * add_button_layout = new QHBoxLayout();
     QPushButton * add_oscillator = new QPushButton("Add oscillator");
