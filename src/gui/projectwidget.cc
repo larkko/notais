@@ -45,4 +45,5 @@ void Project_widget::add_instrument
 )
 {
     m_project.add_instrument(instrument);
+    emit instruments_updated(m_project.instruments());
 }
