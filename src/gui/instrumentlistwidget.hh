@@ -30,6 +30,7 @@ class Instrument_list_widget : public QWidget
     (
         std::shared_ptr<Adjustable_audio_source> instrument
     );
+    void selected(std::shared_ptr<Adjustable_audio_source> instrument);
   public slots:
     void update_list
     (

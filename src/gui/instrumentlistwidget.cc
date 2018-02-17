@@ -96,5 +96,13 @@ void Instrument_list_widget::update_list
         Instrument_list_item_widget * item =
             new Instrument_list_item_widget(instrument);
         m_instrument_list->layout()->addWidget(item);
+
+        QObject::connect
+        (
+            item,
+            &Instrument_list_item_widget::selected,
+            this,
+            &Instrument_list_widget::selected
+        );
     }
 }
