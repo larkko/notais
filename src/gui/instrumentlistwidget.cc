@@ -5,9 +5,11 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
+#include "../lib/audio/oscillator.hh"
+
 Instrument_list_item_widget::Instrument_list_item_widget
 (
-    std::shared_ptr<Adjustable_audio_source> const & instrument
+    std::shared_ptr<Adjustable_audio_source> instrument
 )
     : m_instrument(instrument)
 {
@@ -27,16 +29,44 @@ Instrument_list_widget::Instrument_list_widget()
 
     m_instrument_list = new QWidget();
     m_instrument_list->setLayout(new QVBoxLayout());
-
     layout->addWidget(m_instrument_list);
 
+    QHBoxLayout * add_button_layout = new QHBoxLayout();
+    QPushButton * add_oscillator = new QPushButton("Add oscillator");
+    add_button_layout->addWidget(add_oscillator);
+    layout->addLayout(add_button_layout);
+
     this->setLayout(layout);
+
+    QObject::connect
+    (
+        add_oscillator,
+        &QPushButton::pressed,
+        this,
+        [&]()
+        {
+            emit add_instrument
+            (
+                std::make_shared<Adjustable_audio_source>
+                (
+                    Adjustable_audio_source
+                    (
+                        std::make_shared<Oscillator>
+                        (
+                            Oscillator(Oscillator::Type::Sine)
+                        )
+                    )
+                )
+            );
+        }
+    );
+
     update_list({});
 }
 
 void Instrument_list_widget::update_list
 (
-    std::vector<std::shared_ptr<Adjustable_audio_source>> const & instruments
+    std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
 )
 {
     for(auto widget : m_instrument_list->findChildren<QWidget *>

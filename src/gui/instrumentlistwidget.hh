@@ -10,7 +10,7 @@ class Instrument_list_item_widget : public QWidget
   public:
     Instrument_list_item_widget
     (
-        std::shared_ptr<Adjustable_audio_source> const & instrument
+        std::shared_ptr<Adjustable_audio_source> instrument
     );
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
@@ -23,9 +23,14 @@ class Instrument_list_widget : public QWidget
     Instrument_list_widget();
   private:
     QWidget * m_instrument_list;
+  signals:
+    void add_instrument
+    (
+        std::shared_ptr<Adjustable_audio_source> instrument
+    );
   public slots:
     void update_list
     (
-        std::vector<std::shared_ptr<Adjustable_audio_source>> const & instruments
+        std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
 };
