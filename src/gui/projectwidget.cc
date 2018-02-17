@@ -44,5 +44,5 @@ void Project_widget::add_instrument
     std::shared_ptr<Adjustable_audio_source> instrument
 )
 {
-
+    m_project.add_instrument(instrument);
 }
