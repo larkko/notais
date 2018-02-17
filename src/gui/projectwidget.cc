@@ -8,6 +8,7 @@
 #include "headingwidget.hh"
 
 Project_widget::Project_widget()
+    : m_project(Project())
 {
     QHBoxLayout * root_layout = new QHBoxLayout();
 
