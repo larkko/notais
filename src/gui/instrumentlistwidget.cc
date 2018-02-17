@@ -22,6 +22,17 @@ Instrument_list_item_widget::Instrument_list_item_widget
     layout->addWidget(select_button);
 
     this->setLayout(layout);
+
+    QObject::connect
+    (
+        select_button,
+        &QPushButton::pressed,
+        this,
+        [&]()
+        {
+            emit selected(m_instrument);
+        }
+    );
 }
 
 Instrument_list_widget::Instrument_list_widget()
