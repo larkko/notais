@@ -19,7 +19,7 @@ class Main_window : public QWidget
     MIDI_input m_midi_input;
     Keyboard m_keyboard;
     Audio_output m_audio_out;
-    std::unique_ptr<Adjustable_audio_source> m_active_instrument;
+    std::shared_ptr<Adjustable_audio_source> m_active_instrument;
     std::unique_ptr<Tuning> m_active_tuning;
   signals:
     void keyboard_state_changed();

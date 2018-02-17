@@ -18,6 +18,10 @@ class Project_widget : public QWidget
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
+    void instrument_selected
+    (
+        std::shared_ptr<Adjustable_audio_source> instrument
+    );
   public slots:
     void add_instrument(std::shared_ptr<Adjustable_audio_source> instrument);
 };

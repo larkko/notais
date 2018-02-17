@@ -44,6 +44,14 @@ Project_widget::Project_widget()
         instrument_list,
         &Instrument_list_widget::update_list
     );
+
+    QObject::connect
+    (
+        instrument_list,
+        &Instrument_list_widget::selected,
+        this,
+        &Project_widget::instrument_selected
+    );    
 }
 
 void Project_widget::add_instrument

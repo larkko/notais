@@ -63,7 +63,7 @@ Main_window::Main_window()
     )),
     m_active_instrument
     (
-        std::make_unique<Adjustable_audio_source>
+        std::make_shared<Adjustable_audio_source>
         (
             std::make_shared<Oscillator>(Oscillator(Oscillator::Type::Sine))
         )
@@ -157,6 +157,17 @@ Main_window::Main_window()
         &Main_window::keyboard_state_changed,
         this,
         &Main_window::update_audio_state
+    );
+
+    QObject::connect
+    (
+        project_widget,
+        &Project_widget::instrument_selected,
+        this,
+        [&](std::shared_ptr<Adjustable_audio_source> instrument)
+        {
+            m_active_instrument = instrument;
+        }
     );
 }
 
