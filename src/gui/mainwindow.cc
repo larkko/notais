@@ -71,7 +71,7 @@ Main_window::Main_window()
     m_active_tuning
     (
         /*Normal 12EDO tuning.*/
-        std::make_unique<Equal_temperament>(Equal_temperament(12, 2, 440))
+        std::make_shared<Equal_temperament>(Equal_temperament(12, 2, 440))
     )
 {
     QVBoxLayout * root_layout = new QVBoxLayout;
@@ -167,6 +167,17 @@ Main_window::Main_window()
         [&](std::shared_ptr<Adjustable_audio_source> instrument)
         {
             m_active_instrument = instrument;
+        }
+    );
+
+    QObject::connect
+    (
+        project_widget,
+        &Project_widget::tuning_selected,
+        this,
+        [&](std::shared_ptr<Tuning> tuning)
+        {
+            m_active_tuning = tuning;
         }
     );
 }

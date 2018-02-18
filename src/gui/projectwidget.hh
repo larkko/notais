@@ -22,6 +22,9 @@ class Project_widget : public QWidget
     (
         std::shared_ptr<Adjustable_audio_source> instrument
     );
+    void tunings_updated(std::vector<std::shared_ptr<Tuning>> tunings);
+    void tuning_selected(std::shared_ptr<Tuning> tuning);
   public slots:
     void add_instrument(std::shared_ptr<Adjustable_audio_source> instrument);
+    void add_tuning(std::shared_ptr<Tuning> tuning);
 };
