@@ -18,3 +18,16 @@ class Edit_tuning_widget : public QWidget
     );
   private:
 };
+
+class Edit_equal_temperament_widget : public QWidget
+{
+  Q_OBJECT
+  public:
+    Edit_equal_temperament_widget
+    (
+        std::shared_ptr<Equal_temperament> tuning,
+        QWidget * parent = nullptr
+    );
+  private:
+    std::shared_ptr<Equal_temperament> m_tuning;
+};
