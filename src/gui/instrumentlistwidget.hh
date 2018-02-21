@@ -14,6 +14,7 @@ class Instrument_list_item_widget : public QWidget
     );
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
+    std::unique_ptr<QWidget> m_edit_window;
   signals:
     void selected(std::shared_ptr<Adjustable_audio_source> instrument);
 };
