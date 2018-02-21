@@ -13,6 +13,7 @@ class Tuning_list_item_widget : public QWidget
     Tuning_list_item_widget(std::shared_ptr<Tuning> tuning);
   private:
     std::shared_ptr<Tuning> m_tuning;
+    std::unique_ptr<QWidget> m_edit_window;
   signals:
     void selected(std::shared_ptr<Tuning> tuning);
 };
