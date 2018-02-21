@@ -7,13 +7,14 @@
 #include <QScrollArea>
 
 #include "../lib/tuning/equaltemperament.hh"
+#include "edittuningwidget.hh"
 
 Tuning_list_item_widget::Tuning_list_item_widget
 (
     std::shared_ptr<Tuning> tuning
 )
     : m_tuning(tuning),
-      m_edit_window(new QLabel("tuning edit window"))
+      m_edit_window(new Edit_tuning_widget(m_tuning))
 {
     QHBoxLayout * layout = new QHBoxLayout();
 
