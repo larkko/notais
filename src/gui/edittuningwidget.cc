@@ -1,8 +1,13 @@
 #include "edittuningwidget.hh"
 
 #include <QLabel>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "../lib/util/util.hh"
+#include "headingwidget.hh"
 
 Edit_tuning_widget::Edit_tuning_widget
 (
@@ -34,5 +39,48 @@ Edit_equal_temperament_widget::Edit_equal_temperament_widget
     : QWidget(parent),
       m_tuning(tuning)
 {
-    new QLabel("edit equal temperament", this);
+    QVBoxLayout * layout = new QVBoxLayout();
+
+    Heading_widget * heading = new Heading_widget("Equal temperament", this);
+    layout->addWidget(heading);
+
+    QHBoxLayout * steps_layout = new QHBoxLayout();
+    QLabel * steps_label = new QLabel("steps: ");
+    steps_layout->addWidget(steps_label);
+    QLineEdit * steps_input = new QLineEdit(QString("steps"));
+    steps_layout->addWidget(steps_input);
+    layout->addLayout(steps_layout);
+
+    QHBoxLayout * interval_layout = new QHBoxLayout();
+    QLabel * interval_label = new QLabel("interval ('tave): ");
+    interval_layout->addWidget(interval_label);
+    QLineEdit * interval_input = new QLineEdit(QString("interval"));
+    interval_layout->addWidget(interval_input);
+    layout->addLayout(interval_layout);
+
+    QHBoxLayout * base_frequency_layout = new QHBoxLayout();
+    QLabel * base_frequency_label = new QLabel("base frequency: ");
+    base_frequency_layout->addWidget(base_frequency_label);
+    QLineEdit * base_frequency_input = new QLineEdit(QString("base frequency"));
+    base_frequency_layout->addWidget(base_frequency_input);
+    layout->addLayout(base_frequency_layout);
+
+    QPushButton * update_button = new QPushButton("update");
+    layout->addWidget(update_button);
+
+    QObject::connect
+    (
+        update_button,
+        &QPushButton::pressed,
+        this,
+        [](){}
+    );
+
+    this->setLayout(layout);
 }
+
+
+
+
+
+
