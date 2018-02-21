@@ -18,19 +18,21 @@ Edit_tuning_widget::Edit_tuning_widget
 )
     : QWidget(parent)
 {
+    QVBoxLayout * layout = new QVBoxLayout();
     std::type_index type = util::underlying_type(tuning);
     if(type == std::type_index(typeid(Equal_temperament)))
     {
-        new Edit_equal_temperament_widget
+        auto edit_widget = new Edit_equal_temperament_widget
         (
-            std::static_pointer_cast<Equal_temperament>(tuning),
-            this
+            std::static_pointer_cast<Equal_temperament>(tuning)
         );
+        layout->addWidget(edit_widget);
     }
     else
     {
-        new QLabel("unrecognized tuning", this);
+        layout->addWidget(new QLabel("unrecognized tuning"));
     }
+    this->setLayout(layout);
 }
 
 Edit_equal_temperament_widget::Edit_equal_temperament_widget
