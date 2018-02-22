@@ -51,7 +51,7 @@ Edit_equal_temperament_widget::Edit_equal_temperament_widget
     QHBoxLayout * steps_layout = new QHBoxLayout();
     QLabel * steps_label = new QLabel("steps: ");
     steps_layout->addWidget(steps_label);
-    QLineEdit * steps_input = new QLineEdit(QString(""));
+    QLineEdit * steps_input = new QLineEdit(QString());
     steps_layout->addWidget(steps_input);
     layout->addLayout(steps_layout);
 
@@ -65,7 +65,7 @@ Edit_equal_temperament_widget::Edit_equal_temperament_widget
     QHBoxLayout * base_frequency_layout = new QHBoxLayout();
     QLabel * base_frequency_label = new QLabel("base frequency: ");
     base_frequency_layout->addWidget(base_frequency_label);
-    QLineEdit * base_frequency_input = new QLineEdit(QString(""));
+    QLineEdit * base_frequency_input = new QLineEdit(QString());
     base_frequency_layout->addWidget(base_frequency_input);
     layout->addLayout(base_frequency_layout);
 

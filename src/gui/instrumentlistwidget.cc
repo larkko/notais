@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QScrollArea>
 
+#include "editinstrumentwidget.hh"
+
 #include "../lib/audio/oscillator.hh"
 
 Instrument_list_item_widget::Instrument_list_item_widget
@@ -13,7 +15,7 @@ Instrument_list_item_widget::Instrument_list_item_widget
     std::shared_ptr<Adjustable_audio_source> instrument
 )
     : m_instrument(instrument),
-      m_edit_window(new QLabel("instrument edit window"))
+      m_edit_window(new Edit_instrument_widget(m_instrument))
 {
     QHBoxLayout * layout = new QHBoxLayout();
 
