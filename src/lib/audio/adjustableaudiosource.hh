@@ -17,8 +17,11 @@ class Adjustable_audio_source : public Audio_source
         double offset
     ) const override;
     std::shared_ptr<Audio_source> & audio_source();
+    float volume() const;
+    void set_volume(float value);
     std::string const & name() const;
   private:
     std::shared_ptr<Audio_source> m_audio_source;
+    float m_volume;
     std::string m_name;
 };

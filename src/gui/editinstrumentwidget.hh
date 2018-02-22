@@ -17,3 +17,16 @@ class Edit_instrument_widget : public QWidget
     );
   private:
 };
+
+class Edit_instrument_general_tab_widget : public QWidget
+{
+  Q_OBJECT
+  public:
+    Edit_instrument_general_tab_widget
+    (
+        std::shared_ptr<Adjustable_audio_source> instrument,
+        QWidget * parent = nullptr
+    );
+  private:
+    std::shared_ptr<Adjustable_audio_source> m_instrument;
+};
