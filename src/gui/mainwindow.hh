@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include <QWidget>
 
 #include "midiinput.hh"
@@ -21,6 +23,7 @@ class Main_window : public QWidget
     Audio_output m_audio_out;
     std::shared_ptr<Adjustable_audio_source> m_active_instrument;
     std::shared_ptr<Tuning> m_active_tuning;
+    std::chrono::steady_clock::time_point m_last_activity;
   signals:
     void keyboard_state_changed();
 };

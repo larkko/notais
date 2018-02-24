@@ -4,6 +4,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSlider>
+#include <QTimer>
 
 #include "mainwindow.hh"
 #include "arrowselectorwidget.hh"
@@ -184,13 +185,40 @@ Main_window::Main_window()
 
 void Main_window::update_audio_state()
 {
-    if(!m_audio_out.is_active() && m_keyboard.is_active())
+    bool keyboard_active = m_keyboard.is_active();
+    auto now = std::chrono::steady_clock::now();
+
+    if(keyboard_active)
+    {
+        m_last_activity = now;
+    }
+
+    if(!m_audio_out.is_active() && keyboard_active)
     {
         m_audio_out.start();
     }
-    else if(m_audio_out.is_active() && !m_keyboard.is_active())
+    else if(m_audio_out.is_active() && !keyboard_active)
     {
-        m_audio_out.stop();
+        auto elapsed_time = std::chrono::duration<float>(now - m_last_activity);
+        auto limit = std::chrono::minutes(5);
+        if(elapsed_time < limit)
+        {
+            QTimer::singleShot
+            (
+                std::chrono::duration_cast<std::chrono::milliseconds>(limit).count(),
+                [&, limit]()
+                {
+                    auto now = std::chrono::steady_clock::now();
+                    auto elapsed_time = std::chrono::duration<float>(now - m_last_activity);
+                    if(elapsed_time >= limit)
+                        emit update_audio_state();
+                }
+            );
+        }
+        else
+        {
+            m_audio_out.stop();
+        }
     }
 }
 
