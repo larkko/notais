@@ -1,6 +1,6 @@
 #include "audiodata.hh"
 
-Audio_data::Audio_data(size_t sample_rate, size_t channel_count)
+Audio_data::Audio_data(Sample_rate sample_rate, size_t channel_count)
     : m_sample_rate(sample_rate), m_channel_count(channel_count)
 {
 
@@ -59,7 +59,7 @@ void Audio_data::multiply_all_samples(float multiplier)
     }
 }
 
-size_t Audio_data::sample_rate() const
+Sample_rate Audio_data::sample_rate() const
 {
     return m_sample_rate;
 }

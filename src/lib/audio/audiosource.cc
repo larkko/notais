@@ -12,11 +12,10 @@ void Audio_source::get_samples
     size_t offset_in_destination
 ) const
 {
+    Sample_rate sample_rate = destination.sample_rate();
     for(size_t i = 0; i < sample_count; ++i)
     {
-        double sample_offset = double(i + offset_in_source)
-                             / double(destination.sample_rate());
-        double seconds_passed = sample_offset;
+        double seconds_passed = sample_rate.samples_to_seconds(i + offset_in_source);
         Audio_data::Sample sample = volume
                                   * get_sample(frequency, seconds_passed);
         for(size_t c = 0; c < destination.channel_count(); ++c)

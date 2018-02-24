@@ -3,11 +3,13 @@
 #include <vector>
 #include <cstddef>
 
+#include "samplerate.hh"
+
 class Audio_data
 {
   public:
     typedef float Sample;
-    Audio_data(size_t sample_rate, size_t channel_count);
+    Audio_data(Sample_rate sample_rate, size_t channel_count);
     /*Reserves sample_count samples for each channel*/
     void reserve(size_t frame_count);
     Sample sample_at(size_t index, size_t channel) const;
@@ -18,7 +20,7 @@ class Audio_data
     /*Ensures no samples are out of bounds*/
     void clamp_samples();
     void multiply_all_samples(float multiplier);
-    size_t sample_rate() const;
+    Sample_rate sample_rate() const;
     size_t channel_count() const;
     /*Number of individual samples*/
     size_t sample_count() const;
@@ -26,7 +28,7 @@ class Audio_data
     size_t frame_count() const;
   private:
     std::vector<Sample> m_samples;
-    size_t m_sample_rate;
+    Sample_rate m_sample_rate;
     size_t m_channel_count;
     size_t sample_index(size_t nth, size_t channel) const;
 };
