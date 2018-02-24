@@ -1,10 +1,14 @@
 #include "editinstrumentwidget.hh"
 
+#include <typeindex>
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QTabWidget>
 #include <QDial>
+
+#include "../lib/util/util.hh"
 
 Edit_instrument_widget::Edit_instrument_widget
 (
@@ -20,8 +24,22 @@ Edit_instrument_widget::Edit_instrument_widget
 
     QWidget * general_tab = new Edit_instrument_general_tab_widget(instrument);
     tabs->addTab(general_tab, "general");
-    QLabel * instrument_tab = new QLabel("instrument tab");
+
+    QWidget * instrument_tab = nullptr;
+    std::shared_ptr<Audio_source> audio_source = instrument->audio_source();
+    std::type_index type = util::underlying_type(audio_source);
+    if(type == std::type_index(typeid(Oscillator)))
+    {
+        std::shared_ptr<Oscillator> oscillator =
+            std::static_pointer_cast<Oscillator>(audio_source);
+        instrument_tab = new Edit_oscillator_widget(oscillator);
+    }
+    else
+    {
+        instrument_tab = new QLabel("editing not supported for this instrument");
+    }
     tabs->addTab(instrument_tab, "instrument");
+
     QLabel * effects_tab = new QLabel("effects tab");
     tabs->addTab(effects_tab, "effects");
 
@@ -62,9 +80,21 @@ Edit_instrument_general_tab_widget::Edit_instrument_general_tab_widget
     this->setLayout(layout);
 }
 
+Edit_oscillator_widget::Edit_oscillator_widget
+(
+    std::shared_ptr<Oscillator> oscillator,
+    QWidget * parent
+)
+    : QWidget(parent),
+      m_oscillator(oscillator)
+{
+    QVBoxLayout * layout = new QVBoxLayout();
 
+    QLabel * label = new QLabel("edit oscillator widget");
+    layout->addWidget(label);
 
-
+    this->setLayout(layout);
+}
 
 
 
