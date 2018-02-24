@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QTabWidget>
 #include <QDial>
+#include <QComboBox>
 
 #include "../lib/util/util.hh"
 
@@ -90,8 +91,29 @@ Edit_oscillator_widget::Edit_oscillator_widget
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
-    QLabel * label = new QLabel("edit oscillator widget");
-    layout->addWidget(label);
+    QHBoxLayout * type_layout = new QHBoxLayout();
+    QLabel * type_label = new QLabel("type: ");
+    type_layout->addWidget(type_label);
+    QComboBox * type_selector = new QComboBox();
+    type_selector->addItems({"Sine", "Square", "Saw"});
+    type_layout->addWidget(type_selector);
+    layout->addLayout(type_layout);
+
+    QObject::connect
+    (
+        type_selector,
+        &QComboBox::currentTextChanged,
+        this,
+        [=](QString const & text)
+        {
+            if(text == "Sine")
+                m_oscillator->set_type(Oscillator::Type::Sine);
+            else if(text == "Square")
+                m_oscillator->set_type(Oscillator::Type::Square);
+            else if(text == "Saw")
+                m_oscillator->set_type(Oscillator::Type::Saw);
+        }
+    );
 
     this->setLayout(layout);
 }

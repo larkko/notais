@@ -17,6 +17,7 @@ class Oscillator : public Audio_source
         float frequency,
         double offset
     ) const final override;
+    void set_type(Type type);
   private:
     Type m_type;
 };

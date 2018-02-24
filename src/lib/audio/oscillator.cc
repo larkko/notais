@@ -57,6 +57,10 @@ Audio_data::Sample Oscillator::get_sample
     return sample;
 }
 
+void Oscillator::set_type(Oscillator::Type type)
+{
+    m_type = type;
+}
 
 
 
