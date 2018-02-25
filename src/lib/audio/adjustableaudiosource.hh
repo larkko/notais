@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "audiosource.hh"
+#include "../effects/effectstack.hh"
 
 class Adjustable_audio_source : public Audio_source
 {
@@ -17,6 +18,7 @@ class Adjustable_audio_source : public Audio_source
         double offset
     ) const override;
     std::shared_ptr<Audio_source> & audio_source();
+    Effect_stack m_effect_stack;
     float volume() const;
     void set_volume(float value);
     std::string const & name() const;

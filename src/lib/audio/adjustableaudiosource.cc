@@ -15,7 +15,7 @@ Audio_data::Sample Adjustable_audio_source::get_sample
     double offset
 ) const
 {
-    return m_volume * m_audio_source->get_sample(frequency, offset);
+    return m_volume * m_effect_stack.get_sample(*m_audio_source, frequency, offset);
 }
 
 std::shared_ptr<Audio_source> & Adjustable_audio_source::audio_source()
