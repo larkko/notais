@@ -82,8 +82,8 @@ Tuning_list_widget::Tuning_list_widget()
             (
                 std::make_shared<Equal_temperament>
                 (
-                    /*Use 5EDO as placeholder for now*/
-                    Equal_temperament(5.0, 2.0, 440.0)
+                    /*Default equal temperament set to 12EDO*/
+                    Equal_temperament(12.0, 2.0, 440.0)
                 )
             );
         }
