@@ -24,7 +24,6 @@ HEADERS += src/lib/tuning/tuning.hh
 HEADERS += src/lib/tuning/equaltemperament.hh
 SOURCES += src/lib/tuning/equaltemperament.cc
 HEADERS += src/lib/effects/effect.hh
-SOURCES += src/lib/effects/effect.cc
 HEADERS += src/lib/util/util.hh
 HEADERS += src/lib/util/util.tt
 HEADERS += src/gui/midiinput.hh
