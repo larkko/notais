@@ -5,7 +5,7 @@
 class Audio_source
 {
   public:
-    virtual ~Audio_source(){};
+    virtual ~Audio_source(){}
 
     class Offset
     {
@@ -35,4 +35,6 @@ class Audio_source
         size_t offset_in_source,
         size_t offset_in_destination
     ) const;
+
+    virtual float linger_time() const;
 };
