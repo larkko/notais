@@ -23,7 +23,7 @@ class Audio_source
     virtual Audio_data::Sample get_sample
     (
         float frequency,
-        double offset
+        Offset offset
     ) const = 0;
 
     void get_samples

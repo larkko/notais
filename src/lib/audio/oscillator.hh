@@ -15,7 +15,7 @@ class Oscillator : public Audio_source
     Audio_data::Sample get_sample
     (
         float frequency,
-        double offset
+        Audio_source::Offset offset
     ) const final override;
     void set_type(Type type);
   private:

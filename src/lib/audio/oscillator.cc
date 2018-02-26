@@ -38,7 +38,7 @@ Audio_data::Sample square_saw_at
 Audio_data::Sample Oscillator::get_sample
 (
     float frequency,
-    double offset
+    Audio_source::Offset offset
 ) const
 {
     double sine_multiplier = 2.0 * M_PI;

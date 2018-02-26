@@ -12,7 +12,7 @@ Adjustable_audio_source::Adjustable_audio_source
 Audio_data::Sample Adjustable_audio_source::get_sample
 (
     float frequency,
-    double offset
+    Audio_source::Offset offset
 ) const
 {
     return m_volume * m_effect_stack.get_sample(*m_audio_source, frequency, offset);

@@ -15,7 +15,7 @@ class Adjustable_audio_source : public Audio_source
     virtual Audio_data::Sample get_sample
     (
         float frequency,
-        double offset
+        Audio_source::Offset offset
     ) const override;
     std::shared_ptr<Audio_source> & audio_source();
     Effect_stack m_effect_stack;
