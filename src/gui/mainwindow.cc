@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QSlider>
 #include <QTimer>
+#include <QLabel>
 
 #include "mainwindow.hh"
 #include "arrowselectorwidget.hh"
@@ -80,6 +81,9 @@ Main_window::Main_window()
 
     QHBoxLayout * top_bar_layout = new QHBoxLayout;
     root_layout->addLayout(top_bar_layout);
+
+    QLabel * volume_label = new QLabel("Volume: ");
+    top_bar_layout->addWidget(volume_label);
 
     QSlider * volume_slider = new QSlider(Qt::Horizontal);
     volume_slider->setMinimum(0);
