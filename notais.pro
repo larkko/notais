@@ -27,7 +27,6 @@ HEADERS += src/lib/effects/effect.hh
 HEADERS += src/lib/effects/effectstack.hh
 SOURCES += src/lib/effects/effectstack.cc
 HEADERS += src/lib/util/util.hh
-HEADERS += src/lib/util/util.tt
 HEADERS += src/gui/midiinput.hh
 SOURCES += src/gui/midiinput.cc
 HEADERS += src/gui/keyboard.hh
