@@ -1,13 +1,13 @@
 #pragma once
 
-#include <array>
+#include <vector>
 #include <cstddef>
 #include <chrono>
 
 class Keyboard
 {
   public:
-    Keyboard(int offset = 0);
+    Keyboard(int offset = 0, size_t history_size = 1000);
 
     typedef int Key_identifier;
 
@@ -22,35 +22,67 @@ class Keyboard
         Type type;
     };
 
+    typedef size_t Press_identifier;
+
     struct Keypress
     {
-        Keypress(float velocity = 0.0f, size_t elapsed_time = 0);
+        Keypress
+        (
+            Key_identifier key = 0,
+            float velocity = 0.0f,
+            size_t elapsed_time = 0,
+            size_t release_offset = 0,
+            bool expired = true
+        );
+        Key_identifier key;
         float velocity;
         size_t elapsed_time;
+        size_t release_offset;
+        bool expired;
+
+        enum class State
+        {
+            Pressed, Released, Expired
+        };
+
+        State state() const;
     };
 
-    /*Performs function for each keypress, with a keypress and key (int) as its
+    /*Performs function for each keypress, with a keypress as its identifier
       parameters. Whether offset is applied to key depends on the type.*/
     template<typename F>
     void for_each(F function, Key::Type type);
     void press(Key key, float velocity);
     void release(Key key);
+    void expire(Press_identifier press);
     bool is_active() const;
     bool key_is_active(Key key) const;
     size_t key_count() const;
     void advance_time(size_t amount);
   private:
-    bool contains(Key key) const;
-    int raw_index(Key key) const;
-    int offset_index(Key key) const;
-    /*The number of keys in possible to express in a MIDI message
-      can be used as our keyboard size here.*/
-    static constexpr int m_size = 128;
-    std::array<Keypress, m_size> m_keys;
+    int raw_key_identifier(Key key) const;
+    int offset_key_identifier(Key key) const;
+    std::vector<Keypress> m_presses;
     int m_offset;
 };
 
-#include "keyboard.tt"
+
+template<typename F>
+void Keyboard::for_each(F function, Key::Type type)
+{
+    for(Press_identifier i = 0; i < m_presses.size(); ++i)
+    {
+        Keypress press = m_presses[i];
+        if(!press.expired)
+        {
+            auto identifier = (type == Key::Type::Raw)
+                            ? press.key
+                            : offset_key_identifier({press.key, Key::Type::Raw});
+            press.key = identifier;
+            function(press, identifier);
+        }
+    }
+}
 
 
 

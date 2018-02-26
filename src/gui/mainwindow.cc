@@ -42,15 +42,15 @@ Main_window::Main_window()
         [&](Audio_data & destination)
         {
             m_keyboard.for_each
-            ([&](Keyboard::Keypress press, Keyboard::Key_identifier key)
+            ([&](Keyboard::Keypress press, Keyboard::Press_identifier press_id)
                 {
                     if(m_keyboard.key_is_active
-                      ({key, Keyboard::Key::Type::Offset}))
+                      ({press.key, Keyboard::Key::Type::Offset}))
                     {
                         m_active_instrument->get_samples
                         (
                             destination,
-                            m_active_tuning->frequency_at(key), //frequency
+                            m_active_tuning->frequency_at(press.key), //frequency
                             press.velocity, //volume
                             destination.frame_count(),
                             press.elapsed_time, //source offset

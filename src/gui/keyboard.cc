@@ -1,41 +1,90 @@
 #include "keyboard.hh"
 
-Keyboard::Keyboard(int offset)
-    : m_keys(std::array<Keyboard::Keypress, m_size>()),
-      m_offset(offset)
+Keyboard::Keyboard(int offset, size_t history_size)
+    : m_offset(offset)
+{
+    for(size_t i = 0; i < history_size; ++i)
+    {
+        m_presses.push_back(Keyboard::Keypress());
+    }
+}
+
+Keyboard::Keypress::Keypress
+(
+    Key_identifier key,
+    float velocity,
+    size_t elapsed_time,
+    size_t release_offset,
+    bool expired
+)
+    : key(key),
+      velocity(velocity),
+      elapsed_time(elapsed_time),
+      release_offset(release_offset),
+      expired(expired)
 {
 }
 
-Keyboard::Keypress::Keypress(float velocity, size_t elapsed_time)
-    : velocity(velocity),
-      elapsed_time(elapsed_time)
+Keyboard::Keypress::State Keyboard::Keypress::state() const
 {
+    if(expired)
+    {
+        return State::Expired;
+    }
+    else
+    {
+        if(release_offset == 0)
+        {
+            return State::Pressed;
+        }
+        else
+        {
+            return State::Released;
+        }
+    }
 }
 
 void Keyboard::press(Key key, float velocity)
 {
-    if(contains(key))
+    auto raw_id = raw_key_identifier(key);
+    for(Keypress & press : m_presses)
     {
-        int index = raw_index(key);
-        m_keys[index] = Keypress(velocity);
+        if(press.state() == Keypress::State::Expired)
+        {
+            Keypress result(raw_id, velocity, 0, 0, false);
+            press = result;
+            break;
+        }
     }
 }
 
 void Keyboard::release(Key key)
 {
-    if(contains(key))
+    for(Keypress & press : m_presses)
     {
-        int index = raw_index(key);
-        m_keys[index] = Keypress();
+        if(press.key == raw_key_identifier(key) &&
+           press.state() == Keypress::State::Pressed)
+        {
+            press.release_offset = press.elapsed_time;
+        }
+    }
+}
+
+void Keyboard::expire(Keyboard::Press_identifier press)
+{
+    if(press < m_presses.size())
+    {
+        m_presses[press].expired = true;
     }
 }
 
 bool Keyboard::is_active() const
 {
     bool active = false;
-    for(Keyboard::Keypress press : m_keys)
+    for(Keypress const & press : m_presses)
     {
-        if(press.velocity != 0.0f)
+        if(!press.expired &&
+           press.state() == Keypress::State::Pressed)
         {
             active = true;
         }
@@ -45,37 +94,44 @@ bool Keyboard::is_active() const
 
 bool Keyboard::key_is_active(Key key) const
 {
-    int index = raw_index(key);
-    return contains(key) && m_keys[index].velocity > 0.0f;
+    bool active = false;
+    for(Keypress const & press : m_presses)
+    {
+        if(!press.expired &&
+           press.state() == Keypress::State::Pressed &&
+           press.key == raw_key_identifier(key))
+        {
+            active = true;
+        }
+    }
+    return active;
 }
 
 size_t Keyboard::key_count() const
 {
-    return m_keys.size();
+    size_t const MIDI_key_count = 128;
+    return MIDI_key_count;
 }
 
 void Keyboard::advance_time(size_t amount)
 {
-    for(Keyboard::Keypress & press : m_keys)
+    for(Keypress & press : m_presses)
     {
-        press.elapsed_time += amount;
+        if(!press.expired)
+        {
+            press.elapsed_time += amount;
+        }
     }
 }
 
-bool Keyboard::contains(Key key) const
-{
-    int index = raw_index(key);
-    return index >= 0 && index < int(key_count());
-}
-
-int Keyboard::raw_index(Key key) const
+int Keyboard::raw_key_identifier(Key key) const
 {
     return (key.type == Key::Type::Raw)
             ? key.key
             : (key.key + m_offset);
 }
 
-int Keyboard::offset_index(Key key) const
+int Keyboard::offset_key_identifier(Key key) const
 {
     return (key.type == Key::Type::Offset)
             ? key.key

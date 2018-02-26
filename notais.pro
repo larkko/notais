@@ -31,7 +31,6 @@ HEADERS += src/lib/util/util.tt
 HEADERS += src/gui/midiinput.hh
 SOURCES += src/gui/midiinput.cc
 HEADERS += src/gui/keyboard.hh
-HEADERS += src/gui/keyboard.tt
 SOURCES += src/gui/keyboard.cc
 HEADERS += src/gui/keyboardwidget.hh
 SOURCES += src/gui/keyboardwidget.cc
