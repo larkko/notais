@@ -9,6 +9,8 @@ class Keyboard
   public:
     Keyboard(int offset = 0);
 
+    typedef int Key_identifier;
+
     struct Key
     {
         enum class Type
@@ -16,7 +18,7 @@ class Keyboard
             Offset,
             Raw
         };
-        int key;
+        Key_identifier key;
         Type type;
     };
 

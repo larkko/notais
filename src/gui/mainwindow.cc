@@ -42,7 +42,7 @@ Main_window::Main_window()
         [&](Audio_data & destination)
         {
             m_keyboard.for_each
-            ([&](Keyboard::Keypress press, int key)
+            ([&](Keyboard::Keypress press, Keyboard::Key_identifier key)
                 {
                     if(m_keyboard.key_is_active
                       ({key, Keyboard::Key::Type::Offset}))
