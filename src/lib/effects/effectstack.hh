@@ -13,7 +13,7 @@ class Effect_stack
     (
         Audio_source const & source,
         float frequency,
-        double offset
+        Audio_source::Offset offset
     ) const;
   private:
     std::vector<std::shared_ptr<Effect>> m_effects;

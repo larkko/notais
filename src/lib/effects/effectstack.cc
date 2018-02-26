@@ -14,7 +14,7 @@ Audio_data::Sample Effect_stack::get_sample
 (
     Audio_source const & source,
     float frequency,
-    double offset
+    Audio_source::Offset offset
 ) const
 {
     return source.get_sample(frequency, offset);

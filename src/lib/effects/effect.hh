@@ -10,6 +10,6 @@ class Effect
     (
         Audio_source const & source,
         float frequency,
-        double offset
+        Audio_source::Offset offset
     ) const = 0;
 };
