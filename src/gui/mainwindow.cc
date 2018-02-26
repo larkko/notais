@@ -39,29 +39,7 @@ Main_window::Main_window()
         44100, //sample rate
         256, //buffer frame count
         2, //channel count
-        [&](Audio_data & destination)
-        {
-            m_keyboard.for_each
-            ([&](Keyboard::Keypress press, Keyboard::Press_identifier press_id)
-                {
-                    if(m_keyboard.key_is_active
-                      ({press.key, Keyboard::Key::Type::Offset}))
-                    {
-                        m_active_instrument->get_samples
-                        (
-                            destination,
-                            m_active_tuning->frequency_at(press.key), //frequency
-                            press.velocity, //volume
-                            destination.frame_count(),
-                            press.elapsed_time, //source offset
-                            0 //destination offset
-                        );
-                    }
-                },
-                Keyboard::Key::Type::Offset
-            );
-            m_keyboard.advance_time(destination.frame_count());
-        }
+        [&](Audio_data & destination){ use_instrument(destination); }
     )),
     m_audio_stop_timer(new QTimer(this)),
     m_active_instrument
@@ -228,7 +206,29 @@ void Main_window::start_audio_stop_timer()
     m_audio_stop_timer->start(timer_limit);
 }
 
-
+void Main_window::use_instrument(Audio_data & destination)
+{
+    m_keyboard.for_each
+    ([&](Keyboard::Keypress press, Keyboard::Press_identifier press_id)
+        {
+            if(m_keyboard.key_is_active
+              ({press.key, Keyboard::Key::Type::Offset}))
+            {
+                m_active_instrument->get_samples
+                (
+                    destination,
+                    m_active_tuning->frequency_at(press.key), //frequency
+                    press.velocity, //volume
+                    destination.frame_count(),
+                    press.elapsed_time, //source offset
+                    0 //destination offset
+                );
+            }
+        },
+        Keyboard::Key::Type::Offset
+    );
+    m_keyboard.advance_time(destination.frame_count());
+}
 
 
 
