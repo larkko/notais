@@ -2,6 +2,37 @@
 
 #include <iostream>
 
+Audio_source::Offset::Offset
+(
+    double offset,
+    double release_offset
+)
+    : m_offset(offset),
+      m_release_offset(release_offset)
+{
+
+}
+
+double Audio_source::Offset::offset() const
+{
+    return m_offset;
+}
+
+double Audio_source::Offset::release_offset() const
+{
+    return m_release_offset;
+}
+
+bool Audio_source::Offset::released() const
+{
+    return !((m_release_offset < 0.0) || (m_release_offset > m_offset));
+}
+
+Audio_source::Offset::operator double() const
+{
+    return offset();
+}
+
 void Audio_source::get_samples
 (
     Audio_data & destination,
