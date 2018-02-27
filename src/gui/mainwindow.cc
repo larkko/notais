@@ -206,7 +206,7 @@ void Main_window::start_audio_stop_timer()
     m_audio_stop_timer->start(timer_limit);
 }
 
-void Main_window::use_instrument(Audio_data & destination)
+void Main_window::use_instrument(Audio_data & audio_output_buffer)
 {
     m_keyboard.for_each
     ([&](Keyboard::Keypress press, Keyboard::Press_identifier press_id)
@@ -216,10 +216,10 @@ void Main_window::use_instrument(Audio_data & destination)
             {
                 m_active_instrument->get_samples
                 (
-                    destination,
+                    audio_output_buffer,
                     m_active_tuning->frequency_at(press.key), //frequency
                     press.velocity, //volume
-                    destination.frame_count(),
+                    audio_output_buffer.frame_count(),
                     press.elapsed_time, //source offset
                     0 //destination offset
                 );
@@ -227,7 +227,7 @@ void Main_window::use_instrument(Audio_data & destination)
         },
         Keyboard::Key::Type::Offset
     );
-    m_keyboard.advance_time(destination.frame_count());
+    m_keyboard.advance_time(audio_output_buffer.frame_count());
 }
 
 
