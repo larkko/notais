@@ -40,6 +40,7 @@ void Audio_source::get_samples
     float volume,
     size_t sample_count,
     size_t offset_in_source,
+    size_t release_offset,
     size_t offset_in_destination
 ) const
 {
@@ -47,8 +48,14 @@ void Audio_source::get_samples
     for(size_t i = 0; i < sample_count; ++i)
     {
         double seconds_passed = sample_rate.samples_to_seconds(i + offset_in_source);
+        bool released = release_offset != 0;
+        Offset offset = released
+                      ? Offset(seconds_passed,
+                               destination.sample_rate()
+                                          .samples_to_seconds(release_offset))
+                      : Offset(seconds_passed);
         Audio_data::Sample sample = volume
-                                  * get_sample(frequency, seconds_passed);
+                                  * get_sample(frequency, offset);
         for(size_t c = 0; c < destination.channel_count(); ++c)
         {
             destination.add_to_sample(i + offset_in_destination, c, sample);

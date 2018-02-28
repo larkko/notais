@@ -46,7 +46,7 @@ Keyboard::Keypress::State Keyboard::Keypress::state() const
 
 size_t Keyboard::Keypress::time_since_release() const
 {
-    return elapsed_time - release_offset;
+    return (state() == State::Pressed) ? 0 : (elapsed_time - release_offset);
 }
 
 void Keyboard::press(Key key, float velocity)

@@ -33,6 +33,7 @@ class Audio_source
         float volume,
         size_t sample_count,
         size_t offset_in_source,
+        size_t release_offset,
         size_t offset_in_destination
     ) const;
 

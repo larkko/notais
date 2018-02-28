@@ -212,17 +212,24 @@ void Main_window::use_instrument(Audio_data & audio_output_buffer)
     ([&](Keyboard::Keypress press, Keyboard::Press_identifier press_id)
         {
             if(m_keyboard.key_is_active
-              ({press.key, Keyboard::Key::Type::Offset}))
+              ({press.key, Keyboard::Key::Type::Offset}, true))
             {
-                m_active_instrument->get_samples
-                (
-                    audio_output_buffer,
-                    m_active_tuning->frequency_at(press.key), //frequency
-                    press.velocity, //volume
-                    audio_output_buffer.frame_count(),
-                    press.elapsed_time, //source offset
-                    0 //destination offset
-                );
+                auto seconds_released = audio_output_buffer
+                                       .sample_rate()
+                                       .samples_to_seconds(press.time_since_release());
+                if(seconds_released <= m_active_instrument->linger_time())
+                {
+                    m_active_instrument->get_samples
+                    (
+                        audio_output_buffer,
+                        m_active_tuning->frequency_at(press.key), //frequency
+                        press.velocity, //volume
+                        audio_output_buffer.frame_count(),
+                        press.elapsed_time, //source offset
+                        press.release_offset,
+                        0 //destination offset
+                    );
+                }
             }
         },
         Keyboard::Key::Type::Offset
