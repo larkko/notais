@@ -97,13 +97,16 @@ bool Keyboard::is_active() const
     return active;
 }
 
-bool Keyboard::key_is_active(Key key) const
+bool Keyboard::key_is_active(Key key, bool include_released) const
 {
     bool active = false;
     for(Keypress const & press : m_presses)
     {
+        bool key_active = press.state() == Keypress::State::Pressed
+                        || (press.state() == Keypress::State::Released
+                            && include_released);
         if(!press.expired &&
-           press.state() == Keypress::State::Pressed &&
+           key_active &&
            press.key == raw_key_identifier(key))
         {
             active = true;

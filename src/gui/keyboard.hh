@@ -58,7 +58,7 @@ class Keyboard
     void release(Key key);
     void expire(Press_identifier press);
     bool is_active() const;
-    bool key_is_active(Key key) const;
+    bool key_is_active(Key key, bool include_released = false) const;
     size_t key_count() const;
     void advance_time(size_t amount);
   private:
