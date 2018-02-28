@@ -46,6 +46,8 @@ class Keyboard
         };
 
         State state() const;
+
+        size_t time_since_release() const;
     };
 
     /*Performs function for each keypress, with a keypress as its identifier

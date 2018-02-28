@@ -44,6 +44,11 @@ Keyboard::Keypress::State Keyboard::Keypress::state() const
     }
 }
 
+size_t Keyboard::Keypress::time_since_release() const
+{
+    return elapsed_time - release_offset;
+}
+
 void Keyboard::press(Key key, float velocity)
 {
     auto raw_id = raw_key_identifier(key);
