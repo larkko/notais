@@ -19,3 +19,13 @@ Audio_data::Sample Effect_stack::get_sample
 {
     return source.get_sample(frequency, offset);
 }
+
+double Effect_stack::linger_time() const
+{
+    double sum = 0.0;
+    for(auto & e : m_effects)
+    {
+        sum += e->linger_time();
+    }
+    return sum;
+}

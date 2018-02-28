@@ -63,7 +63,7 @@ void Audio_source::get_samples
     }
 }
 
-float Audio_source::linger_time() const
+double Audio_source::linger_time() const
 {
     return 0.0;
 }

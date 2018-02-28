@@ -37,5 +37,5 @@ class Audio_source
         size_t offset_in_destination
     ) const;
 
-    virtual float linger_time() const;
+    virtual double linger_time() const;
 };

@@ -12,4 +12,5 @@ class Effect
         float frequency,
         Audio_source::Offset offset
     ) const = 0;
+    virtual double linger_time() const = 0;
 };

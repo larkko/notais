@@ -18,6 +18,11 @@ Audio_data::Sample Adjustable_audio_source::get_sample
     return m_volume * m_effect_stack.get_sample(*m_audio_source, frequency, offset);
 }
 
+double Adjustable_audio_source::linger_time() const
+{
+    return m_audio_source->linger_time() + m_effect_stack.linger_time();
+}
+
 std::shared_ptr<Audio_source> & Adjustable_audio_source::audio_source()
 {
     return m_audio_source;

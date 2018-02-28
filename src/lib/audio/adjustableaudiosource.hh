@@ -16,14 +16,15 @@ class Adjustable_audio_source : public Audio_source
     (
         float frequency,
         Audio_source::Offset offset
-    ) const override;
+    ) const final override;
+    virtual double linger_time() const final override;
     std::shared_ptr<Audio_source> & audio_source();
-    Effect_stack m_effect_stack;
     float volume() const;
     void set_volume(float value);
     std::string const & name() const;
   private:
     std::shared_ptr<Audio_source> m_audio_source;
+    Effect_stack m_effect_stack;
     float m_volume;
     std::string m_name;
 };

@@ -15,6 +15,7 @@ class Effect_stack
         float frequency,
         Audio_source::Offset offset
     ) const;
+    double linger_time() const;
   private:
     std::vector<std::shared_ptr<Effect>> m_effects;
 };
