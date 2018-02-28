@@ -14,6 +14,7 @@ class Audio_source
         double offset() const;
         double release_offset() const;
         bool released() const;
+        double time_since_release() const;
         operator double() const;
       private:
         double m_offset;

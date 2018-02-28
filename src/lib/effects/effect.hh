@@ -5,7 +5,7 @@
 class Effect
 {
   public:
-    virtual ~Effect();
+    virtual ~Effect(){}
     virtual Audio_data::Sample get_sample
     (
         Audio_source const & source,

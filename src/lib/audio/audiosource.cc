@@ -28,6 +28,11 @@ bool Audio_source::Offset::released() const
     return !((m_release_offset < 0.0) || (m_release_offset > m_offset));
 }
 
+double Audio_source::Offset::time_since_release() const
+{
+    return released() ? (offset() - release_offset()) : 0.0;
+}
+
 Audio_source::Offset::operator double() const
 {
     return offset();
