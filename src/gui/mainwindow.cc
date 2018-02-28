@@ -230,6 +230,10 @@ void Main_window::use_instrument(Audio_data & audio_output_buffer)
                         0 //destination offset
                     );
                 }
+                else
+                {
+                    m_keyboard.expire(press_id);
+                }
             }
         },
         Keyboard::Key::Type::Offset

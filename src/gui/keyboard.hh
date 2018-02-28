@@ -81,7 +81,7 @@ void Keyboard::for_each(F function, Key::Type type)
                             ? press.key
                             : offset_key_identifier({press.key, Key::Type::Raw});
             press.key = identifier;
-            function(press, identifier);
+            function(press, i);
         }
     }
 }
