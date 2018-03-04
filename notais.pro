@@ -29,6 +29,7 @@ SOURCES += src/lib/effects/effectstack.cc
 HEADERS += src/lib/effects/envelope.hh
 SOURCES += src/lib/effects/envelope.cc
 HEADERS += src/lib/util/util.hh
+HEADERS += src/lib/util/ringbuffer.hh
 HEADERS += src/gui/midiinput.hh
 SOURCES += src/gui/midiinput.cc
 HEADERS += src/gui/keyboard.hh
