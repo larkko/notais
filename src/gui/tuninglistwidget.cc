@@ -56,6 +56,7 @@ Tuning_list_widget::Tuning_list_widget()
 
     m_tuning_list = new QWidget();
     m_tuning_list->setLayout(new QVBoxLayout());
+    m_tuning_list->layout()->setAlignment(Qt::AlignTop);
     
     QScrollArea * tuning_list_area = new QScrollArea();
     tuning_list_area->setWidgetResizable(true);

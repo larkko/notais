@@ -57,6 +57,7 @@ Instrument_list_widget::Instrument_list_widget()
 
     m_instrument_list = new QWidget();
     m_instrument_list->setLayout(new QVBoxLayout());
+    m_instrument_list->layout()->setAlignment(Qt::AlignTop);
     
     QScrollArea * instrument_list_area = new QScrollArea();
     instrument_list_area->setWidgetResizable(true);
