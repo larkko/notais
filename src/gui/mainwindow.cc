@@ -10,6 +10,7 @@
 #include "mainwindow.hh"
 #include "arrowselectorwidget.hh"
 #include "projectwidget.hh"
+#include "taskqueue.hh"
 #include "../lib/audio/oscillator.hh"
 #include "../lib/tuning/equaltemperament.hh"
 

@@ -45,7 +45,7 @@ Ring_buffer<Type, Size>::Ring_buffer(Type const & default_value)
 }
 
 template<typename Type, size_t Size>
-size_t Ring_buffer<Type, Size>::size()
+constexpr size_t Ring_buffer<Type, Size>::size()
 {
     return Size;
 }
@@ -105,19 +105,19 @@ bool Ring_buffer<Type, Size>::push(Type const & item)
 }
 
 template<typename Type, size_t Size>
-bool Ring_buffer<Type, Size>::is_empty(size_t head, size_t tail)
+bool Ring_buffer<Type, Size>::is_empty(size_t head, size_t tail) const
 {
     return head == tail;
 }
 
 template<typename Type, size_t Size>
-bool Ring_buffer<Type, Size>::is_full(size_t head, size_t tail)
+bool Ring_buffer<Type, Size>::is_full(size_t head, size_t tail) const
 {
     return head == next_index(tail);
 }
 
 template<typename Type, size_t Size>
-size_t Ring_buffer<Type, Size>::next_index(size_t index)
+size_t Ring_buffer<Type, Size>::next_index(size_t index) const
 {
     return (index == (Size - 1)) ? 0 : (index + 1);
 }
