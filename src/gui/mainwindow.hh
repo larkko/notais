@@ -17,12 +17,10 @@ class Main_window : public QWidget
     Main_window();
   private:
     void update_audio_state();
-    void start_audio_stop_timer();
     void use_instrument(Audio_data & audio_output_buffer);
     MIDI_input m_midi_input;
     Keyboard m_keyboard;
     Audio_output m_audio_out;
-    QTimer * m_audio_stop_timer;
     std::shared_ptr<Adjustable_audio_source const> m_active_instrument;
     std::shared_ptr<Tuning const> m_active_tuning;
   signals:
