@@ -6,9 +6,11 @@
 #include "instrumentlistwidget.hh"
 #include "tuninglistwidget.hh"
 #include "headingwidget.hh"
+#include "taskqueue.hh"
 
-Project_widget::Project_widget()
-    : m_project(Project())
+Project_widget::Project_widget(Task_queue & task_queue)
+    : m_project(Project()),
+      m_task_queue(task_queue)
 {
     QHBoxLayout * root_layout = new QHBoxLayout();
 
@@ -83,13 +85,27 @@ void Project_widget::add_instrument
     std::shared_ptr<Adjustable_audio_source> instrument
 )
 {
-    m_project.add_instrument(instrument);
+    atomic_perform
+    (
+        m_task_queue,
+        [&, instrument]()
+        {
+            m_project.add_instrument(instrument);
+        }
+    );
     emit instruments_updated(m_project.instruments());
 }
 
 void Project_widget::add_tuning(std::shared_ptr<Tuning> tuning)
 {
-    m_project.add_tuning(tuning);
+    atomic_perform
+    (
+        m_task_queue,
+        [&, tuning]()
+        {
+            m_project.add_tuning(tuning);
+        }
+    );
     emit tunings_updated(m_project.tunings());
 }
 

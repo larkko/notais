@@ -98,7 +98,7 @@ bool Ring_buffer<Type, Size>::push(Type const & item)
     else
     {
         size_t next = next_index(tail);
-        m_data[next] = item;
+        m_data[tail] = item;
         m_tail_index.store(next);
         return true;
     }

@@ -53,7 +53,8 @@ Main_window::Main_window()
     (
         /*Normal 12EDO tuning.*/
         std::make_shared<Equal_temperament>(Equal_temperament(12, 2, 440))
-    )
+    ),
+    m_project_tasks([](){})
 {
     QVBoxLayout * root_layout = new QVBoxLayout;
 
@@ -79,7 +80,7 @@ Main_window::Main_window()
     );
     top_bar_layout->addWidget(audio_device_selector);
 
-    Project_widget * project_widget = new Project_widget();
+    Project_widget * project_widget = new Project_widget(m_project_tasks);
     root_layout->addWidget(project_widget);
 
     Keyboard_widget * keyboard_widget = new Keyboard_widget(m_keyboard);
@@ -208,7 +209,13 @@ void Main_window::use_instrument(Audio_data & audio_output_buffer)
         },
         Keyboard::Key::Type::Offset
     );
+
     m_keyboard.advance_time(audio_output_buffer.frame_count());
+
+    while(m_project_tasks.pop
+    (
+        [](std::function<void ()> & function){ function(); }
+    )){}
 }
 
 
