@@ -14,6 +14,7 @@
 Edit_tuning_widget::Edit_tuning_widget
 (
     std::shared_ptr<Tuning> tuning,
+    Task_queue & task_queue,
     QWidget *parent
 )
     : QWidget(parent)
@@ -24,7 +25,8 @@ Edit_tuning_widget::Edit_tuning_widget
     {
         auto edit_widget = new Edit_equal_temperament_widget
         (
-            std::static_pointer_cast<Equal_temperament>(tuning)
+            std::static_pointer_cast<Equal_temperament>(tuning),
+            task_queue
         );
         layout->addWidget(edit_widget);
     }
@@ -38,10 +40,12 @@ Edit_tuning_widget::Edit_tuning_widget
 Edit_equal_temperament_widget::Edit_equal_temperament_widget
 (
     std::shared_ptr<Equal_temperament> tuning,
+    Task_queue & task_queue,
     QWidget *parent
 )
     : QWidget(parent),
-      m_tuning(tuning)
+      m_tuning(tuning),
+      m_task_queue(task_queue)
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
@@ -97,20 +101,26 @@ Edit_equal_temperament_widget::Edit_equal_temperament_widget
         this,
         [=]()
         {
-            std::string steps_string = steps_input->text().toStdString();
-            std::string interval_string = interval_input->text().toStdString();
-            std::string base_frequency_string = base_frequency_input->text().toStdString();
-            try
-            {
-                float steps = std::stod(steps_string);
-                float interval = std::stod(interval_string);
-                float base_frequency = std::stod(base_frequency_string);
-                m_tuning->set_steps_per_interval(steps);
-                m_tuning->set_interval_size(interval);
-                m_tuning->set_base_frequency(base_frequency);
-            }
-            catch (...) {}
-
+            atomic_perform
+            (
+                m_task_queue,
+                [&]()
+                {
+                    std::string steps_string = steps_input->text().toStdString();
+                    std::string interval_string = interval_input->text().toStdString();
+                    std::string base_frequency_string = base_frequency_input->text().toStdString();
+                    try
+                    {
+                        float steps = std::stod(steps_string);
+                        float interval = std::stod(interval_string);
+                        float base_frequency = std::stod(base_frequency_string);
+                        m_tuning->set_steps_per_interval(steps);
+                        m_tuning->set_interval_size(interval);
+                        m_tuning->set_base_frequency(base_frequency);
+                    }
+                    catch (...) {}
+                }
+            );
             update_inputs();
         }
     );

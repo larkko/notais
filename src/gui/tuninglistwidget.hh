@@ -5,12 +5,17 @@
 #include <QWidget>
 
 #include "../lib/tuning/tuning.hh"
+#include "taskqueue.hh"
 
 class Tuning_list_item_widget : public QWidget
 {
   Q_OBJECT
   public:
-    Tuning_list_item_widget(std::shared_ptr<Tuning> tuning);
+    Tuning_list_item_widget
+    (
+        std::shared_ptr<Tuning> tuning,
+        Task_queue & task_queue
+    );
   private:
     std::shared_ptr<Tuning> m_tuning;
     std::unique_ptr<QWidget> m_edit_window;
@@ -22,9 +27,10 @@ class Tuning_list_widget : public QWidget
 {
   Q_OBJECT
   public:
-    Tuning_list_widget();
+    Tuning_list_widget(Task_queue & task_queue);
   private:
     QWidget * m_tuning_list;
+    Task_queue & m_task_queue;
   signals:
     void add_tuning(std::shared_ptr<Tuning> tuning);
     void selected(std::shared_ptr<Tuning> tuning);

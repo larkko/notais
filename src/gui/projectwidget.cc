@@ -23,7 +23,7 @@ Project_widget::Project_widget(Task_queue & task_queue)
     QVBoxLayout * tuning_side_layout = new QVBoxLayout();
     Heading_widget * tunings_label = new Heading_widget("Tunings");
     tuning_side_layout->addWidget(tunings_label);
-    Tuning_list_widget * tuning_list = new Tuning_list_widget();
+    Tuning_list_widget * tuning_list = new Tuning_list_widget(m_task_queue);
     tuning_side_layout->addWidget(tuning_list); 
 
     root_layout->addLayout(instrument_side_layout);

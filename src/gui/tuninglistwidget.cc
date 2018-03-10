@@ -11,10 +11,11 @@
 
 Tuning_list_item_widget::Tuning_list_item_widget
 (
-    std::shared_ptr<Tuning> tuning
+    std::shared_ptr<Tuning> tuning,
+    Task_queue & task_queue
 )
     : m_tuning(tuning),
-      m_edit_window(new Edit_tuning_widget(m_tuning))
+      m_edit_window(new Edit_tuning_widget(m_tuning, task_queue))
 {
     QHBoxLayout * layout = new QHBoxLayout();
 
@@ -50,7 +51,8 @@ Tuning_list_item_widget::Tuning_list_item_widget
     );
 }
 
-Tuning_list_widget::Tuning_list_widget()
+Tuning_list_widget::Tuning_list_widget(Task_queue & task_queue)
+    : m_task_queue(task_queue)
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
@@ -106,7 +108,7 @@ void Tuning_list_widget::update_list
     for(auto & tuning : tunings)
     {
         Tuning_list_item_widget * item =
-            new Tuning_list_item_widget(tuning);
+            new Tuning_list_item_widget(tuning, m_task_queue);
         m_tuning_list->layout()->addWidget(item);
 
         QObject::connect
