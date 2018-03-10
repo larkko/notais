@@ -14,6 +14,7 @@
 Edit_instrument_widget::Edit_instrument_widget
 (
     std::shared_ptr<Adjustable_audio_source> instrument,
+    Task_queue & task_queue,
     QWidget * parent
 )
     : QWidget(parent)
@@ -23,7 +24,11 @@ Edit_instrument_widget::Edit_instrument_widget
     QTabWidget * tabs = new QTabWidget();
     layout->addWidget(tabs);
 
-    QWidget * general_tab = new Edit_instrument_general_tab_widget(instrument);
+    QWidget * general_tab = new Edit_instrument_general_tab_widget
+    (
+        instrument,
+        task_queue
+    );
     tabs->addTab(general_tab, "general");
 
     QWidget * instrument_tab = nullptr;
@@ -33,7 +38,7 @@ Edit_instrument_widget::Edit_instrument_widget
     {
         std::shared_ptr<Oscillator> oscillator =
             std::static_pointer_cast<Oscillator>(audio_source);
-        instrument_tab = new Edit_oscillator_widget(oscillator);
+        instrument_tab = new Edit_oscillator_widget(oscillator, task_queue);
     }
     else
     {
@@ -50,6 +55,7 @@ Edit_instrument_widget::Edit_instrument_widget
 Edit_instrument_general_tab_widget::Edit_instrument_general_tab_widget
 (
     std::shared_ptr<Adjustable_audio_source> instrument,
+    Task_queue & task_queue,
     QWidget * parent
 )
     : QWidget(parent),
@@ -72,9 +78,19 @@ Edit_instrument_general_tab_widget::Edit_instrument_general_tab_widget
         volume_dial,
         &QDial::sliderMoved,
         this,
-        [=](int position)
+        [=, &task_queue](int position)
         {
-            m_instrument->set_volume(float(position)/float(volume_dial->maximum()));
+            atomic_perform
+            (
+                task_queue,
+                [=]()
+                {
+                    m_instrument->set_volume
+                    (
+                        float(position)/float(volume_dial->maximum())
+                    );
+                }
+            );
         }
     );
 
@@ -84,6 +100,7 @@ Edit_instrument_general_tab_widget::Edit_instrument_general_tab_widget
 Edit_oscillator_widget::Edit_oscillator_widget
 (
     std::shared_ptr<Oscillator> oscillator,
+    Task_queue & task_queue,
     QWidget * parent
 )
     : QWidget(parent),
@@ -104,14 +121,21 @@ Edit_oscillator_widget::Edit_oscillator_widget
         type_selector,
         &QComboBox::currentTextChanged,
         this,
-        [=](QString const & text)
+        [=, &task_queue](QString const & text)
         {
-            if(text == "Sine")
-                m_oscillator->set_type(Oscillator::Type::Sine);
-            else if(text == "Square")
-                m_oscillator->set_type(Oscillator::Type::Square);
-            else if(text == "Saw")
-                m_oscillator->set_type(Oscillator::Type::Saw);
+            atomic_perform
+            (
+                task_queue,
+                [=]()
+                {
+                    if(text == "Sine")
+                        m_oscillator->set_type(Oscillator::Type::Sine);
+                    else if(text == "Square")
+                        m_oscillator->set_type(Oscillator::Type::Square);
+                    else if(text == "Saw")
+                        m_oscillator->set_type(Oscillator::Type::Saw);
+                }
+            );
         }
     );
 

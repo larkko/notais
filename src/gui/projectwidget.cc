@@ -17,7 +17,7 @@ Project_widget::Project_widget(Task_queue & task_queue)
     QVBoxLayout * instrument_side_layout = new QVBoxLayout();
     Heading_widget * instruments_label = new Heading_widget("Instruments");
     instrument_side_layout->addWidget(instruments_label);
-    Instrument_list_widget * instrument_list = new Instrument_list_widget();
+    Instrument_list_widget * instrument_list = new Instrument_list_widget(m_task_queue);
     instrument_side_layout->addWidget(instrument_list);
 
     QVBoxLayout * tuning_side_layout = new QVBoxLayout();

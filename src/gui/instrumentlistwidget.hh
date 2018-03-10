@@ -3,6 +3,7 @@
 #include <QWidget>
 
 #include "../lib/audio/adjustableaudiosource.hh"
+#include "taskqueue.hh"
 
 class Instrument_list_item_widget : public QWidget
 {
@@ -10,7 +11,8 @@ class Instrument_list_item_widget : public QWidget
   public:
     Instrument_list_item_widget
     (
-        std::shared_ptr<Adjustable_audio_source> instrument
+        std::shared_ptr<Adjustable_audio_source> instrument,
+        Task_queue & task_queue
     );
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
@@ -23,9 +25,10 @@ class Instrument_list_widget : public QWidget
 {
   Q_OBJECT
   public:
-    Instrument_list_widget();
+    Instrument_list_widget(Task_queue & task_queue);
   private:
     QWidget * m_instrument_list;
+    Task_queue & m_task_queue;
   signals:
     void add_instrument
     (

@@ -6,6 +6,7 @@
 
 #include "../lib/audio/adjustableaudiosource.hh"
 #include "../lib/audio/oscillator.hh"
+#include "taskqueue.hh"
 
 class Edit_instrument_widget : public QWidget
 {
@@ -14,6 +15,7 @@ class Edit_instrument_widget : public QWidget
     Edit_instrument_widget
     (
         std::shared_ptr<Adjustable_audio_source> instrument,
+        Task_queue & task_queue,
         QWidget * parent = nullptr
     );
   private:
@@ -26,6 +28,7 @@ class Edit_instrument_general_tab_widget : public QWidget
     Edit_instrument_general_tab_widget
     (
         std::shared_ptr<Adjustable_audio_source> instrument,
+        Task_queue & task_queue,
         QWidget * parent = nullptr
     );
   private:
@@ -39,6 +42,7 @@ class Edit_oscillator_widget : public QWidget
     Edit_oscillator_widget
     (
         std::shared_ptr<Oscillator> oscillator,
+        Task_queue & task_queue,
         QWidget * parent = nullptr
     );
   private:

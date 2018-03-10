@@ -12,10 +12,11 @@
 
 Instrument_list_item_widget::Instrument_list_item_widget
 (
-    std::shared_ptr<Adjustable_audio_source> instrument
+    std::shared_ptr<Adjustable_audio_source> instrument,
+    Task_queue & task_queue
 )
     : m_instrument(instrument),
-      m_edit_window(new Edit_instrument_widget(m_instrument))
+      m_edit_window(new Edit_instrument_widget(m_instrument, task_queue))
 {
     QHBoxLayout * layout = new QHBoxLayout();
 
@@ -51,7 +52,8 @@ Instrument_list_item_widget::Instrument_list_item_widget
     );
 }
 
-Instrument_list_widget::Instrument_list_widget()
+Instrument_list_widget::Instrument_list_widget(Task_queue & task_queue)
+    : m_task_queue(task_queue)
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
@@ -111,7 +113,7 @@ void Instrument_list_widget::update_list
     for(auto & instrument : instruments)
     {
         Instrument_list_item_widget * item =
-            new Instrument_list_item_widget(instrument);
+            new Instrument_list_item_widget(instrument, m_task_queue);
         m_instrument_list->layout()->addWidget(item);
 
         QObject::connect
