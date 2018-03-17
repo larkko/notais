@@ -61,6 +61,7 @@ class Keyboard
     bool key_is_active(Key key, bool include_released = false) const;
     size_t key_count() const;
     void advance_time(size_t amount);
+    int offset() const;
   private:
     int raw_key_identifier(Key key) const;
     int offset_key_identifier(Key key) const;

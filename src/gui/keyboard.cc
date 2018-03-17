@@ -132,6 +132,11 @@ void Keyboard::advance_time(size_t amount)
     }
 }
 
+int Keyboard::offset() const
+{
+    return m_offset;
+}
+
 int Keyboard::raw_key_identifier(Key key) const
 {
     return (key.type == Key::Type::Raw)
