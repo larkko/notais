@@ -111,7 +111,7 @@ Edit_equal_temperament_widget::Edit_equal_temperament_widget
                     std::string base_frequency_string = base_frequency_input->text().toStdString();
                     try
                     {
-                        float steps = std::stod(steps_string);
+                        int steps = std::stoi(steps_string);
                         float interval = std::stod(interval_string);
                         float base_frequency = std::stod(base_frequency_string);
                         m_tuning->set_steps_per_interval(steps);
