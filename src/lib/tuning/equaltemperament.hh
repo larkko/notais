@@ -12,6 +12,7 @@ class Equal_temperament : public Tuning
         float base_frequency
     );
     float frequency_at(float steps) const override;
+    int steps_in_pattern() const override;
     int steps_per_interval() const;
     void set_steps_per_interval(int value);
     float interval_size() const;

@@ -19,6 +19,11 @@ float Equal_temperament::frequency_at(float steps) const
     return m_base_frequency * pow(step_multiplier(), steps);
 }
 
+int Equal_temperament::steps_in_pattern() const
+{
+    return steps_per_interval();
+};
+
 int Equal_temperament::steps_per_interval() const
 {
     return m_steps_per_interval;
