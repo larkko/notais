@@ -28,6 +28,11 @@ std::shared_ptr<Audio_source> & Adjustable_audio_source::audio_source()
     return m_audio_source;
 }
 
+Effect_stack & Adjustable_audio_source::effect_stack()
+{
+    return m_effect_stack;
+}
+
 float Adjustable_audio_source::volume() const
 {
     return m_volume;

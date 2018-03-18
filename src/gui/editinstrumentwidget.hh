@@ -1,11 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QWidget>
 
 #include "../lib/audio/adjustableaudiosource.hh"
 #include "../lib/audio/oscillator.hh"
+#include "../lib/effects/effect.hh"
 #include "taskqueue.hh"
 
 class Edit_instrument_widget : public QWidget
@@ -19,6 +21,8 @@ class Edit_instrument_widget : public QWidget
         QWidget * parent = nullptr
     );
   private:
+  signals:
+    void effects_updated(std::vector<std::shared_ptr<Effect>> effects);
 };
 
 class Edit_instrument_general_tab_widget : public QWidget

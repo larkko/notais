@@ -10,6 +10,7 @@
 #include <QComboBox>
 
 #include "../lib/util/util.hh"
+#include "effectlistwidget.hh"
 
 Edit_instrument_widget::Edit_instrument_widget
 (
@@ -46,10 +47,37 @@ Edit_instrument_widget::Edit_instrument_widget
     }
     tabs->addTab(instrument_tab, "instrument");
 
-    QLabel * effects_tab = new QLabel("effects tab");
+    Effect_list_widget * effects_tab = new Effect_list_widget(task_queue);
     tabs->addTab(effects_tab, "effects");
 
     this->setLayout(layout);
+
+    QObject::connect
+    (
+        effects_tab,
+        &Effect_list_widget::add_effect,
+        this,
+        [&, instrument](std::shared_ptr<Effect> effect)
+        {
+            atomic_perform
+            (
+                task_queue,
+                [=]()
+                {
+                    instrument->effect_stack().add_effect(effect);
+                }
+            );
+            emit effects_updated(instrument->effect_stack().effects());
+        }
+    );
+
+    QObject::connect
+    (
+        this,
+        &Edit_instrument_widget::effects_updated,
+        effects_tab,
+        &Effect_list_widget::update_list
+    );
 }
 
 Edit_instrument_general_tab_widget::Edit_instrument_general_tab_widget

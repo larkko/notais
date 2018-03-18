@@ -16,6 +16,7 @@ class Effect_stack
         Audio_source::Offset offset
     ) const;
     double linger_time() const;
+    std::vector<std::shared_ptr<Effect>> effects() const;
   private:
     Audio_data::Sample get_sample_nested
     (

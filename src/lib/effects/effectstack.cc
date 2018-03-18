@@ -29,6 +29,11 @@ double Effect_stack::linger_time() const
     return sum;
 }
 
+std::vector<std::shared_ptr<Effect>> Effect_stack::effects() const
+{
+    return m_effects;
+}
+
 Audio_data::Sample Effect_stack::get_sample_nested
 (
     Audio_source const & source,
