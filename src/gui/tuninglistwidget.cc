@@ -14,9 +14,10 @@ Tuning_list_item_widget::Tuning_list_item_widget
     std::shared_ptr<Tuning> tuning,
     Task_queue & task_queue
 )
-    : m_tuning(tuning),
-      m_edit_window(new Edit_tuning_widget(m_tuning, task_queue))
+    : m_tuning(tuning)
 {
+    Edit_tuning_widget * edit_window = new Edit_tuning_widget(m_tuning, task_queue, this, Qt::Window);
+
     QHBoxLayout * layout = new QHBoxLayout();
 
     QLabel * info_label = new QLabel("tuning");
@@ -44,10 +45,18 @@ Tuning_list_item_widget::Tuning_list_item_widget
         edit_button,
         &QPushButton::pressed,
         this,
-        [&]()
+        [=]()
         {
-            m_edit_window->show();
+            edit_window->show();
         }
+    );
+
+    QObject::connect
+    (
+        edit_window,
+        &Edit_tuning_widget::updated,
+        this,
+        &Tuning_list_item_widget::tuning_updated
     );
 }
 
@@ -117,6 +126,14 @@ void Tuning_list_widget::update_list
             &Tuning_list_item_widget::selected,
             this,
             &Tuning_list_widget::selected
+        );
+
+        QObject::connect
+        (
+            item,
+            &Tuning_list_item_widget::tuning_updated,
+            this,
+            &Tuning_list_widget::tuning_updated
         );
     }
 }

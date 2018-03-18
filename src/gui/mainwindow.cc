@@ -155,18 +155,39 @@ Main_window::Main_window()
         }
     );
 
+    auto register_tuning_update = [&, keyboard_widget]()
+    {
+        keyboard_widget->change_pattern
+        (
+            m_active_tuning->steps_in_pattern(),
+            m_keyboard.offset()
+        );
+        keyboard_widget->update();
+    };
+
     QObject::connect
     (
         project_widget,
         &Project_widget::tuning_selected,
         this,
-        [&](std::shared_ptr<Tuning> tuning)
+        [&, keyboard_widget, register_tuning_update]
+        (std::shared_ptr<Tuning> tuning)
         {
             m_active_tuning = tuning;
+            register_tuning_update();
         }
     );
 
+    QObject::connect
+    (
+        project_widget,
+        &Project_widget::tuning_updated,
+        this,
+        register_tuning_update
+    );
+
     update_audio_state();
+    register_tuning_update();
 }
 
 void Main_window::update_audio_state()
@@ -217,9 +238,6 @@ void Main_window::use_instrument(Audio_data & audio_output_buffer)
         [](std::function<void ()> & function){ function(); }
     )){}
 }
-
-
-
 
 
 

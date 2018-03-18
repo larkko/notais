@@ -11,6 +11,7 @@ class Keyboard_widget : public QWidget
   Q_OBJECT
   public:
     Keyboard_widget(Keyboard const & keyboard, QWidget * parent = nullptr);
+
   private:
     QRect key_rect(int key) const;
     void paintEvent(QPaintEvent * event) override;
@@ -20,7 +21,21 @@ class Keyboard_widget : public QWidget
     QSize sizeHint() const override;
     Keyboard const & m_keyboard;
     int m_held_key;
+
+    struct Pattern
+    {
+        int steps_per_pattern = 1;
+        int offset = 0;
+        bool valid = false;
+        bool is_special(int key) const;
+    };
+
+    Pattern m_pattern;
+
   signals:
     void key_press_event(int key, float velocity);
     void key_release_event(int key);
+
+  public slots:
+    void change_pattern(int steps_per_pattern, int offset);
 };

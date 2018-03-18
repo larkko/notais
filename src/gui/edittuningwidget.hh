@@ -16,9 +16,12 @@ class Edit_tuning_widget : public QWidget
     (
         std::shared_ptr<Tuning> tuning,
         Task_queue & task_queue,
-        QWidget * parent = nullptr
+        QWidget * parent = nullptr,
+        Qt::WindowFlags flags = Qt::WindowFlags()
     );
   private:
+  signals:
+    void updated();
 };
 
 class Edit_equal_temperament_widget : public QWidget
@@ -34,4 +37,6 @@ class Edit_equal_temperament_widget : public QWidget
   private:
     std::shared_ptr<Equal_temperament> m_tuning;
     Task_queue & m_task_queue;
+  signals:
+    void updated();
 };

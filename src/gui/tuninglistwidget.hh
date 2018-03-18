@@ -18,9 +18,9 @@ class Tuning_list_item_widget : public QWidget
     );
   private:
     std::shared_ptr<Tuning> m_tuning;
-    std::unique_ptr<QWidget> m_edit_window;
   signals:
     void selected(std::shared_ptr<Tuning> tuning);
+    void tuning_updated();
 };
 
 class Tuning_list_widget : public QWidget
@@ -34,6 +34,7 @@ class Tuning_list_widget : public QWidget
   signals:
     void add_tuning(std::shared_ptr<Tuning> tuning);
     void selected(std::shared_ptr<Tuning> tuning);
+    void tuning_updated();
   public slots:
     void update_list(std::vector<std::shared_ptr<Tuning>> tunings);
 };

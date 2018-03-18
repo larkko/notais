@@ -15,9 +15,10 @@ Edit_tuning_widget::Edit_tuning_widget
 (
     std::shared_ptr<Tuning> tuning,
     Task_queue & task_queue,
-    QWidget *parent
+    QWidget *parent,
+    Qt::WindowFlags flags
 )
-    : QWidget(parent)
+    : QWidget(parent, flags)
 {
     QVBoxLayout * layout = new QVBoxLayout();
     std::type_index type = util::underlying_type(tuning);
@@ -29,6 +30,8 @@ Edit_tuning_widget::Edit_tuning_widget
             task_queue
         );
         layout->addWidget(edit_widget);
+        QObject::connect(edit_widget, &Edit_equal_temperament_widget::updated,
+                         this, &Edit_tuning_widget::updated);
     }
     else
     {
@@ -122,6 +125,7 @@ Edit_equal_temperament_widget::Edit_equal_temperament_widget
                 }
             );
             update_inputs();
+            emit updated();
         }
     );
 

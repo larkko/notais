@@ -27,13 +27,15 @@ void Keyboard_widget::paintEvent(QPaintEvent * event)
     (void)event;
 
     QPainter painter(this);
-    for(size_t key = 0; key < m_keyboard.key_count(); ++key)
+    for(int key = 0; key < int(m_keyboard.key_count()); ++key)
     {
         /*Draw keys*/
         Qt::GlobalColor color = m_keyboard.key_is_active
-                                ({int(key), Keyboard::Key::Type::Raw})
+                                ({key, Keyboard::Key::Type::Raw})
                               ? Qt::cyan
-                              : Qt::darkGray;
+                              : (m_pattern.is_special(key)
+                                 ? Qt::gray
+                                 : Qt::darkGray);
         QRect rect = key_rect(key);
         painter.fillRect(rect, color);
         /*Draw separator between keys*/
@@ -89,6 +91,18 @@ void Keyboard_widget::mouseReleaseEvent(QMouseEvent * event)
 QSize Keyboard_widget::sizeHint() const
 {
     return QSize(1000, 90);
+}
+
+void Keyboard_widget::change_pattern(int steps_per_pattern, int offset)
+{
+    m_pattern.steps_per_pattern = steps_per_pattern;
+    m_pattern.offset = offset;
+    m_pattern.valid = true;
+}
+
+bool Keyboard_widget::Pattern::is_special(int key) const
+{
+    return valid ? (((key - offset) % steps_per_pattern) == 0) : false;
 }
 
 
