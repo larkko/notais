@@ -29,7 +29,7 @@ Audio_data::Sample square_saw_at
                             : 2; 
     for(int harmonic = 1; harmonic < harmonic_count; harmonic += harmonic_step)
     {
-        sample += sin(wave_offset * harmonic);
+        sample += sinf(wave_offset * harmonic);
         resulting_amplitude += 1.0f / harmonic;
     }
     return sample / resulting_amplitude;
@@ -47,7 +47,7 @@ Audio_data::Sample Oscillator::get_sample
     switch(m_type)
     {
         case Oscillator::Type::Sine:
-            sample = sin(wave_offset);
+            sample = sinf(wave_offset);
             break;
         default:
             sample = square_saw_at(wave_offset, m_type);

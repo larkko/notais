@@ -114,6 +114,7 @@ void Tuning_list_widget::update_list
     {
         delete widget;
     }
+
     for(auto & tuning : tunings)
     {
         Tuning_list_item_widget * item =

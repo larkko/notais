@@ -7,6 +7,19 @@
 #include "../lib/effects/effect.hh"
 #include "taskqueue.hh"
 
+class Effect_list_item_widget : public QWidget
+{
+  Q_OBJECT
+  public:
+    Effect_list_item_widget
+    (
+        std::shared_ptr<Effect> effect,
+        Task_queue & task_queue
+    );
+  private:
+    std::shared_ptr<Effect> m_effect;
+};
+
 class Effect_list_widget : public QWidget
 {
   Q_OBJECT

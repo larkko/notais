@@ -4,6 +4,7 @@ TEMPLATE = app
 QT = core gui widgets
 
 CONFIG += c++14
+CONFIG += optimize_full
 
 LIBS += -lrtmidi -lm -lrtaudio
 
@@ -47,6 +48,8 @@ HEADERS += src/gui/edittuningwidget.hh
 SOURCES += src/gui/edittuningwidget.cc
 HEADERS += src/gui/editinstrumentwidget.hh
 SOURCES += src/gui/editinstrumentwidget.cc
+HEADERS += src/gui/editeffectwidget.hh
+SOURCES += src/gui/editeffectwidget.cc
 HEADERS += src/gui/projectwidget.hh
 SOURCES += src/gui/projectwidget.cc
 HEADERS += src/gui/headingwidget.hh

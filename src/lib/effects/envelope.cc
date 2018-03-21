@@ -24,6 +24,26 @@ double Envelope::linger_time() const
     return m_release_length;
 }
 
+double Envelope::attack_length() const
+{
+    return m_attack_length;
+}
+
+void Envelope::set_attack_length(double length)
+{
+    m_attack_length = length;
+}
+
+double Envelope::release_length() const
+{
+    return m_release_length;
+}
+
+void Envelope::set_release_length(double length)
+{
+    m_release_length = length;
+}
+
 float Envelope::volume_at(Audio_source::Offset offset) const
 {
     float volume = 0.0f;
