@@ -9,7 +9,8 @@ class Oscillator : public Audio_source
     {
         Sine,
         Square,
-        Saw
+        Saw,
+        White_noise
     };
     Oscillator(Type type);
     Audio_data::Sample get_sample

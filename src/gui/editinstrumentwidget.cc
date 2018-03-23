@@ -140,7 +140,7 @@ Edit_oscillator_widget::Edit_oscillator_widget
     QLabel * type_label = new QLabel("type: ");
     type_layout->addWidget(type_label);
     QComboBox * type_selector = new QComboBox();
-    type_selector->addItems({"Sine", "Square", "Saw"});
+    type_selector->addItems({"Sine", "Square", "Saw", "White noise"});
     type_layout->addWidget(type_selector);
     layout->addLayout(type_layout);
 
@@ -162,6 +162,8 @@ Edit_oscillator_widget::Edit_oscillator_widget
                         m_oscillator->set_type(Oscillator::Type::Square);
                     else if(text == "Saw")
                         m_oscillator->set_type(Oscillator::Type::Saw);
+                    else if(text == "White noise")
+                        m_oscillator->set_type(Oscillator::Type::White_noise);
                 }
             );
         }

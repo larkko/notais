@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include <iostream>
+#include <cstdlib>
 
 #include "oscillator.hh"
 
@@ -35,6 +36,12 @@ Audio_data::Sample square_saw_at
     return sample / resulting_amplitude;
 }
 
+Audio_data::Sample random_value(Audio_source::Offset offset)
+{
+    Audio_data::Sample result = ((float(std::rand()) / float(RAND_MAX)) - 0.5f) * 2.0f;
+    return result;
+}
+
 Audio_data::Sample Oscillator::get_sample
 (
     float frequency,
@@ -48,6 +55,9 @@ Audio_data::Sample Oscillator::get_sample
     {
         case Oscillator::Type::Sine:
             sample = sinf(wave_offset);
+            break;
+        case Oscillator::Type::White_noise:
+            sample = random_value(offset);
             break;
         default:
             sample = square_saw_at(wave_offset, m_type);
