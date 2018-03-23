@@ -7,6 +7,7 @@
 
 #include "../lib/audio/adjustableaudiosource.hh"
 #include "../lib/audio/oscillator.hh"
+#include "../lib/sequencing/sequence.hh"
 #include "../lib/effects/effect.hh"
 #include "taskqueue.hh"
 
