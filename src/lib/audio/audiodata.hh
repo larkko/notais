@@ -9,6 +9,7 @@ class Audio_data
 {
   public:
     typedef float Sample;
+    static Sample constexpr max_amplitude = 1.0f;
     Audio_data(Sample_rate sample_rate, size_t channel_count);
     /*Reserves sample_count samples for each channel*/
     void reserve(size_t frame_count);

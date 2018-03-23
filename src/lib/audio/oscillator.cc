@@ -33,12 +33,16 @@ Audio_data::Sample square_saw_at
         sample += sinf(wave_offset * harmonic);
         resulting_amplitude += 1.0f / harmonic;
     }
-    return sample / resulting_amplitude;
+    return Audio_data::max_amplitude * sample / resulting_amplitude;
 }
 
-Audio_data::Sample random_value(Audio_source::Offset offset)
+Audio_data::Sample random_sample(Audio_source::Offset offset)
 {
-    Audio_data::Sample result = ((float(std::rand()) / float(RAND_MAX)) - 0.5f) * 2.0f;
+    Audio_data::Sample value_offset = Audio_data::max_amplitude / 2.0;
+    Audio_data::Sample value_multiplier = Audio_data::max_amplitude * 2.0;
+    Audio_data::Sample result = ((float(std::rand())
+                                  / float(RAND_MAX))
+                                - value_offset) * value_multiplier;
     return result;
 }
 
@@ -54,10 +58,10 @@ Audio_data::Sample Oscillator::get_sample
     switch(m_type)
     {
         case Oscillator::Type::Sine:
-            sample = sinf(wave_offset);
+            sample = Audio_data::max_amplitude * sinf(wave_offset);
             break;
         case Oscillator::Type::White_noise:
-            sample = random_value(offset);
+            sample = random_sample(offset);
             break;
         default:
             sample = square_saw_at(wave_offset, m_type);
