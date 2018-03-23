@@ -45,8 +45,8 @@ void Audio_data::clamp_samples()
 {
     for(auto & s : m_samples)
     {
-        s = (s > 1.0f) ? 1.0f
-          : (s < -1.0f) ? -1.0f
+        s = (s > max_amplitude) ? max_amplitude
+          : (s < -max_amplitude) ? -max_amplitude
           : s;
     }
 }
