@@ -11,6 +11,7 @@
 
 #include "../lib/util/util.hh"
 #include "effectlistwidget.hh"
+#include "headingwidget.hh"
 
 Edit_instrument_widget::Edit_instrument_widget
 (
@@ -142,6 +143,9 @@ Edit_oscillator_widget::Edit_oscillator_widget
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
+    Heading_widget * heading = new Heading_widget("Oscillator");
+    layout->addWidget(heading);
+
     QHBoxLayout * type_layout = new QHBoxLayout();
     QLabel * type_label = new QLabel("type: ");
     type_layout->addWidget(type_label);
@@ -188,8 +192,8 @@ Edit_sequence_widget::Edit_sequence_widget
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
-    QLabel * label = new QLabel("Sequence");
-    layout->addWidget(label);
+    Heading_widget * heading = new Heading_widget("Sequence");
+    layout->addWidget(heading);
 
     this->setLayout(layout);
 }
