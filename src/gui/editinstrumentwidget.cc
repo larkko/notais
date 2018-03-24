@@ -195,6 +195,19 @@ Edit_sequence_widget::Edit_sequence_widget
     Heading_widget * heading = new Heading_widget("Sequence");
     layout->addWidget(heading);
 
+    QHBoxLayout * top_bar_layout = new QHBoxLayout();
+    layout->addLayout(top_bar_layout);
+
+    QLabel * instrument_label = new QLabel("Instrument:");
+    top_bar_layout->addWidget(instrument_label);
+    QComboBox * instrument_selector = new QComboBox();
+    top_bar_layout->addWidget(instrument_selector);
+
+    QLabel * tuning_label = new QLabel("Tuning:");
+    top_bar_layout->addWidget(tuning_label);
+    QComboBox * tuning_selector = new QComboBox();
+    top_bar_layout->addWidget(tuning_selector);
+
     this->setLayout(layout);
 }
 
