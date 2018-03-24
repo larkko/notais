@@ -142,6 +142,7 @@ Edit_oscillator_widget::Edit_oscillator_widget
       m_oscillator(oscillator)
 {
     QVBoxLayout * layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignTop);
 
     Heading_widget * heading = new Heading_widget("Oscillator");
     layout->addWidget(heading);
@@ -191,11 +192,13 @@ Edit_sequence_widget::Edit_sequence_widget
       m_sequence(sequence)
 {
     QVBoxLayout * layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignTop);
 
     Heading_widget * heading = new Heading_widget("Sequence");
     layout->addWidget(heading);
 
     QHBoxLayout * top_bar_layout = new QHBoxLayout();
+    top_bar_layout->setAlignment(Qt::AlignLeft);
     layout->addLayout(top_bar_layout);
 
     QLabel * instrument_label = new QLabel("Instrument:");
