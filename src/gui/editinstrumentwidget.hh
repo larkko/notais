@@ -53,3 +53,25 @@ class Edit_oscillator_widget : public QWidget
   private:
     std::shared_ptr<Oscillator> m_oscillator;
 };
+
+class Edit_sequence_widget : public QWidget
+{
+  Q_OBJECT
+  public:
+    Edit_sequence_widget
+    (
+        std::shared_ptr<Sequence> sequence,
+        Task_queue & task_queue,
+        QWidget * parent = nullptr
+    );
+  private:
+    std::shared_ptr<Sequence> m_sequence;
+};
+
+
+
+
+
+
+
+

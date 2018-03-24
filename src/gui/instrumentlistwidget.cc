@@ -70,6 +70,8 @@ Instrument_list_widget::Instrument_list_widget(Task_queue & task_queue)
     QHBoxLayout * add_button_layout = new QHBoxLayout();
     QPushButton * add_oscillator = new QPushButton("Add oscillator");
     add_button_layout->addWidget(add_oscillator);
+    QPushButton * add_sequence = new QPushButton("Add sequence");
+    add_button_layout->addWidget(add_sequence);
     layout->addLayout(add_button_layout);
 
     this->setLayout(layout);
@@ -90,6 +92,29 @@ Instrument_list_widget::Instrument_list_widget(Task_queue & task_queue)
                         std::make_shared<Oscillator>
                         (
                             Oscillator(Oscillator::Type::Sine)
+                        )
+                    )
+                )
+            );
+        }
+    );
+
+    QObject::connect
+    (
+        add_sequence,
+        &QPushButton::pressed,
+        this,
+        [&]()
+        {
+            emit add_instrument
+            (
+                std::make_shared<Adjustable_audio_source>
+                (
+                    Adjustable_audio_source
+                    (
+                        std::make_shared<Sequence>
+                        (
+                            Sequence()
                         )
                     )
                 )

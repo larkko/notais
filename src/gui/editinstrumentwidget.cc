@@ -41,6 +41,12 @@ Edit_instrument_widget::Edit_instrument_widget
             std::static_pointer_cast<Oscillator>(audio_source);
         instrument_tab = new Edit_oscillator_widget(oscillator, task_queue);
     }
+    else if(type == std::type_index(typeid(Sequence)))
+    {
+        std::shared_ptr<Sequence> sequence =
+            std::static_pointer_cast<Sequence>(audio_source);
+        instrument_tab = new Edit_sequence_widget(sequence, task_queue);
+    }
     else
     {
         instrument_tab = new QLabel("editing not supported for this instrument");
@@ -172,6 +178,21 @@ Edit_oscillator_widget::Edit_oscillator_widget
     this->setLayout(layout);
 }
 
+Edit_sequence_widget::Edit_sequence_widget
+(
+    std::shared_ptr<Sequence> sequence,
+    Task_queue & task_queue,
+    QWidget * parent
+)   : QWidget(parent),
+      m_sequence(sequence)
+{
+    QVBoxLayout * layout = new QVBoxLayout();
+
+    QLabel * label = new QLabel("Sequence");
+    layout->addWidget(label);
+
+    this->setLayout(layout);
+}
 
 
 
