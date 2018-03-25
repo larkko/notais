@@ -230,6 +230,9 @@ Edit_sequence_widget::Edit_sequence_widget
     m_tuning_selector = new QComboBox();
     top_bar_layout->addWidget(m_tuning_selector);
 
+    auto editor = new Edit_sequence_pattern_widget(sequence, task_queue);
+    layout->addWidget(editor);
+
     this->setLayout(layout);
 }
 
@@ -298,6 +301,20 @@ void Edit_sequence_widget::update_tunings
             );
         }
     );
+}
+
+Edit_sequence_pattern_widget::Edit_sequence_pattern_widget
+(
+    std::shared_ptr<Sequence> sequence,
+    Task_queue & task_queue,
+    QWidget * parent
+) : QWidget(parent),
+    m_sequence(sequence),
+    m_task_queue(task_queue)
+{
+    QVBoxLayout * layout = new QVBoxLayout();
+    layout->addWidget(new QLabel("pattern"));
+    this->setLayout(layout);
 }
 
 

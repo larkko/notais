@@ -90,6 +90,20 @@ class Edit_sequence_widget : public QWidget
     );
 };
 
+class Edit_sequence_pattern_widget : public QWidget
+{
+  Q_OBJECT
+  public:
+    Edit_sequence_pattern_widget
+    (
+        std::shared_ptr<Sequence> sequence,
+        Task_queue & task_queue,
+        QWidget * parent = nullptr
+    );
+  private:
+    std::shared_ptr<Sequence> m_sequence;
+    Task_queue & m_task_queue;
+};
 
 
 
