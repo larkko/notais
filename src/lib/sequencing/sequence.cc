@@ -1,5 +1,28 @@
 #include "sequence.hh"
 
+Sequence::Note::Note
+(
+    double start_point,
+    double end_point,
+    double steps,
+    double velocity
+) : m_start_point(start_point),
+    m_end_point(end_point),
+    m_steps(steps),
+    m_velocity(velocity)
+{
+
+}
+
+Sequence::Pattern::Pattern()
+{
+}
+
+Sequence::Pattern::add_note(Note note)
+{
+    m_notes.push_back(note);
+}
+
 Sequence::Sequence()
     : m_instrument(nullptr),
       m_tuning(nullptr)
@@ -44,7 +67,10 @@ void Sequence::set_tuning(std::shared_ptr<Tuning> tuning)
     m_tuning = tuning;
 }
 
-
+Sequence::Pattern & Sequence::pattern()
+{
+    return m_pattern;
+}
 
 
 
