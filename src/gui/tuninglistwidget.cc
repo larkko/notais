@@ -16,7 +16,13 @@ Tuning_list_item_widget::Tuning_list_item_widget
 )
     : m_tuning(tuning)
 {
-    Edit_tuning_widget * edit_window = new Edit_tuning_widget(m_tuning, task_queue, this, Qt::Window);
+    Edit_tuning_widget * edit_window = new Edit_tuning_widget
+    (
+        m_tuning,
+        task_queue,
+        this,
+        Qt::Window
+    );
 
     QHBoxLayout * layout = new QHBoxLayout();
 

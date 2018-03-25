@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <QWidget>
+#include <QComboBox>
 
 #include "../lib/audio/adjustableaudiosource.hh"
 #include "../lib/audio/oscillator.hh"
@@ -19,11 +20,16 @@ class Edit_instrument_widget : public QWidget
     (
         std::shared_ptr<Adjustable_audio_source> instrument,
         Task_queue & task_queue,
-        QWidget * parent = nullptr
+        QWidget * parent = nullptr,
+        Qt::WindowFlags flags = Qt::WindowFlags()
     );
   private:
   signals:
     void effects_updated(std::vector<std::shared_ptr<Effect>> effects);
+    void instruments_updated
+    (
+        std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+    );
 };
 
 class Edit_instrument_general_tab_widget : public QWidget
@@ -66,6 +72,14 @@ class Edit_sequence_widget : public QWidget
     );
   private:
     std::shared_ptr<Sequence> m_sequence;
+    Task_queue & m_task_queue;
+    QComboBox * m_instrument_selector;
+    QComboBox * m_tuning_selector;
+  public slots:
+    void update_instruments
+    (
+        std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+    );
 };
 
 

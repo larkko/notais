@@ -15,9 +15,16 @@ Instrument_list_item_widget::Instrument_list_item_widget
     std::shared_ptr<Adjustable_audio_source> instrument,
     Task_queue & task_queue
 )
-    : m_instrument(instrument),
-      m_edit_window(new Edit_instrument_widget(m_instrument, task_queue))
+    : m_instrument(instrument)
 {
+    Edit_instrument_widget * edit_window = new Edit_instrument_widget
+    (
+        m_instrument,
+        task_queue,
+        this,
+        Qt::Window
+    );
+
     QHBoxLayout * layout = new QHBoxLayout();
 
     QLabel * info_label = new QLabel("instrument");
@@ -45,10 +52,18 @@ Instrument_list_item_widget::Instrument_list_item_widget
         edit_button,
         &QPushButton::pressed,
         this,
-        [&]()
+        [&, edit_window]()
         {
-            m_edit_window->show();
+            edit_window->show();
         }
+    );
+
+    QObject::connect
+    (
+        this,
+        &Instrument_list_item_widget::instruments_updated,
+        edit_window,
+        &Edit_instrument_widget::instruments_updated
     );
 }
 
@@ -75,6 +90,14 @@ Instrument_list_widget::Instrument_list_widget(Task_queue & task_queue)
     layout->addLayout(add_button_layout);
 
     this->setLayout(layout);
+
+    QObject::connect
+    (
+        this,
+        &Instrument_list_widget::instruments_updated,
+        this,
+        &Instrument_list_widget::update_list
+    );
 
     QObject::connect
     (
@@ -148,5 +171,15 @@ void Instrument_list_widget::update_list
             this,
             &Instrument_list_widget::selected
         );
+
+        QObject::connect
+        (
+            this,
+            &Instrument_list_widget::instruments_updated,
+            item,
+            &Instrument_list_item_widget::instruments_updated
+        );
+
+        emit item->instruments_updated(instruments);
     }
 }

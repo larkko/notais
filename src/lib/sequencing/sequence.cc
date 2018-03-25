@@ -11,7 +11,7 @@ Audio_data::Sample Sequence::get_sample(float frequency, Offset offset) const
 {
     if(m_instrument && m_tuning)
     {
-        return 0;
+        return m_instrument->get_sample(frequency, offset);
     }
     else
     {

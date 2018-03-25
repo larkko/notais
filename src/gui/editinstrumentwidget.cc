@@ -17,9 +17,10 @@ Edit_instrument_widget::Edit_instrument_widget
 (
     std::shared_ptr<Adjustable_audio_source> instrument,
     Task_queue & task_queue,
-    QWidget * parent
+    QWidget * parent,
+    Qt::WindowFlags flags
 )
-    : QWidget(parent)
+    : QWidget(parent, flags)
 {
     QVBoxLayout * layout = new QVBoxLayout();
 
@@ -46,7 +47,16 @@ Edit_instrument_widget::Edit_instrument_widget
     {
         std::shared_ptr<Sequence> sequence =
             std::static_pointer_cast<Sequence>(audio_source);
-        instrument_tab = new Edit_sequence_widget(sequence, task_queue);
+        auto edit_widget = new Edit_sequence_widget(sequence, task_queue);
+        instrument_tab = edit_widget;
+
+        QObject::connect
+        (
+            this,
+            &Edit_instrument_widget::instruments_updated,
+            edit_widget,
+            &Edit_sequence_widget::update_instruments
+        );
     }
     else
     {
@@ -189,7 +199,8 @@ Edit_sequence_widget::Edit_sequence_widget
     Task_queue & task_queue,
     QWidget * parent
 )   : QWidget(parent),
-      m_sequence(sequence)
+      m_sequence(sequence),
+      m_task_queue(task_queue)
 {
     QVBoxLayout * layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
@@ -203,17 +214,45 @@ Edit_sequence_widget::Edit_sequence_widget
 
     QLabel * instrument_label = new QLabel("Instrument:");
     top_bar_layout->addWidget(instrument_label);
-    QComboBox * instrument_selector = new QComboBox();
-    top_bar_layout->addWidget(instrument_selector);
+    m_instrument_selector = new QComboBox();
+    top_bar_layout->addWidget(m_instrument_selector);
 
     QLabel * tuning_label = new QLabel("Tuning:");
     top_bar_layout->addWidget(tuning_label);
-    QComboBox * tuning_selector = new QComboBox();
-    top_bar_layout->addWidget(tuning_selector);
+    m_tuning_selector = new QComboBox();
+    top_bar_layout->addWidget(m_tuning_selector);
 
     this->setLayout(layout);
 }
 
-
+void Edit_sequence_widget::update_instruments
+(
+    std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+)
+{
+    disconnect(m_instrument_selector);
+    m_instrument_selector->clear();
+    for(auto & instrument : instruments)
+    {
+        m_instrument_selector->addItem(QString::fromStdString(instrument->name()));
+    }
+    QObject::connect
+    (
+        m_instrument_selector,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [=](int index)
+        {
+            atomic_perform
+            (
+                m_task_queue,
+                [=]()
+                {
+                    m_sequence->set_instrument(instruments[index]);
+                }
+            );
+        }
+    );
+}
 
 

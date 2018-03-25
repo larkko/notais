@@ -16,9 +16,14 @@ class Instrument_list_item_widget : public QWidget
     );
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
-    std::unique_ptr<QWidget> m_edit_window;
   signals:
     void selected(std::shared_ptr<Adjustable_audio_source> instrument);
+    /*Some instruments can reference others. This allows passing the
+      updated list of instruments to all relevant instrument editing widgets.*/
+    void instruments_updated
+    (
+        std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+    );
 };
 
 class Instrument_list_widget : public QWidget
@@ -34,8 +39,12 @@ class Instrument_list_widget : public QWidget
     (
         std::shared_ptr<Adjustable_audio_source> instrument
     );
+    void instruments_updated
+    (
+        std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+    );
     void selected(std::shared_ptr<Adjustable_audio_source> instrument);
-  public slots:
+  private slots:
     void update_list
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments

@@ -44,7 +44,7 @@ Project_widget::Project_widget(Task_queue & task_queue)
         this,
         &Project_widget::instruments_updated,
         instrument_list,
-        &Instrument_list_widget::update_list
+        &Instrument_list_widget::instruments_updated
     );
 
     QObject::connect
