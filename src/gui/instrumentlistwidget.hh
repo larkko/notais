@@ -3,6 +3,7 @@
 #include <QWidget>
 
 #include "../lib/audio/adjustableaudiosource.hh"
+#include "../lib/tuning/tuning.hh"
 #include "taskqueue.hh"
 
 class Instrument_list_item_widget : public QWidget
@@ -24,6 +25,11 @@ class Instrument_list_item_widget : public QWidget
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
+    /*Similarly, some instruments can reference tunings.*/
+    void tunings_updated
+    (
+        std::vector<std::shared_ptr<Tuning>> tunings
+    );
 };
 
 class Instrument_list_widget : public QWidget
@@ -42,6 +48,10 @@ class Instrument_list_widget : public QWidget
     void instruments_updated
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+    );
+    void tunings_updated
+    (
+        std::vector<std::shared_ptr<Tuning>> tunings
     );
     void selected(std::shared_ptr<Adjustable_audio_source> instrument);
   private slots:

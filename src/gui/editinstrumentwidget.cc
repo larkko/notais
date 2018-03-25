@@ -57,6 +57,14 @@ Edit_instrument_widget::Edit_instrument_widget
             edit_widget,
             &Edit_sequence_widget::update_instruments
         );
+
+        QObject::connect
+        (
+            this,
+            &Edit_instrument_widget::tunings_updated,
+            edit_widget,
+            &Edit_sequence_widget::update_tunings
+        );
     }
     else
     {
@@ -231,10 +239,14 @@ void Edit_sequence_widget::update_instruments
 )
 {
     disconnect(m_instrument_selector);
+    m_instrument_selector->disconnect(this);
     m_instrument_selector->clear();
     for(auto & instrument : instruments)
     {
-        m_instrument_selector->addItem(QString::fromStdString(instrument->name()));
+        m_instrument_selector->addItem
+        (
+            "Instrument: " + QString::fromStdString(instrument->name())
+        );
     }
     QObject::connect
     (
@@ -243,12 +255,45 @@ void Edit_sequence_widget::update_instruments
         this,
         [=](int index)
         {
+            if(index < 0) return;
             atomic_perform
             (
                 m_task_queue,
                 [=]()
                 {
                     m_sequence->set_instrument(instruments[index]);
+                }
+            );
+        }
+    );
+}
+
+void Edit_sequence_widget::update_tunings
+(
+    std::vector<std::shared_ptr<Tuning>> tunings
+)
+{
+    disconnect(m_tuning_selector);
+    m_tuning_selector->disconnect(this);
+    m_tuning_selector->clear();
+    for(auto & tuning : tunings)
+    {
+        m_tuning_selector->addItem("Tuning: ");
+    }
+    QObject::connect
+    (
+        m_tuning_selector,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [=](int index)
+        {
+            if(index < 0) return;
+            atomic_perform
+            (
+                m_task_queue,
+                [=]()
+                {
+                    m_sequence->set_tuning(tunings[index]);
                 }
             );
         }

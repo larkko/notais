@@ -65,6 +65,14 @@ Instrument_list_item_widget::Instrument_list_item_widget
         edit_window,
         &Edit_instrument_widget::instruments_updated
     );
+
+    QObject::connect
+    (
+        this,
+        &Instrument_list_item_widget::tunings_updated,
+        edit_window,
+        &Edit_instrument_widget::tunings_updated
+    );
 }
 
 Instrument_list_widget::Instrument_list_widget(Task_queue & task_queue)
@@ -178,6 +186,14 @@ void Instrument_list_widget::update_list
             &Instrument_list_widget::instruments_updated,
             item,
             &Instrument_list_item_widget::instruments_updated
+        );
+
+        QObject::connect
+        (
+            this,
+            &Instrument_list_widget::tunings_updated,
+            item,
+            &Instrument_list_item_widget::tunings_updated
         );
 
         emit item->instruments_updated(instruments);

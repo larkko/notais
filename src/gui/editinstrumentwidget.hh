@@ -30,6 +30,10 @@ class Edit_instrument_widget : public QWidget
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
+    void tunings_updated
+    (
+        std::vector<std::shared_ptr<Tuning>> tunings
+    );
 };
 
 class Edit_instrument_general_tab_widget : public QWidget
@@ -79,6 +83,10 @@ class Edit_sequence_widget : public QWidget
     void update_instruments
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
+    );
+    void update_tunings
+    (
+        std::vector<std::shared_ptr<Tuning>> tunings
     );
 };
 
