@@ -48,6 +48,7 @@ class Sequence : public Audio_source
         Offset offset
     ) const final override;
     virtual double linger_time() const final override;
+    virtual bool contains(Audio_source const & other) const final override;
     void set_instrument(std::shared_ptr<Adjustable_audio_source> instrument);
     void set_tuning(std::shared_ptr<Tuning> tuning);
     Pattern & pattern();

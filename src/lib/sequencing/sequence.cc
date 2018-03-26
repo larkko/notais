@@ -84,6 +84,14 @@ double Sequence::linger_time() const
     }
 }
 
+bool Sequence::contains(Audio_source const & other) const
+{
+    return (this == &other) || 
+           ((m_instrument)
+               ? (m_instrument->contains(other))
+               : false); 
+}
+
 void Sequence::set_instrument
 (
     std::shared_ptr<Adjustable_audio_source> instrument

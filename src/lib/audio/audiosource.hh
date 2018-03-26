@@ -39,4 +39,11 @@ class Audio_source
     ) const;
 
     virtual double linger_time() const;
+    
+    /*Some audio sources contain other audio sources. Such audio sources
+      should override this.*/
+    virtual bool contains(Audio_source const & other) const
+    {
+        return (this == &other);
+    }
 };
