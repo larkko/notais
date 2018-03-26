@@ -271,10 +271,11 @@ void Edit_sequence_widget::update_instruments
             "Instrument: " + QString::fromStdString(instrument->name())
         );
     }
+    
     QObject::connect
     (
         m_instrument_selector,
-        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
         this,
         [=](int index)
         {
@@ -310,7 +311,7 @@ void Edit_sequence_widget::update_tunings
     QObject::connect
     (
         m_tuning_selector,
-        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::activated),
         this,
         [=](int index)
         {
