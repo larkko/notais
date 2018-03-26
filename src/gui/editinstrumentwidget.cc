@@ -1,6 +1,7 @@
 #include "editinstrumentwidget.hh"
 
 #include <typeindex>
+#include <iostream>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -8,6 +9,9 @@
 #include <QTabWidget>
 #include <QDial>
 #include <QComboBox>
+#include <QPainter>
+#include <QRect>
+#include <QColor>
 
 #include "../lib/util/util.hh"
 #include "effectlistwidget.hh"
@@ -231,6 +235,7 @@ Edit_sequence_widget::Edit_sequence_widget
     top_bar_layout->addWidget(m_tuning_selector);
 
     auto editor = new Edit_sequence_pattern_widget(sequence, task_queue);
+    editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(editor);
 
     this->setLayout(layout);
@@ -312,9 +317,77 @@ Edit_sequence_pattern_widget::Edit_sequence_pattern_widget
     m_sequence(sequence),
     m_task_queue(task_queue)
 {
-    QVBoxLayout * layout = new QVBoxLayout();
-    layout->addWidget(new QLabel("pattern"));
-    this->setLayout(layout);
 }
+
+void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
+{
+    (void)event;
+
+    QPainter painter(this);
+
+    int width = this->width();
+    int height = this->height();
+
+    /*Draw background*/
+    int background_brightness = 230;
+    QColor background_color
+    (
+        background_brightness,
+        background_brightness,
+        background_brightness
+    );
+    QRect background_rect(0, 0, width, height);
+    painter.fillRect(background_rect, background_color);
+
+    double horizontal_zoom = 1.0;
+    double vertical_zoom = 1.0;
+    double const base_cell_width = 60;
+    double const base_cell_height = 20;
+    double cell_width = base_cell_width * horizontal_zoom;
+    double cell_height = base_cell_height * vertical_zoom;
+    int horizontal_cells = std::ceil(double(width)/cell_width);
+    int vertical_cells = std::ceil(double(height)/cell_height);
+
+    /*Draw grid*/
+    QColor grid_color(Qt::gray);
+    painter.setPen(grid_color);
+    for(int i = 0; i < horizontal_cells; ++i)
+    {
+        int x = i * cell_width;
+        painter.drawLine(x, 0, x, height);
+    }
+    for(int i = 0; i < vertical_cells; ++i)
+    {
+        int y = (vertical_cells - i) * cell_height;
+        painter.drawLine(0, y, width, y);
+    }
+
+    /*Draw notes*/
+    QColor note_color(Qt::cyan);
+    std::vector<Sequence::Note> notes = m_sequence->pattern().notes();
+    for(auto & note : notes)
+    {
+        QRect note_rect
+        (
+            note.start_point() * cell_width,
+            (vertical_cells - note.steps()) * cell_height,
+            note.length() * cell_width,
+            -cell_height
+        );
+        painter.fillRect(note_rect, note_color);
+    }
+}
+
+void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
+{
+    (void)event;
+}
+
+
+
+
+
+
+
 
 

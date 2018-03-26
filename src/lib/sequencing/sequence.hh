@@ -23,6 +23,7 @@ class Sequence : public Audio_source
         double end_point() const;
         double steps() const;
         double velocity() const;
+        double length() const;
       private:
         double m_start_point;
         double m_end_point;

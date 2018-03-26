@@ -14,6 +14,31 @@ Sequence::Note::Note
 
 }
 
+double Sequence::Note::start_point() const
+{
+    return m_start_point;
+}
+
+double Sequence::Note::end_point() const
+{
+    return m_end_point;
+}
+
+double Sequence::Note::steps() const
+{
+    return m_steps;
+}
+
+double Sequence::Note::velocity() const
+{
+    return m_velocity;
+}
+
+double Sequence::Note::length() const
+{
+    return end_point() - start_point();
+}
+
 Sequence::Pattern::Pattern()
 {
 }

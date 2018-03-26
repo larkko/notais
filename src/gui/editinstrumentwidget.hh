@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QComboBox>
+#include <QMouseEvent>
 
 #include "../lib/audio/adjustableaudiosource.hh"
 #include "../lib/audio/oscillator.hh"
@@ -101,6 +102,8 @@ class Edit_sequence_pattern_widget : public QWidget
         QWidget * parent = nullptr
     );
   private:
+    void paintEvent(QPaintEvent * event) override;
+    void mousePressEvent(QMouseEvent * event) override;
     std::shared_ptr<Sequence> m_sequence;
     Task_queue & m_task_queue;
 };
