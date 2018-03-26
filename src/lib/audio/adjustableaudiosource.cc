@@ -23,6 +23,13 @@ double Adjustable_audio_source::linger_time() const
     return m_audio_source->linger_time() + m_effect_stack.linger_time();
 }
 
+bool Adjustable_audio_source::contains(Audio_source const & other) const
+{
+    return (this == &other) || ((m_audio_source)
+                                    ? m_audio_source->contains(other)
+                                    : false);
+}
+
 std::shared_ptr<Audio_source> & Adjustable_audio_source::audio_source()
 {
     return m_audio_source;

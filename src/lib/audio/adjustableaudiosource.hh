@@ -18,6 +18,7 @@ class Adjustable_audio_source : public Audio_source
         Audio_source::Offset offset
     ) const final override;
     virtual double linger_time() const final override;
+    virtual bool contains(Audio_source const & other) const final override;
     std::shared_ptr<Audio_source> & audio_source();
     Effect_stack & effect_stack();
     float volume() const;

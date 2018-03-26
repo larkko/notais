@@ -1,6 +1,7 @@
 #include "editinstrumentwidget.hh"
 
 #include <typeindex>
+#include <algorithm>
 #include <iostream>
 
 #include <QVBoxLayout>
@@ -249,7 +250,21 @@ void Edit_sequence_widget::update_instruments
     disconnect(m_instrument_selector);
     m_instrument_selector->disconnect(this);
     m_instrument_selector->clear();
-    for(auto & instrument : instruments)
+    
+    std::vector<std::shared_ptr<Adjustable_audio_source>> other_instruments;
+    
+    std::copy_if
+    (
+        instruments.begin(),
+        instruments.end(),
+        std::back_inserter(other_instruments),
+        [this](std::shared_ptr<Adjustable_audio_source> const & source)
+        {
+            return !(source->contains(*m_sequence));
+        }
+    );
+    
+    for(auto & instrument : other_instruments)
     {
         m_instrument_selector->addItem
         (
@@ -269,7 +284,11 @@ void Edit_sequence_widget::update_instruments
                 m_task_queue,
                 [=]()
                 {
-                    m_sequence->set_instrument(instruments[index]);
+                    auto & selection = other_instruments[index];
+                    if(!(selection->contains(*m_sequence)))
+                    {
+                        m_sequence->set_instrument(other_instruments[index]);
+                    }
                 }
             );
         }
