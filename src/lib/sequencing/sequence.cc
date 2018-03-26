@@ -18,9 +18,14 @@ Sequence::Pattern::Pattern()
 {
 }
 
-Sequence::Pattern::add_note(Note note)
+void Sequence::Pattern::add_note(Note note)
 {
     m_notes.push_back(note);
+}
+
+std::vector<Sequence::Note> Sequence::Pattern::notes() const
+{
+    return m_notes;
 }
 
 Sequence::Sequence()

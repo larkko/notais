@@ -35,6 +35,7 @@ class Sequence : public Audio_source
       public:
         Pattern();
         void add_note(Note note);
+        std::vector<Note> notes() const;
       private:
         std::vector<Note> m_notes;
     };
