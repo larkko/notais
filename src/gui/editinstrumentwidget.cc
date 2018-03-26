@@ -315,7 +315,9 @@ Edit_sequence_pattern_widget::Edit_sequence_pattern_widget
     QWidget * parent
 ) : QWidget(parent),
     m_sequence(sequence),
-    m_task_queue(task_queue)
+    m_task_queue(task_queue),
+    m_horizontal_zoom(1.0),
+    m_vertical_zoom(1.0)
 {
 }
 
@@ -339,26 +341,20 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
     QRect background_rect(0, 0, width, height);
     painter.fillRect(background_rect, background_color);
 
-    double horizontal_zoom = 1.0;
-    double vertical_zoom = 1.0;
-    double const base_cell_width = 60;
-    double const base_cell_height = 20;
-    double cell_width = base_cell_width * horizontal_zoom;
-    double cell_height = base_cell_height * vertical_zoom;
-    int horizontal_cells = std::ceil(double(width)/cell_width);
-    int vertical_cells = std::ceil(double(height)/cell_height);
+    int horizontal_cells = std::ceil(double(width)/cell_width());
+    int vertical_cells = std::ceil(double(height)/cell_height());
 
     /*Draw grid*/
     QColor grid_color(Qt::gray);
     painter.setPen(grid_color);
     for(int i = 0; i < horizontal_cells; ++i)
     {
-        int x = i * cell_width;
+        int x = i * cell_width();
         painter.drawLine(x, 0, x, height);
     }
     for(int i = 0; i < vertical_cells; ++i)
     {
-        int y = (vertical_cells - i) * cell_height;
+        int y = (vertical_cells - i) * cell_height();
         painter.drawLine(0, y, width, y);
     }
 
@@ -369,10 +365,10 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
     {
         QRect note_rect
         (
-            note.start_point() * cell_width,
-            (vertical_cells - note.steps()) * cell_height,
-            note.length() * cell_width,
-            -cell_height
+            note.start_point() * cell_width(),
+            (vertical_cells - note.steps()) * cell_height(),
+            note.length() * cell_width(),
+            -cell_height()
         );
         painter.fillRect(note_rect, note_color);
     }
@@ -381,11 +377,50 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
 void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
 {
     (void)event;
+    
+    int x = event->x();
+    int y = event->y();
+    
+    QPoint cell = click_cell(x, y);
+    
+    double note_length = 1.0;
+    double note_velocity = 1.0;
+    
+    Sequence::Note note
+    (
+        cell.x(),
+        cell.x() + note_length,
+        cell.y(),
+        note_velocity
+    );
+    
+    atomic_perform
+    (
+        m_task_queue,
+        [=]()
+        {
+            m_sequence->pattern().add_note(note);
+        }
+    );
+    update();
 }
 
+double Edit_sequence_pattern_widget::cell_width() const
+{
+    return base_cell_width * m_horizontal_zoom;
+}
 
+double Edit_sequence_pattern_widget::cell_height() const
+{
+    return base_cell_height * m_vertical_zoom;
+}
 
-
+QPoint Edit_sequence_pattern_widget::click_cell(int x, int y) const
+{
+    int cell_x = std::floor(x / cell_width());
+    int cell_y = std::floor((height() - y) / cell_height());
+    return QPoint(cell_x, cell_y);
+}
 
 
 
