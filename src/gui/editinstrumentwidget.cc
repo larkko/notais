@@ -401,16 +401,18 @@ void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
     int x = event->x();
     int y = event->y();
     
-    QPoint cell = click_cell(x, y);
+    auto cell = click_cell(x, y);
+    auto cell_x = std::get<0>(cell);
+    auto cell_y = std::get<1>(cell);
     
     double note_length = 1.0;
     double note_velocity = 1.0;
     
     Sequence::Note note
     (
-        cell.x(),
-        cell.x() + note_length,
-        cell.y(),
+        cell_x,
+        cell_x + note_length,
+        cell_y,
         note_velocity
     );
     
@@ -435,11 +437,15 @@ double Edit_sequence_pattern_widget::cell_height() const
     return base_cell_height * m_vertical_zoom;
 }
 
-QPoint Edit_sequence_pattern_widget::click_cell(int x, int y) const
+std::tuple<int, int> Edit_sequence_pattern_widget::click_cell
+(
+    int x,
+    int y
+) const
 {
     int cell_x = std::floor(x / cell_width());
     int cell_y = std::floor((height() - y) / cell_height());
-    return QPoint(cell_x, cell_y);
+    return std::make_tuple(cell_x, cell_y);
 }
 
 
