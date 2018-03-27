@@ -374,7 +374,7 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
     }
     for(int i = 0; i < vertical_cells; ++i)
     {
-        int y = (vertical_cells - i) * cell_height();
+        int y = this->height() - (vertical_cells - i) * cell_height();
         painter.drawLine(0, y, width, y);
     }
 
@@ -386,7 +386,7 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
         QRect note_rect
         (
             note.start_point() * cell_width(),
-            (vertical_cells - note.steps()) * cell_height(),
+            this->height() - note.steps() * cell_height(),
             note.length() * cell_width(),
             -cell_height()
         );
