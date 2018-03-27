@@ -399,6 +399,12 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
         painter.fillPath(path, note_color);
         painter.drawPath(path);
     }
+    
+    /*Draw border*/
+    QColor border_color(Qt::gray);
+    painter.setPen(border_color);
+    QRect border_rect(0, 0, this->width(), this->height());
+    painter.drawRect(border_rect);
 }
 
 void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
