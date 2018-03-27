@@ -346,6 +346,7 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
     (void)event;
 
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
     int width = this->width();
     int height = this->height();
@@ -380,6 +381,9 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
 
     /*Draw notes*/
     QColor note_color(Qt::cyan);
+    QColor note_border_color(Qt::darkCyan);
+    painter.setPen(note_border_color);
+    auto note_corner_radius = std::min(cell_height(), cell_width()) / 3.0;
     std::vector<Sequence::Note> notes = m_sequence->pattern().notes();
     for(auto & note : notes)
     {
@@ -390,7 +394,10 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
             note.length() * cell_width(),
             -cell_height()
         );
-        painter.fillRect(note_rect, note_color);
+        QPainterPath path;
+        path.addRoundedRect(note_rect, note_corner_radius, note_corner_radius);
+        painter.fillPath(path, note_color);
+        painter.drawPath(path);
     }
 }
 
