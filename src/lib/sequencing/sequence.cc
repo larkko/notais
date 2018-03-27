@@ -48,7 +48,7 @@ void Sequence::Pattern::add_note(Note note)
     m_notes.push_back(note);
 }
 
-std::vector<Sequence::Note> Sequence::Pattern::notes() const
+std::vector<Sequence::Note> const & Sequence::Pattern::notes() const
 {
     return m_notes;
 }
@@ -62,9 +62,32 @@ Sequence::Sequence()
 
 Audio_data::Sample Sequence::get_sample(float frequency, Offset offset) const
 {
+    (void)frequency;
+    
     if(m_instrument && m_tuning)
     {
-        return m_instrument->get_sample(frequency, offset);
+        auto linger_time = m_instrument->linger_time();
+        Audio_data::Sample sample = 0;
+        for(auto & note : m_pattern.notes())
+        {
+            if((offset.offset() >= note.start_point())
+               && (offset.offset() <= (note.end_point() + linger_time)))
+            {
+                auto note_local_start =  offset.offset() - note.start_point();
+                bool released = note.end_point() > offset.offset();
+                auto note_local_release =  offset.offset() - note.end_point();
+                Offset note_local_offset = released
+                                         ? Offset
+                                           (
+                                                note_local_start,
+                                                note_local_release
+                                           )
+                                         : Offset(note_local_start);
+                auto note_frequency = m_tuning->frequency_at(note.steps());
+                sample += m_instrument->get_sample(note_frequency, note_local_offset);
+            }
+        }
+        return sample;
     }
     else
     {
