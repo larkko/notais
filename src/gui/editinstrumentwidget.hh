@@ -105,6 +105,8 @@ class Edit_sequence_pattern_widget : public QWidget
   private:
     void paintEvent(QPaintEvent * event) override;
     void mousePressEvent(QMouseEvent * event) override;
+    void mouseReleaseEvent(QMouseEvent * event) override;
+    void mouseMoveEvent(QMouseEvent * event) override;
     double cell_width() const;
     double cell_height() const;
     std::tuple<int, int> click_cell(int x, int y) const;
@@ -112,6 +114,11 @@ class Edit_sequence_pattern_widget : public QWidget
     Task_queue & m_task_queue;
     double m_horizontal_zoom;
     double m_vertical_zoom;
+    int m_x_offset;
+    int m_y_offset;
+    int m_last_mouse_x;
+    int m_last_mouse_y;
+    bool m_dragging;
     static double constexpr base_cell_width = 60;
     static double constexpr base_cell_height = 20;
 };

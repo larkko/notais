@@ -337,7 +337,12 @@ Edit_sequence_pattern_widget::Edit_sequence_pattern_widget
     m_sequence(sequence),
     m_task_queue(task_queue),
     m_horizontal_zoom(1.0),
-    m_vertical_zoom(1.0)
+    m_vertical_zoom(1.0),
+    m_x_offset(0),
+    m_y_offset(0),
+    m_last_mouse_x(0),
+    m_last_mouse_y(0),
+    m_dragging(false)
 {
 }
 
@@ -370,12 +375,12 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
     painter.setPen(grid_color);
     for(int i = 0; i < horizontal_cells; ++i)
     {
-        int x = i * cell_width();
+        int x = i * cell_width() - m_x_offset;
         painter.drawLine(x, 0, x, height);
     }
     for(int i = 0; i < vertical_cells; ++i)
     {
-        int y = this->height() - (vertical_cells - i) * cell_height();
+        int y = this->height() - (vertical_cells - i) * cell_height() - m_y_offset;
         painter.drawLine(0, y, width, y);
     }
 
@@ -389,8 +394,8 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
     {
         QRect note_rect
         (
-            note.start_point() * cell_width(),
-            this->height() - note.steps() * cell_height(),
+            note.start_point() * cell_width() - m_x_offset,
+            this->height() - note.steps() * cell_height() - m_y_offset,
             note.length() * cell_width(),
             -cell_height()
         );
@@ -409,35 +414,69 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
 
 void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
 {
-    (void)event;
+    Qt::MouseButton button = event->button();
     
-    int x = event->x();
-    int y = event->y();
-    
-    auto cell = click_cell(x, y);
-    auto cell_x = std::get<0>(cell);
-    auto cell_y = std::get<1>(cell);
-    
-    double note_length = 1.0;
-    double note_velocity = 1.0;
-    
-    Sequence::Note note
-    (
-        cell_x,
-        cell_x + note_length,
-        cell_y,
-        note_velocity
-    );
-    
-    atomic_perform
-    (
-        m_task_queue,
-        [=]()
-        {
-            m_sequence->pattern().add_note(note);
-        }
-    );
-    update();
+    if(button == Qt::LeftButton)
+    {
+        int x = event->x();
+        int y = event->y();
+        
+        auto cell = click_cell(x, y);
+        auto cell_x = std::get<0>(cell);
+        auto cell_y = std::get<1>(cell);
+        
+        double note_length = 1.0;
+        double note_velocity = 1.0;
+        
+        Sequence::Note note
+        (
+            cell_x,
+            cell_x + note_length,
+            cell_y,
+            note_velocity
+        );
+        
+        atomic_perform
+        (
+            m_task_queue,
+            [=]()
+            {
+                m_sequence->pattern().add_note(note);
+            }
+        );
+        update();
+    }
+    else if(button == Qt::RightButton)
+    {
+        m_last_mouse_x = event->x();
+        m_last_mouse_y = event->y();
+        m_dragging = true;
+    }
+}
+
+void Edit_sequence_pattern_widget::mouseReleaseEvent(QMouseEvent * event)
+{
+    Qt::MouseButton button = event->button();
+    if(button == Qt::RightButton)
+    {
+        m_dragging = false;
+    }
+}
+
+void Edit_sequence_pattern_widget::mouseMoveEvent(QMouseEvent * event)
+{
+    if(m_dragging)
+    {
+        int x = event->x();
+        int y = event->y();
+        int x_diff = x - m_last_mouse_x;
+        int y_diff = y - m_last_mouse_y;
+        m_x_offset -= x_diff;
+        m_y_offset -= y_diff;
+        m_last_mouse_x = x;
+        m_last_mouse_y = y;
+        emit update();
+    }
 }
 
 double Edit_sequence_pattern_widget::cell_width() const
@@ -456,8 +495,8 @@ std::tuple<int, int> Edit_sequence_pattern_widget::click_cell
     int y
 ) const
 {
-    int cell_x = std::floor(x / cell_width());
-    int cell_y = std::floor((height() - y) / cell_height());
+    int cell_x = std::floor((x + m_x_offset) / cell_width());
+    int cell_y = std::floor((height() - y - m_y_offset) / cell_height());
     return std::make_tuple(cell_x, cell_y);
 }
 
