@@ -478,6 +478,10 @@ void Edit_sequence_pattern_widget::mouseMoveEvent(QMouseEvent * event)
         int x_diff = x - m_last_mouse_x;
         int y_diff = y - m_last_mouse_y;
         m_x_offset -= x_diff;
+        if(m_x_offset < 0)
+        {
+            m_x_offset = 0;
+        }
         m_y_offset -= y_diff;
         m_last_mouse_x = x;
         m_last_mouse_y = y;
