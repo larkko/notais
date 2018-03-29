@@ -369,18 +369,23 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
 
     int horizontal_cells = std::ceil(double(width)/cell_width());
     int vertical_cells = std::ceil(double(height)/cell_height());
+    
+    int horizontal_cell_offset = m_x_offset / cell_width();
+    int vertical_cell_offset = m_y_offset / cell_height();
 
     /*Draw grid*/
     QColor grid_color(Qt::gray);
     painter.setPen(grid_color);
     for(int i = 0; i < horizontal_cells; ++i)
     {
-        int x = i * cell_width() - m_x_offset;
+        int x = (i + horizontal_cell_offset) * cell_width() - m_x_offset;
         painter.drawLine(x, 0, x, height);
     }
     for(int i = 0; i < vertical_cells; ++i)
     {
-        int y = this->height() - (vertical_cells - i) * cell_height() - m_y_offset;
+        int y = this->height() - (vertical_cells - (i + vertical_cell_offset))
+                               * cell_height()
+                               - m_y_offset;
         painter.drawLine(0, y, width, y);
     }
 
@@ -444,6 +449,7 @@ void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
                 m_sequence->pattern().add_note(note);
             }
         );
+        
         update();
     }
     else if(button == Qt::RightButton)
