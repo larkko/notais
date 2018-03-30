@@ -510,14 +510,14 @@ void Edit_sequence_pattern_widget::mouseMoveEvent(QMouseEvent * event)
         int y = event->y();
         int x_diff = x - m_last_mouse_x;
         int y_diff = y - m_last_mouse_y;
+        
         m_x_offset -= x_diff;
-        if(m_x_offset < 0)
-        {
-            m_x_offset = 0;
-        }
         m_y_offset -= y_diff;
+        clamp_location();
+        
         m_last_mouse_x = x;
         m_last_mouse_y = y;
+        
         emit update();
     }
 }
@@ -543,10 +543,7 @@ void Edit_sequence_pattern_widget::wheelEvent(QWheelEvent * event)
     m_x_offset *= change_factor;
     m_y_offset *= change_factor;
     
-    if(m_x_offset < 0)
-    {
-        m_x_offset = 0;
-    }
+    clamp_location();
     
     emit update();
 }
@@ -570,6 +567,14 @@ std::tuple<int, int> Edit_sequence_pattern_widget::click_cell
     int cell_x = std::floor((x + m_x_offset) / cell_width());
     int cell_y = std::floor((height() - y - m_y_offset) / cell_height());
     return std::make_tuple(cell_x, cell_y);
+}
+
+void Edit_sequence_pattern_widget::clamp_location()
+{
+    if(m_x_offset < 0)
+    {
+        m_x_offset = 0;
+    }
 }
 
 

@@ -111,6 +111,7 @@ class Edit_sequence_pattern_widget : public QWidget
     double cell_width() const;
     double cell_height() const;
     std::tuple<int, int> click_cell(int x, int y) const;
+    void clamp_location();
     std::shared_ptr<Sequence> m_sequence;
     Task_queue & m_task_queue;
     double m_horizontal_zoom;
