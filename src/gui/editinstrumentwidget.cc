@@ -524,26 +524,74 @@ void Edit_sequence_pattern_widget::mouseMoveEvent(QMouseEvent * event)
 
 void Edit_sequence_pattern_widget::wheelEvent(QWheelEvent * event)
 {
-    double constexpr qt_units_per_scroll_click = 120;
-    QPoint angle_delta = event->angleDelta();
-    double clicks = angle_delta.y() / qt_units_per_scroll_click;
-    double constexpr change_per_click = 0.95;
-    double change_factor = std::pow(change_per_click, -clicks);
-    double change_complement = 1.0 - change_factor;
+    int x = event->x();
+    int y = event->y();
     
-    double x_compensation = -double(event->x()) * change_complement;
-    double y_compensation = -double(height() - event->y()) * change_complement;
+    auto cell = click_cell(x, y);
+    auto cell_x = std::get<0>(cell);
+    auto cell_y = std::get<1>(cell);
     
-    m_x_offset += x_compensation;
-    m_y_offset -= y_compensation;
+    auto contained_notes = m_sequence->pattern().notes_within
+    (
+        util::Rectangle<double>
+        (
+            util::Point<double>
+            (
+                cell_x,
+                cell_y
+            ),
+            util::Point<double>
+            (
+                cell_x,
+                cell_y
+            )
+        )
+    );
+        
+    bool selected_area_is_empty = contained_notes.empty();
     
-    m_horizontal_zoom *= change_factor;
-    m_vertical_zoom *= change_factor;
-    
-    m_x_offset *= change_factor;
-    m_y_offset *= change_factor;
-    
-    clamp_location();
+    if(selected_area_is_empty)
+    {
+        double constexpr qt_units_per_scroll_click = 120;
+        QPoint angle_delta = event->angleDelta();
+        double clicks = angle_delta.y() / qt_units_per_scroll_click;
+        double constexpr change_per_click = 0.95;
+        double change_factor = std::pow(change_per_click, -clicks);
+        double change_complement = 1.0 - change_factor;
+        
+        double x_compensation = -double(event->x()) * change_complement;
+        double y_compensation = -double(height() - event->y()) * change_complement;
+        
+        m_x_offset += x_compensation;
+        m_y_offset -= y_compensation;
+        
+        m_horizontal_zoom *= change_factor;
+        m_vertical_zoom *= change_factor;
+        
+        m_x_offset *= change_factor;
+        m_y_offset *= change_factor;
+        
+        clamp_location();
+    }
+    else
+    {
+        double amount = event->angleDelta().y() > 0 ? 1.0 : -1.0;
+        atomic_perform
+        (
+            m_task_queue,
+            [=]()
+            {
+                m_sequence->pattern().for_each_in
+                (
+                    contained_notes,
+                    [=](Sequence::Note & note)
+                    {
+                        note.lengthen_by(amount, 1.0);
+                    }
+                );
+            }
+        );
+    }
     
     emit update();
 }

@@ -55,6 +55,19 @@ bool Sequence::Note::is_inside(util::Rectangle<double> rectangle) const
     );
 }
 
+void Sequence::Note::lengthen_by(double amount, double minimum)
+{
+    m_end_point += amount;
+    if(length() < minimum)
+    {
+        m_end_point = m_start_point + minimum;
+    }
+    if(length() < 0)
+    {
+        m_end_point = m_start_point;
+    }
+}
+
 Sequence::Pattern::Pattern()
 {
 }

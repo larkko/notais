@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include <cstddef>
 
 #include "../audio/adjustableaudiosource.hh"
@@ -27,6 +28,7 @@ class Sequence : public Audio_source
         double velocity() const;
         double length() const;
         bool is_inside(util::Rectangle<double> rectangle) const;
+        void lengthen_by(double amount, double minimum = 0.0);
       private:
         double m_start_point;
         double m_end_point;
@@ -46,6 +48,8 @@ class Sequence : public Audio_source
             util::Rectangle<double> rectangle
         ) const;
         void remove_notes(std::vector<Index> indices);
+        template <typename Function>
+        void for_each_in(std::vector<Index> indices, Function function);
       private:
         std::vector<Note> m_notes;
     };
@@ -66,3 +70,28 @@ class Sequence : public Audio_source
     std::shared_ptr<Tuning> m_tuning;
     Pattern m_pattern;
 };
+
+template <typename Function>
+void Sequence::Pattern::for_each_in
+(
+    std::vector<Sequence::Pattern::Index> indices,
+    Function function
+)
+{
+    for(Index i = 0; i < m_notes.size(); ++i)
+    {
+        if(std::find(indices.begin(), indices.end(), i) != indices.end())
+        {
+            function(m_notes[i]);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
