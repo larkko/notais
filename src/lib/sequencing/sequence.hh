@@ -1,9 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <cstddef>
 
 #include "../audio/adjustableaudiosource.hh"
 #include "../tuning/tuning.hh"
+#include "../util/util.hh"
 
 class Sequence : public Audio_source
 {
@@ -24,6 +26,7 @@ class Sequence : public Audio_source
         double steps() const;
         double velocity() const;
         double length() const;
+        bool is_inside(util::Rectangle<double> rectangle) const;
       private:
         double m_start_point;
         double m_end_point;
@@ -37,6 +40,12 @@ class Sequence : public Audio_source
         Pattern();
         void add_note(Note note);
         std::vector<Note> const & notes() const;
+        using Index = size_t;
+        std::vector<Index> notes_within
+        (
+            util::Rectangle<double> rectangle
+        ) const;
+        void remove_notes(std::vector<Index> indices);
       private:
         std::vector<Note> m_notes;
     };

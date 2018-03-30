@@ -1,5 +1,7 @@
 #include "sequence.hh"
 
+#include <algorithm>
+
 Sequence::Note::Note
 (
     double start_point,
@@ -39,6 +41,18 @@ double Sequence::Note::length() const
     return end_point() - start_point();
 }
 
+bool Sequence::Note::is_inside(util::Rectangle<double> rectangle) const
+{
+    return rectangle.contains
+    (
+        util::Line<double>
+        (
+            util::Point<double>(start_point(), steps()),
+            util::Point<double>(end_point(), steps())
+        )
+    );
+}
+
 Sequence::Pattern::Pattern()
 {
 }
@@ -51,6 +65,39 @@ void Sequence::Pattern::add_note(Note note)
 std::vector<Sequence::Note> const & Sequence::Pattern::notes() const
 {
     return m_notes;
+}
+
+std::vector<Sequence::Pattern::Index> Sequence::Pattern::notes_within
+(
+    util::Rectangle<double> rectangle
+) const
+{
+    std::vector<Index> result;
+    
+    for(Index i = 0; i < m_notes.size(); ++i)
+    {
+        if(m_notes[i].is_inside(rectangle))
+        {
+            result.push_back(i);
+        }
+    }
+    
+    return result;
+}
+
+void Sequence::Pattern::remove_notes(std::vector<Index> indices)
+{
+    std::vector<Note> remaining;
+    
+    for(Index i = 0; i < m_notes.size(); ++i)
+    {
+        if(std::find(indices.begin(), indices.end(), i) == indices.end())
+        {
+            remaining.push_back(m_notes[i]);
+        }
+    }
+    
+    m_notes = remaining;
 }
 
 Sequence::Sequence()
