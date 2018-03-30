@@ -107,6 +107,7 @@ class Edit_sequence_pattern_widget : public QWidget
     void mousePressEvent(QMouseEvent * event) override;
     void mouseReleaseEvent(QMouseEvent * event) override;
     void mouseMoveEvent(QMouseEvent * event) override;
+    void wheelEvent(QWheelEvent * event) override;
     double cell_width() const;
     double cell_height() const;
     std::tuple<int, int> click_cell(int x, int y) const;

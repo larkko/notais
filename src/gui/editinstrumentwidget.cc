@@ -522,6 +522,23 @@ void Edit_sequence_pattern_widget::mouseMoveEvent(QMouseEvent * event)
     }
 }
 
+void Edit_sequence_pattern_widget::wheelEvent(QWheelEvent * event)
+{
+    double constexpr qt_units_per_scroll_click = 120;
+    QPoint angle_delta = event->angleDelta();
+    double clicks = angle_delta.y() / qt_units_per_scroll_click;
+    double constexpr change_per_click = 0.95;
+    double change_factor = std::pow(change_per_click, clicks);
+    
+    m_horizontal_zoom /= change_factor;
+    m_vertical_zoom /= change_factor;
+    
+    m_x_offset /= change_factor;
+    m_y_offset /= change_factor;
+    
+    emit update();
+}
+
 double Edit_sequence_pattern_widget::cell_width() const
 {
     return base_cell_width * m_horizontal_zoom;
