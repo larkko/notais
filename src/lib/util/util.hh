@@ -27,6 +27,19 @@ class Point
 };
 
 template <typename Number>
+class Line
+{
+  public:
+    Line(Point<Number> first, Point<Number> second)
+        : m_first(first), m_second(second) {}
+    Point<Number> first() const { return m_first; }
+    Point<Number> second() const { return m_second; }
+  private:
+    Point<Number> m_first;
+    Point<Number> m_second;
+};
+
+template <typename Number>
 class Rectangle
 {
   public:
@@ -42,6 +55,12 @@ class Rectangle
         Number y = point.y();
         return (x >= left_x) && (x <= right_x)
             && (y >= top_y) && (y <= bottom_y);
+    }
+    bool contains(Line<Number> line) const
+    {
+        bool contains_end_point
+            = contains(line.first()) && contains(line.second());
+        return contains_end_point;
     }
   private:
     Point<Number> m_first;
