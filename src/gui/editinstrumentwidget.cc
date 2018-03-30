@@ -430,25 +430,58 @@ void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
         auto cell_x = std::get<0>(cell);
         auto cell_y = std::get<1>(cell);
         
-        double note_length = 1.0;
-        double note_velocity = 1.0;
-        
-        Sequence::Note note
+        auto contained_notes = m_sequence->pattern().notes_within
         (
-            cell_x,
-            cell_x + note_length,
-            cell_y,
-            note_velocity
+            util::Rectangle<double>
+            (
+                util::Point<double>
+                (
+                    cell_x,
+                    cell_y
+                ),
+                util::Point<double>
+                (
+                    cell_x,
+                    cell_y
+                )
+            )
         );
         
-        atomic_perform
-        (
-            m_task_queue,
-            [=]()
-            {
-                m_sequence->pattern().add_note(note);
-            }
-        );
+        bool selected_area_is_empty = contained_notes.empty();
+        
+        if(selected_area_is_empty)
+        {
+            double note_length = 1.0;
+            double note_velocity = 1.0;
+            
+            Sequence::Note note
+            (
+                cell_x,
+                cell_x + note_length,
+                cell_y,
+                note_velocity
+            );
+            
+            atomic_perform
+            (
+                m_task_queue,
+                [=]()
+                {
+                    m_sequence->pattern().add_note(note);
+                }
+            );
+        }
+        else
+        {
+            atomic_perform
+            (
+                m_task_queue,
+                [=]()
+                {
+                    m_sequence->pattern().remove_notes(contained_notes);
+                }
+            );
+        }
         
         update();
     }

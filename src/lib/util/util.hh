@@ -59,9 +59,11 @@ class Rectangle
     bool contains(Line<Number> line) const
     {
         bool contains_end_point
-            = contains(line.first()) && contains(line.second());
+            = contains(line.first()) || contains(line.second());
         return contains_end_point;
     }
+    Point<Number> first() const { return m_first; }
+    Point<Number> second() const { return m_second; }
   private:
     Point<Number> m_first;
     Point<Number> m_second;

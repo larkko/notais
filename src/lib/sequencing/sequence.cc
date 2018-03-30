@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "../util/util.hh"
+
 Sequence::Note::Note
 (
     double start_point,
