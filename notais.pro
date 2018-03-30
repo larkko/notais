@@ -8,6 +8,16 @@ CONFIG += optimize_full
 
 LIBS += -lrtmidi -lm -lrtaudio
 
+DEPENDPATH += src 
+DEPENDPATH += src/lib
+DEPENDPATH += src/lib/audio
+DEPENDPATH += src/lib/project
+DEPENDPATH += src/lib/sequencing
+DEPENDPATH += src/lib/tuning
+DEPENDPATH += src/lib/effects
+DEPENDPATH += src/lib/util
+DEPENDPATH += src/gui
+
 SOURCES += src/main.cc
 HEADERS += src/lib/audio/audiodata.hh
 SOURCES += src/lib/audio/audiodata.cc
