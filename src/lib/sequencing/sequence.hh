@@ -64,6 +64,7 @@ class Sequence : public Audio_source
     virtual bool contains(Audio_source const & other) const final override;
     void set_instrument(std::shared_ptr<Adjustable_audio_source> instrument);
     void set_tuning(std::shared_ptr<Tuning> tuning);
+    std::shared_ptr<Tuning> const & tuning() const;
     Pattern & pattern();
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;

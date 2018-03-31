@@ -190,6 +190,11 @@ void Sequence::set_tuning(std::shared_ptr<Tuning> tuning)
     m_tuning = tuning;
 }
 
+std::shared_ptr<Tuning> const & Sequence::tuning() const
+{
+    return m_tuning;
+}
+
 Sequence::Pattern & Sequence::pattern()
 {
     return m_pattern;

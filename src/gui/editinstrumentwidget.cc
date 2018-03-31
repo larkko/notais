@@ -325,6 +325,7 @@ void Edit_sequence_widget::update_tunings
                     m_sequence->set_tuning(tunings[index]);
                 }
             );
+            update();
         }
     );
 }
@@ -377,18 +378,32 @@ void Edit_sequence_pattern_widget::paintEvent(QPaintEvent * event)
 
     /*Draw grid*/
     QColor grid_color(Qt::gray);
+    QColor grid_emphasis_color(Qt::lightGray);
     painter.setPen(grid_color);
-    for(int i = 0; i < horizontal_cells; ++i)
-    {
-        int x = (i + horizontal_cell_offset) * cell_width() - m_x_offset;
-        painter.drawLine(x, 0, x, height);
-    }
     for(int i = 0; i < vertical_cells; ++i)
     {
         int y = this->height() - (vertical_cells - (i + vertical_cell_offset))
                                * cell_height()
                                - m_y_offset;
+        if(m_sequence->tuning())
+        {
+            int steps = m_sequence->tuning()->steps_in_pattern();
+            if((vertical_cells - (i + vertical_cell_offset)) % steps == 0)
+            {
+                QRect emphasis_rect
+                (
+                    QPoint(0, y),
+                    QPoint(width, y - cell_height())
+                );
+                painter.fillRect(emphasis_rect, grid_emphasis_color);
+            }
+        }
         painter.drawLine(0, y, width, y);
+    }
+    for(int i = 0; i < horizontal_cells; ++i)
+    {
+        int x = (i + horizontal_cell_offset) * cell_width() - m_x_offset;
+        painter.drawLine(x, 0, x, height);
     }
 
     /*Draw notes*/
@@ -519,7 +534,7 @@ void Edit_sequence_pattern_widget::mouseMoveEvent(QMouseEvent * event)
         m_last_mouse_x = x;
         m_last_mouse_y = y;
         
-        emit update();
+        update();
     }
 }
 
@@ -597,7 +612,7 @@ void Edit_sequence_pattern_widget::wheelEvent(QWheelEvent * event)
         m_note_length = altered_length.load();
     }
     
-    emit update();
+    update();
 }
 
 double Edit_sequence_pattern_widget::cell_width() const
