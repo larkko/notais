@@ -121,6 +121,7 @@ class Edit_sequence_pattern_widget : public QWidget
     int m_last_mouse_x;
     int m_last_mouse_y;
     bool m_dragging;
+    double m_note_length;
     static double constexpr base_cell_width = 60;
     static double constexpr base_cell_height = 20;
 };

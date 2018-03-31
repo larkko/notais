@@ -3,6 +3,7 @@
 #include <typeindex>
 #include <algorithm>
 #include <iostream>
+#include <atomic>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -342,7 +343,8 @@ Edit_sequence_pattern_widget::Edit_sequence_pattern_widget
     m_y_offset(0),
     m_last_mouse_x(0),
     m_last_mouse_y(0),
-    m_dragging(false)
+    m_dragging(false),
+    m_note_length(1.0)
 {
 }
 
@@ -451,13 +453,12 @@ void Edit_sequence_pattern_widget::mousePressEvent(QMouseEvent * event)
         
         if(selected_area_is_empty)
         {
-            double note_length = 1.0;
             double note_velocity = 1.0;
             
             Sequence::Note note
             (
                 cell_x,
-                cell_x + note_length,
+                cell_x + m_note_length,
                 cell_y,
                 note_velocity
             );
@@ -576,21 +577,24 @@ void Edit_sequence_pattern_widget::wheelEvent(QWheelEvent * event)
     else
     {
         double amount = event->angleDelta().y() > 0 ? 1.0 : -1.0;
+        std::atomic<double> altered_length{0};
         atomic_perform
         (
             m_task_queue,
-            [=]()
+            [=, &altered_length]()
             {
                 m_sequence->pattern().for_each_in
                 (
                     contained_notes,
-                    [=](Sequence::Note & note)
+                    [=, &altered_length](Sequence::Note & note)
                     {
                         note.lengthen_by(amount, 1.0);
+                        altered_length.store(note.length());
                     }
                 );
             }
         );
+        m_note_length = altered_length.load();
     }
     
     emit update();
