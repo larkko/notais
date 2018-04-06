@@ -2,6 +2,9 @@
 
 #include <typeindex>
 #include <limits>
+#include <cstddef>
+#include <sstream>
+#include <iomanip>
 
 namespace util
 {
@@ -13,6 +16,14 @@ template<typename Pointer>
 std::type_index underlying_type(Pointer pointer)
 {
     return std::type_index(typeid(*pointer));
+}
+
+template <typename T>
+std::string to_string(T t, size_t precision = 3)
+{
+    std::ostringstream result;
+    result << std::setprecision(precision) << t;
+    return result.str();
 }
 
 template <typename Number>
