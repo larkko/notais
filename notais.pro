@@ -6,8 +6,8 @@ QT = core gui widgets
 CONFIG += c++14
 CONFIG += optimize_full
 
-LIBS += -lrtmidi -lm
-#RtAudio dependencies
+LIBS += -lm
+#RtAudio and RtMidi dependencies
 LIBS += -lasound -lpthread
 DEFINES += __LINUX_ALSA__
 
@@ -21,6 +21,7 @@ DEPENDPATH += src/lib/effects
 DEPENDPATH += src/lib/util
 DEPENDPATH += src/gui
 DEPENDPATH += 3rdparty/rtaudio
+DEPENDPATH += 3rdparty/rtmidi
 
 SOURCES += src/main.cc
 HEADERS += src/lib/audio/audiodata.hh
@@ -78,6 +79,8 @@ HEADERS += src/gui/mainwindow.hh
 SOURCES += src/gui/mainwindow.cc
 HEADERS += 3rdparty/rtaudio/RtAudio.h
 SOURCES += 3rdparty/rtaudio/RtAudio.cpp
+HEADERS += 3rdparty/rtmidi/RtMidi.h
+SOURCES += 3rdparty/rtmidi/RtMidi.cpp
 
 OBJECTS_DIR = .buildfiles
 MOC_DIR = .buildfiles

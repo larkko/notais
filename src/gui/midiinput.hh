@@ -3,7 +3,7 @@
 #include <vector>
 #include <functional>
 
-#include <RtMidi.h>
+#include <../3rdparty/rtmidi/RtMidi.h>
 
 /*A wrapper type for MIDI input*/
 class MIDI_input
