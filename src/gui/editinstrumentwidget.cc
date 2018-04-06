@@ -269,7 +269,7 @@ void Edit_sequence_widget::update_instruments
     {
         m_instrument_selector->addItem
         (
-            "Instrument: " + QString::fromStdString(instrument->name())
+            QString::fromStdString(instrument->description())
         );
     }
     
