@@ -62,6 +62,7 @@ class Sequence : public Audio_source
     ) const final override;
     virtual double linger_time() const final override;
     virtual bool contains(Audio_source const & other) const final override;
+    virtual std::string description() const final override;
     void set_instrument(std::shared_ptr<Adjustable_audio_source> instrument);
     void set_tuning(std::shared_ptr<Tuning> tuning);
     std::shared_ptr<Tuning> const & tuning() const;

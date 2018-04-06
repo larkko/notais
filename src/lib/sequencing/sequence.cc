@@ -177,6 +177,11 @@ bool Sequence::contains(Audio_source const & other) const
                : false); 
 }
 
+std::string Sequence::description() const
+{
+    return "Sequence";
+}
+
 void Sequence::set_instrument
 (
     std::shared_ptr<Adjustable_audio_source> instrument

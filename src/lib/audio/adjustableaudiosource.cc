@@ -30,6 +30,11 @@ bool Adjustable_audio_source::contains(Audio_source const & other) const
                                     : false);
 }
 
+std::string Adjustable_audio_source::description() const
+{
+    return m_audio_source->description();
+}
+
 std::shared_ptr<Audio_source> & Adjustable_audio_source::audio_source()
 {
     return m_audio_source;

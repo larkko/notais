@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "audiodata.hh"
 
 class Audio_source
@@ -46,4 +48,6 @@ class Audio_source
     {
         return (this == &other);
     }
+    
+    virtual std::string description() const { return "Audio source"; }
 };

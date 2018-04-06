@@ -71,6 +71,16 @@ Audio_data::Sample Oscillator::get_sample
     return sample;
 }
 
+std::string Oscillator::description() const
+{
+    return std::string("Oscillator (")
+           + ((m_type == Type::Sine) ? "Sine"
+             : (m_type == Type::Saw) ? "Saw"
+             : (m_type == Type::Square) ? "Square"
+             : (m_type == Type::White_noise) ? "White noise" : "")
+           + ")";
+}
+
 void Oscillator::set_type(Oscillator::Type type)
 {
     m_type = type;
