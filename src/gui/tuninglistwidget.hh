@@ -16,6 +16,7 @@ class Tuning_list_item_widget : public QWidget
         std::shared_ptr<Tuning> tuning,
         Task_queue & task_queue
     );
+    std::shared_ptr<Tuning const> tuning() const;
   private:
     std::shared_ptr<Tuning> m_tuning;
   signals:

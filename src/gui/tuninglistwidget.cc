@@ -66,6 +66,11 @@ Tuning_list_item_widget::Tuning_list_item_widget
     );
 }
 
+std::shared_ptr<Tuning const> Tuning_list_item_widget::tuning() const
+{
+    return m_tuning;
+}
+
 Tuning_list_widget::Tuning_list_widget(Task_queue & task_queue)
     : m_task_queue(task_queue)
 {
@@ -115,33 +120,46 @@ void Tuning_list_widget::update_list
     std::vector<std::shared_ptr<Tuning>> tunings
 )
 {
-    for(auto widget : m_tuning_list->findChildren<QWidget *>
+    std::vector<std::shared_ptr<Tuning const>> found;
+    for(auto widget : m_tuning_list->findChildren<Tuning_list_item_widget *>
                         (QString(), Qt::FindDirectChildrenOnly))
     {
-        delete widget;
+        if(std::find(tunings.begin(), tunings.end(), widget->tuning())
+           == tunings.end())
+        {
+            delete widget;
+        }
+        else
+        {
+            found.push_back(widget->tuning());
+            widget->update();
+        }
     }
 
     for(auto & tuning : tunings)
     {
-        Tuning_list_item_widget * item =
-            new Tuning_list_item_widget(tuning, m_task_queue);
-        m_tuning_list->layout()->addWidget(item);
-
-        QObject::connect
-        (
-            item,
-            &Tuning_list_item_widget::selected,
-            this,
-            &Tuning_list_widget::selected
-        );
-
-        QObject::connect
-        (
-            item,
-            &Tuning_list_item_widget::tuning_updated,
-            this,
-            &Tuning_list_widget::tuning_updated
-        );
+        if(std::find(found.begin(), found.end(), tuning) == found.end())
+        {
+            Tuning_list_item_widget * item =
+                new Tuning_list_item_widget(tuning, m_task_queue);
+            m_tuning_list->layout()->addWidget(item);
+    
+            QObject::connect
+            (
+                item,
+                &Tuning_list_item_widget::selected,
+                this,
+                &Tuning_list_widget::selected
+            );
+    
+            QObject::connect
+            (
+                item,
+                &Tuning_list_item_widget::tuning_updated,
+                this,
+                &Tuning_list_widget::tuning_updated
+            );
+        }
     }
 }
 

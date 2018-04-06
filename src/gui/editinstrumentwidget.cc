@@ -328,6 +328,7 @@ void Edit_sequence_widget::update_tunings
             update();
         }
     );
+    update();
 }
 
 Edit_sequence_pattern_widget::Edit_sequence_pattern_widget
