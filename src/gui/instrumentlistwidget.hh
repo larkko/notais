@@ -15,6 +15,7 @@ class Instrument_list_item_widget : public QWidget
         std::shared_ptr<Adjustable_audio_source> instrument,
         Task_queue & task_queue
     );
+    std::shared_ptr<Adjustable_audio_source const> instrument() const;
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
   signals:
@@ -25,6 +26,7 @@ class Instrument_list_item_widget : public QWidget
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
+    void instrument_updated();
     /*Similarly, some instruments can reference tunings.*/
     void tunings_updated
     (
@@ -49,6 +51,7 @@ class Instrument_list_widget : public QWidget
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
+    void instrument_updated();
     void tunings_updated
     (
         std::vector<std::shared_ptr<Tuning>> tunings

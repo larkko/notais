@@ -73,6 +73,20 @@ Instrument_list_item_widget::Instrument_list_item_widget
         edit_window,
         &Edit_instrument_widget::tunings_updated
     );
+    
+    QObject::connect
+    (
+        edit_window,
+        &Edit_instrument_widget::instrument_updated,
+        this,
+        &Instrument_list_item_widget::instrument_updated
+    );
+}
+
+std::shared_ptr<Adjustable_audio_source const>
+Instrument_list_item_widget::instrument() const
+{
+    return m_instrument;
 }
 
 Instrument_list_widget::Instrument_list_widget(Task_queue & task_queue)
@@ -161,41 +175,68 @@ void Instrument_list_widget::update_list
     std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
 )
 {
-    for(auto widget : m_instrument_list->findChildren<QWidget *>
+    std::vector<std::shared_ptr<Adjustable_audio_source const>> found;
+    
+    for(auto widget : m_instrument_list->findChildren<Instrument_list_item_widget *>
                         (QString(), Qt::FindDirectChildrenOnly))
     {
-        delete widget;
+        if(std::find
+           (
+                instruments.begin(),
+                instruments.end(),
+                widget->instrument()
+            ) == instruments.end())
+        {
+            delete widget;
+        }
+        else
+        {
+            found.push_back(widget->instrument());
+            widget->update();
+        }
     }
     for(auto & instrument : instruments)
     {
-        Instrument_list_item_widget * item =
-            new Instrument_list_item_widget(instrument, m_task_queue);
-        m_instrument_list->layout()->addWidget(item);
-
-        QObject::connect
-        (
-            item,
-            &Instrument_list_item_widget::selected,
-            this,
-            &Instrument_list_widget::selected
-        );
-
-        QObject::connect
-        (
-            this,
-            &Instrument_list_widget::instruments_updated,
-            item,
-            &Instrument_list_item_widget::instruments_updated
-        );
-
-        QObject::connect
-        (
-            this,
-            &Instrument_list_widget::tunings_updated,
-            item,
-            &Instrument_list_item_widget::tunings_updated
-        );
-
-        emit item->instruments_updated(instruments);
+        if(std::find(found.begin(), found.end(), instrument) == found.end())
+        {
+            Instrument_list_item_widget * item =
+                new Instrument_list_item_widget(instrument, m_task_queue);
+            m_instrument_list->layout()->addWidget(item);
+    
+            QObject::connect
+            (
+                item,
+                &Instrument_list_item_widget::selected,
+                this,
+                &Instrument_list_widget::selected
+            );
+    
+            QObject::connect
+            (
+                this,
+                &Instrument_list_widget::instruments_updated,
+                item,
+                &Instrument_list_item_widget::instruments_updated
+            );
+    
+            QObject::connect
+            (
+                this,
+                &Instrument_list_widget::tunings_updated,
+                item,
+                &Instrument_list_item_widget::tunings_updated
+            );
+            
+            
+            QObject::connect
+            (
+                item,
+                &Instrument_list_item_widget::instrument_updated,
+                this,
+                &Instrument_list_widget::instrument_updated
+            );
+    
+            emit item->instruments_updated(instruments);
+        }
     }
 }

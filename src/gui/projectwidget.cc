@@ -46,6 +46,17 @@ Project_widget::Project_widget(Task_queue & task_queue)
         instrument_list,
         &Instrument_list_widget::instruments_updated
     );
+    
+    QObject::connect
+    (
+        instrument_list,
+        &Instrument_list_widget::instrument_updated,
+        this,
+        [=]()
+        {
+            emit instruments_updated(m_project.instruments());
+        }
+    );
 
     QObject::connect
     (

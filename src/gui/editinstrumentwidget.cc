@@ -47,7 +47,16 @@ Edit_instrument_widget::Edit_instrument_widget
     {
         std::shared_ptr<Oscillator> oscillator =
             std::static_pointer_cast<Oscillator>(audio_source);
-        instrument_tab = new Edit_oscillator_widget(oscillator, task_queue);
+        auto edit_widget = new Edit_oscillator_widget(oscillator, task_queue);
+        instrument_tab = edit_widget;
+        
+        QObject::connect
+        (
+            edit_widget,
+            &Edit_oscillator_widget::oscillator_updated,
+            this,
+            &Edit_instrument_widget::instrument_updated
+        );
     }
     else if(type == std::type_index(typeid(Sequence)))
     {
@@ -201,6 +210,7 @@ Edit_oscillator_widget::Edit_oscillator_widget
                         m_oscillator->set_type(Oscillator::Type::White_noise);
                 }
             );
+            emit oscillator_updated();
         }
     );
 

@@ -32,6 +32,7 @@ class Edit_instrument_widget : public QWidget
     (
         std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
     );
+    void instrument_updated();
     void tunings_updated
     (
         std::vector<std::shared_ptr<Tuning>> tunings
@@ -64,6 +65,8 @@ class Edit_oscillator_widget : public QWidget
     );
   private:
     std::shared_ptr<Oscillator> m_oscillator;
+  signals:
+    void oscillator_updated();
 };
 
 class Edit_sequence_widget : public QWidget
