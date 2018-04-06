@@ -97,6 +97,17 @@ Project_widget::Project_widget(Task_queue & task_queue)
         this,
         &Project_widget::tuning_updated
     );
+    
+    QObject::connect
+    (
+        tuning_list,
+        &Tuning_list_widget::tuning_updated,
+        this,
+        [=]()
+        {
+            emit tunings_updated(m_project.tunings());
+        }
+    );
 
     QObject::connect
     (
