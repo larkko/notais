@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <string>
 
-#include <RtAudio.h>
+#include <../3rdparty/rtaudio/RtAudio.h>
 
 #include "../lib/audio/audiodata.hh"
 
