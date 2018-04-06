@@ -11,8 +11,9 @@ class Equal_temperament : public Tuning
         float interval_size,
         float base_frequency
     );
-    float frequency_at(float steps) const override;
-    int steps_in_pattern() const override;
+    virtual float frequency_at(float steps) const override;
+    virtual int steps_in_pattern() const override;
+    virtual std::string description() const override;
     int steps_per_interval() const;
     void set_steps_per_interval(int value);
     float interval_size() const;

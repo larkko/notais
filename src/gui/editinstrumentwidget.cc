@@ -307,7 +307,10 @@ void Edit_sequence_widget::update_tunings
     m_tuning_selector->clear();
     for(auto & tuning : tunings)
     {
-        m_tuning_selector->addItem("Tuning: ");
+        m_tuning_selector->addItem
+        (
+            QString::fromStdString(tuning->description())
+        );
     }
     QObject::connect
     (

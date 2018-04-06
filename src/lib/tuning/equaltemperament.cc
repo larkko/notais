@@ -1,5 +1,7 @@
 #include "equaltemperament.hh"
+
 #include <cmath>
+#include <string>
 
 Equal_temperament::Equal_temperament
 (
@@ -23,6 +25,14 @@ int Equal_temperament::steps_in_pattern() const
 {
     return steps_per_interval();
 };
+
+std::string Equal_temperament::description() const
+{
+    return "Equal temperament (" + std::to_string(m_steps_per_interval)
+                                 + "/" + std::to_string(m_interval_size)
+                                 + "@" + std::to_string(m_base_frequency) + "Hz"
+                                 + ")";
+}
 
 int Equal_temperament::steps_per_interval() const
 {
