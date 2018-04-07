@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <sstream>
 #include <iomanip>
+#include <memory>
 
 namespace util
 {
@@ -123,4 +124,30 @@ class Rectangle
     Point<Number> m_second;
 };
 
+template <typename T>
+class Optional
+{
+  public:
+    Optional() : m_t(nullptr) {}
+    Optional(T && t) : m_t(std::make_unique<T>(t)) {}
+    void operator=(T && t) { m_t = std::make_unique<T>(t); }
+    T & operator->() { return *m_t; }
+    bool has_value() const { return bool(m_t); }
+    operator bool() const { return has_value(); }
+    T & value () { return *m_t; }
+    T & value_or(T const & other) { return has_value() ? value() : other; }
+    void reset() { m_t = std::unique_ptr<T>(nullptr); }
+  private:
+    std::unique_ptr<T> m_t;
+};
+
 }
+
+
+
+
+
+
+
+
+
