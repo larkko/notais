@@ -68,7 +68,29 @@ void Sequence::Note::lengthen_by(double amount, double minimum)
     }
 }
 
-Sequence::Pattern::Pattern()
+Sequence::Timing::Timing(double beats_per_minute)
+    : m_beats_per_minute(beats_per_minute)
+{
+}
+
+double Sequence::Timing::beats_per_minute() const
+{
+    return m_beats_per_minute;
+}
+
+void Sequence::Timing::set_beats_per_minute(double value)
+{
+    m_beats_per_minute = value;
+}
+
+double Sequence::Timing::to_seconds(double timepoint) const
+{
+    double ratio = 60.0 / m_beats_per_minute;
+    return timepoint * ratio;
+}
+
+Sequence::Pattern::Pattern(Sequence::Timing timing)
+    : m_timing(timing)
 {
 }
 
@@ -115,6 +137,11 @@ void Sequence::Pattern::remove_notes(std::vector<Index> indices)
     m_notes = remaining;
 }
 
+Sequence::Timing const & Sequence::Pattern::timing() const
+{
+    return m_timing;
+}
+
 Sequence::Sequence()
     : m_instrument(nullptr),
       m_tuning(nullptr)
@@ -129,15 +156,18 @@ Audio_data::Sample Sequence::get_sample(float frequency, Offset offset) const
     if(m_instrument && m_tuning)
     {
         auto linger_time = m_instrument->linger_time();
+        auto const & timing = pattern().timing();
         Audio_data::Sample sample = 0;
         for(auto & note : m_pattern.notes())
         {
-            if((offset.offset() >= note.start_point())
-               && (offset.offset() <= (note.end_point() + linger_time)))
+            auto note_start = timing.to_seconds(note.start_point());
+            auto note_end = timing.to_seconds(note.end_point());
+            if((offset.offset() >= note_start)
+               && (offset.offset() <= (note_end + linger_time)))
             {
-                auto note_local_start =  offset.offset() - note.start_point();
-                bool released = note.end_point() > offset.offset();
-                auto note_local_release =  offset.offset() - note.end_point();
+                auto note_local_start =  offset.offset() - note_start;
+                bool released = note_end > offset.offset();
+                auto note_local_release =  offset.offset() - note_end;
                 Offset note_local_offset = released
                                          ? Offset
                                            (
@@ -201,6 +231,11 @@ std::shared_ptr<Tuning> const & Sequence::tuning() const
 }
 
 Sequence::Pattern & Sequence::pattern()
+{
+    return m_pattern;
+}
+
+Sequence::Pattern const & Sequence::pattern() const
 {
     return m_pattern;
 }

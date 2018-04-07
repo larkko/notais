@@ -35,11 +35,22 @@ class Sequence : public Audio_source
         double m_steps;
         double m_velocity;
     };
+    
+    class Timing
+    {
+      public:
+        Timing(double beats_per_minute);
+        double beats_per_minute() const;
+        void set_beats_per_minute(double value);
+        double to_seconds(double timepoint) const;
+      private:
+        double m_beats_per_minute;
+    };
 
     class Pattern
     {
       public:
-        Pattern();
+        Pattern(Timing timing = Timing(120));
         void add_note(Note note);
         std::vector<Note> const & notes() const;
         using Index = size_t;
@@ -48,10 +59,12 @@ class Sequence : public Audio_source
             util::Rectangle<double> rectangle
         ) const;
         void remove_notes(std::vector<Index> indices);
+        Timing const & timing() const;
         template <typename Function>
         void for_each_in(std::vector<Index> indices, Function function);
       private:
         std::vector<Note> m_notes;
+        Timing m_timing;
     };
 
     Sequence();
@@ -67,6 +80,7 @@ class Sequence : public Audio_source
     void set_tuning(std::shared_ptr<Tuning> tuning);
     std::shared_ptr<Tuning> const & tuning() const;
     Pattern & pattern();
+    Pattern const & pattern() const;
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
     std::shared_ptr<Tuning> m_tuning;
