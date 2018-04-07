@@ -14,6 +14,8 @@
 #include <QPainter>
 #include <QRect>
 #include <QColor>
+#include <QPushButton>
+#include <QLineEdit>
 
 #include "../lib/util/util.hh"
 #include "effectlistwidget.hh"
@@ -245,12 +247,59 @@ Edit_sequence_widget::Edit_sequence_widget
     top_bar_layout->addWidget(tuning_label);
     m_tuning_selector = new QComboBox();
     top_bar_layout->addWidget(m_tuning_selector);
+    
+    QHBoxLayout * bpm_layout = new QHBoxLayout();
+    top_bar_layout->addLayout(bpm_layout);
+    QLabel * bpm_label = new QLabel("BPM:");
+    bpm_layout->addWidget(bpm_label);
+    QLineEdit * bpm_input = new QLineEdit();
+    bpm_layout->addWidget(bpm_input);
+    QPushButton * bpm_button = new QPushButton("Set BPM");
+    bpm_layout->addWidget(bpm_button);
 
     auto editor = new Edit_sequence_pattern_widget(sequence, task_queue);
     editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(editor);
 
     this->setLayout(layout);
+    
+    auto set_bpm_text = [=]()
+    {
+        bpm_input->setText
+        (
+            QString::fromStdString
+            (
+                std::to_string(m_sequence->pattern().timing().beats_per_minute())
+            )
+        );
+    };
+    set_bpm_text();
+    
+    QObject::connect
+    (
+        bpm_button,
+        &QPushButton::pressed,
+        this,
+        [=]()
+        {
+            auto text = bpm_input->text().toStdString();
+            try
+            {
+                double value = std::stod(text);
+                atomic_perform
+                (
+                    m_task_queue,
+                    [=]()
+                    {
+                        m_sequence->pattern().timing().set_beats_per_minute(value);
+                    }
+                );
+            }
+            catch (...) {}
+            set_bpm_text();
+            update();
+        }
+    );
 }
 
 void Edit_sequence_widget::update_instruments

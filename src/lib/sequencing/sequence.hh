@@ -60,6 +60,7 @@ class Sequence : public Audio_source
         ) const;
         void remove_notes(std::vector<Index> indices);
         Timing const & timing() const;
+        Timing & timing();
         template <typename Function>
         void for_each_in(std::vector<Index> indices, Function function);
       private:

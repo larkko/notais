@@ -142,6 +142,11 @@ Sequence::Timing const & Sequence::Pattern::timing() const
     return m_timing;
 }
 
+Sequence::Timing & Sequence::Pattern::timing()
+{
+    return m_timing;
+}
+
 Sequence::Sequence()
     : m_instrument(nullptr),
       m_tuning(nullptr)
