@@ -7,10 +7,13 @@
 
 #include <alsa/asoundlib.h>
 
-class ALSA_MIDI_input : public MIDI_input_implementation
+namespace MIDI
+{
+
+class ALSA_input : public Input_implementation
 {
   public:
-    ALSA_MIDI_input()
+    ALSA_input()
         : m_midi_in(NULL),
           m_port_open(false)
     {
@@ -33,7 +36,7 @@ class ALSA_MIDI_input : public MIDI_input_implementation
             return true;
         }
     }
-    virtual bool run(std::function<void (MIDI_event)> callback) override
+    virtual bool run(std::function<void (Event)> callback) override
     {
         if(!m_port_open) return false;
         
@@ -64,7 +67,7 @@ class ALSA_MIDI_input : public MIDI_input_implementation
                         }
                         else
                         {
-                            MIDI_event event = MIDI_event::from(data);
+                            Event event = Event::from(data);
                             callback(event);
                         }
                     }
@@ -73,7 +76,7 @@ class ALSA_MIDI_input : public MIDI_input_implementation
         );
         return true;
     }
-    ~ALSA_MIDI_input()
+    ~ALSA_input()
     {
         if(m_port_open)
         {
@@ -87,10 +90,12 @@ class ALSA_MIDI_input : public MIDI_input_implementation
 };
 
 
-MIDI_input::MIDI_input(std::function<void (MIDI_event)> callback)
+Input::Input(std::function<void (Event)> callback)
     : callback(callback),
-      m_implementation(std::make_unique<ALSA_MIDI_input>(ALSA_MIDI_input()))
+      m_implementation(std::make_unique<ALSA_input>(ALSA_input()))
 {
     m_implementation->open_port("hw:1,0,0");
     m_implementation->run(callback);
+}
+
 }

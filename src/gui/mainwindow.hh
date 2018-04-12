@@ -19,7 +19,7 @@ class Main_window : public QWidget
   private:
     void update_audio_state();
     void use_instrument(Audio_data & audio_output_buffer);
-    MIDI_input m_midi_input;
+    MIDI::Input m_midi_input;
     Keyboard m_keyboard;
     Audio_output m_audio_out;
     std::shared_ptr<Adjustable_audio_source const> m_active_instrument;

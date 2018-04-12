@@ -17,7 +17,7 @@
 Main_window::Main_window()
     : m_midi_input
     (
-        [&](MIDI_event e)
+        [&](MIDI::Event e)
         {
             if(e.down)
             {

@@ -4,36 +4,39 @@
 #include <functional>
 #include <memory>
 
-struct MIDI_event
+namespace MIDI
+{
+
+struct Event
 {
     bool down;
     int key;
     float velocity;
     template <typename Sequence>
-    static MIDI_event from(Sequence sequence);
+    static Event from(Sequence sequence);
 };
 
-class MIDI_input_implementation
+class Input_implementation
 {
   public:
-    virtual ~MIDI_input_implementation() {}
+    virtual ~Input_implementation() {}
     virtual bool open_port(char const * port) = 0;
-    virtual bool run(std::function<void (MIDI_event)> callback) = 0;
+    virtual bool run(std::function<void (Event)> callback) = 0;
 };
 
 /*A wrapper type for MIDI input*/
-class MIDI_input
+class Input
 {
   public:
-    MIDI_input(std::function<void (MIDI_event)> callback);
-    std::function<void (MIDI_event)> const callback;
+    Input(std::function<void (Event)> callback);
+    std::function<void (Event)> const callback;
   private:
-    std::unique_ptr<MIDI_input_implementation> m_implementation;
+    std::unique_ptr<Input_implementation> m_implementation;
 };
 
 
 template <typename Sequence>
-MIDI_event MIDI_event::from(Sequence sequence)
+Event Event::from(Sequence sequence)
 {
     if(sequence.size() >= 3)
     {
@@ -50,4 +53,6 @@ MIDI_event MIDI_event::from(Sequence sequence)
     {
         return {false, 0, 0.0f};
     }
+}
+
 }
