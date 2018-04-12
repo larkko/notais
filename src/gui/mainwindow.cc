@@ -15,9 +15,9 @@
 #include "../lib/tuning/equaltemperament.hh"
 
 Main_window::Main_window()
-    : m_midi_input(MIDI_input
+    : m_midi_input
     (
-        [&](MIDI_input::Event e)
+        [&](MIDI_event e)
         {
             if(e.down)
             {
@@ -29,7 +29,7 @@ Main_window::Main_window()
             }
             emit keyboard_state_changed();
         }
-    )),
+    ),
     /*Offset of the middle A key in MIDI key numberings. The middle A
       is commonly used when considering tuning. Furthermore, it's in the middle
       of the keyboard (max MIDI note value = 127), making it a convenient

@@ -1,54 +1,96 @@
 #include "midiinput.hh"
 
-MIDI_input::MIDI_input(std::function<void (Event)> callback)
-    : callback(callback),
-      m_midi_in(RtMidiIn())
-{
-    int port_count = m_midi_in.getPortCount();
-    if(port_count == 0)
-    {
-        std::cout << "No MIDI input ports found.\n" << std::endl;
-    }
-    else
-    {
-        m_midi_in.openPort(1);
+#include <memory>
+#include <iostream>
+#include <thread>
+#include <array>
 
-        m_midi_in.setCallback
+#include <alsa/asoundlib.h>
+
+class ALSA_MIDI_input : public MIDI_input_implementation
+{
+  public:
+    ALSA_MIDI_input()
+        : m_midi_in(NULL),
+          m_port_open(false)
+    {
+        
+    }
+    virtual bool open_port(char const * port) override
+    {
+        int mode = 0;
+        int status = snd_rawmidi_open(&m_midi_in, NULL, port, mode);
+        bool open_success = status >= 0;
+        if(!open_success)
+        {
+            std::cerr << "Failed to open ALSA rawmidi input."
+                         "\nError: " << snd_strerror(status) << std::endl;
+            return false;
+        }
+        else
+        {
+            m_port_open = true;
+            return true;
+        }
+    }
+    virtual bool run(std::function<void (MIDI_event)> callback) override
+    {
+        if(!m_port_open) return false;
+        
+        m_thread = 
+        std::make_shared<std::thread>
         (
-            [](double timestamp,
-            std::vector<unsigned char> * message,
-            void * user_data)
-            {
-                (void)timestamp;
-                MIDI_input * input = static_cast<MIDI_input *>(user_data);
-                Event event = input->as_event(message);
-                input->callback(event);
-            },
-            /*user_data pointer for callback*/
-            this
+            std::thread
+            (
+                [=]()
+                {
+                    std::array<char, 3> data;
+                    while(true)
+                    {
+                        for(auto datum : data)
+                        {
+                            datum = 0;
+                        }
+                        auto result = snd_rawmidi_read
+                        (
+                            m_midi_in,
+                            data.data(),
+                            data.size()
+                        );
+                        if(result < 0)
+                        {
+                            std::cerr << "MIDI input error: " 
+                                      << snd_strerror(result) << std::endl;
+                        }
+                        else
+                        {
+                            MIDI_event event = MIDI_event::from(data);
+                            callback(event);
+                        }
+                    }
+                }
+            )
         );
-        m_midi_in.ignoreTypes(false,false,false);
+        return true;
     }
-}
+    ~ALSA_MIDI_input()
+    {
+        if(m_port_open)
+        {
+            snd_rawmidi_close(m_midi_in);
+        }
+    }
+  private:
+    snd_rawmidi_t * m_midi_in;
+    bool m_port_open;
+    std::shared_ptr<std::thread> m_thread;
+};
 
-MIDI_input::Event MIDI_input::as_event
-(
-    std::vector<unsigned char> * message
-) const
+
+MIDI_input::MIDI_input(std::function<void (MIDI_event)> callback)
+    : callback(callback),
+      m_implementation(std::make_unique<ALSA_MIDI_input>(ALSA_MIDI_input()))
 {
-    if(message->size() >= 3)
-    {
-        /*MIDI "note on" event when first byte is 1001**** */
-        bool down = (message->at(0) & 0b11110000) == 0b10010000;
-        /*The key being struct is at byte number two*/
-        int key = message->at(1);
-        /*The velocity of the strike is the 7 least significant bits
-          of the third byte (normalized to a float [0,1] here).*/
-        float velocity = (float)(message->at(2)) / (float)0b01111111;
-        return {down, key, velocity};
-    }
-    else
-    {
-        return {false, 0, 0.0f};
-    }
+    m_implementation->open_port("hw:1,0,0");
+    m_implementation->run(callback);
 }
