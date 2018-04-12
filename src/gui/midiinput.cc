@@ -50,7 +50,7 @@ class ALSA_input : public Input_implementation
                     std::array<char, 3> data;
                     while(true)
                     {
-                        for(auto datum : data)
+                        for(auto & datum : data)
                         {
                             datum = 0;
                         }
