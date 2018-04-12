@@ -6,9 +6,9 @@ QT = core gui widgets
 CONFIG += c++14
 CONFIG += optimize_full
 
-LIBS += -lm
+LIBS += -lm -lasound
 #RtAudio dependencies
-LIBS += -lasound -lpthread
+LIBS += -lpthread
 DEFINES += __LINUX_ALSA__
 
 DEPENDPATH += src 
