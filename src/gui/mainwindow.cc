@@ -70,16 +70,6 @@ Main_window::Main_window()
     volume_slider->setValue(m_audio_out.volume() * volume_slider->maximum());
     top_bar_layout->addWidget(volume_slider);
 
-    Arrow_selector_widget * audio_device_selector
-    = new Arrow_selector_widget
-    (
-        [&](size_t index){return m_audio_out.device_description(index);},
-        [&](){return m_audio_out.device_index();},
-        [&](){return m_audio_out.device_count();},
-        [&](size_t index){m_audio_out.set_device(index);}
-    );
-    top_bar_layout->addWidget(audio_device_selector);
-
     Project_widget * project_widget = new Project_widget(m_project_tasks);
     root_layout->addWidget(project_widget);
 

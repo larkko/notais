@@ -6,9 +6,23 @@
 #include <cstddef>
 #include <string>
 
-#include <../3rdparty/rtaudio/RtAudio.h>
-
 #include "../lib/audio/audiodata.hh"
+
+class Audio_output_implementation
+{
+  public:
+    virtual ~Audio_output_implementation() {}
+    virtual bool start
+    (
+        Audio_data & buffer,
+        size_t sample_rate,
+        size_t frame_count,
+        size_t channel_count,
+        std::function<void (Audio_data &)> callback
+    ) = 0;
+    virtual void stop() = 0;
+    virtual bool on() const = 0;
+};
 
 class Audio_output
 {
@@ -31,11 +45,6 @@ class Audio_output
     void set_buffer_frame_count(size_t buffer_frame_count);
     size_t channel_count() const;
     void set_channel_count(size_t channel_count);
-    size_t device_count();
-    size_t device_index() const;
-    void set_device(size_t device_index);
-    size_t default_device();
-    std::string device_description(size_t device_index);
     Audio_data & buffer();
     std::function<void (Audio_data &)> const buffer_fill_callback;
   private:
@@ -43,9 +52,8 @@ class Audio_output
     size_t m_sample_rate;
     size_t m_buffer_frame_count;
     size_t m_channel_count;
-    RtAudio m_out;
     bool m_active;
     Audio_data m_buffer;
     float m_volume;
-    size_t m_device_index;
+    std::unique_ptr<Audio_output_implementation> m_out;
 };
