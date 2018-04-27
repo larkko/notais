@@ -1,0 +1,27 @@
+#include "slider.hh"
+
+Slider::Slider()
+    : QSlider(Qt::Horizontal)
+{
+    setMinimum(0);
+    setMaximum(maximum_position);
+    setValue(0);
+    
+    QObject::connect
+    (
+        this,
+        &QSlider::sliderMoved,
+        this,
+        &Slider::moved
+    );
+}
+
+void Slider::set_upper_limit(float limit)
+{
+    setMaximum(maximum_position / limit);
+}
+
+void Slider::set_position(float position)
+{
+    setValue(maximum_position * position);
+}
