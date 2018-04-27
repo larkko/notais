@@ -1,8 +1,9 @@
 #pragma once
 
+#include <QWidget>
 #include <QSlider>
 
-class Slider : public QSlider
+class Slider : public QWidget
 {
   Q_OBJECT
   public:
@@ -12,6 +13,7 @@ class Slider : public QSlider
     float position() const;
   private:
     float m_upper_limit;
+    QSlider * m_slider;
     static int constexpr maximum_position = 100;
   signals:
     void moved();
