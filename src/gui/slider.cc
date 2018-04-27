@@ -2,7 +2,35 @@
 
 #include <QVBoxLayout>
 
-Slider::Slider()
+Slider::Range::Range(float bottom, float top)
+    : m_bottom(bottom),
+      m_top(top)
+{
+}
+
+float Slider::Range::bottom() const
+{
+    return m_bottom;
+}
+
+float Slider::Range::top() const
+{
+    return m_top;
+}
+
+float Slider::Range::to_position(float value) const
+{
+    return (value - m_bottom) / (m_top - m_bottom);
+}
+
+float Slider::Range::to_value(float position) const
+{
+    return (position * (m_top - m_bottom)) + m_bottom;
+}
+
+
+Slider::Slider(Range range)
+    : m_range(range)
 {
     QVBoxLayout * layout = new QVBoxLayout();
     
@@ -23,9 +51,14 @@ Slider::Slider()
     );
 }
 
-void Slider::set_upper_limit(float limit)
+void Slider::set_value(float value)
 {
-    m_slider->setMaximum(maximum_position * limit);
+    set_position(m_range.to_position(value));
+}
+
+float Slider::value() const
+{
+    return m_range.to_value(position());
 }
 
 void Slider::set_position(float position)

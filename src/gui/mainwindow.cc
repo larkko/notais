@@ -65,10 +65,9 @@ Main_window::Main_window()
     QLabel * volume_label = new QLabel("Volume: ");
     top_bar_layout->addWidget(volume_label);
 
-    Slider * volume_slider = new Slider();
     /*Exact upper limit irrelevant, just limiting it to ~20% volume here.*/
-    volume_slider->set_upper_limit(0.2f);
-    volume_slider->set_position(m_audio_out.volume());
+    Slider * volume_slider = new Slider(Slider::Range(0, 0.2f));
+    volume_slider->set_value(m_audio_out.volume());
     top_bar_layout->addWidget(volume_slider);
 
     Project_widget * project_widget = new Project_widget(m_project_tasks);
@@ -87,7 +86,7 @@ Main_window::Main_window()
         this,
         [=]()
         {
-            m_audio_out.set_volume(volume_slider->position());
+            m_audio_out.set_volume(volume_slider->value());
         }
     );
 
