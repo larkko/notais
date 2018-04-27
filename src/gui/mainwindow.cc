@@ -9,6 +9,7 @@
 
 #include "mainwindow.hh"
 #include "arrowselectorwidget.hh"
+#include "slider.hh"
 #include "projectwidget.hh"
 #include "taskqueue.hh"
 #include "../lib/audio/oscillator.hh"
@@ -64,10 +65,8 @@ Main_window::Main_window()
     QLabel * volume_label = new QLabel("Volume: ");
     top_bar_layout->addWidget(volume_label);
 
-    QSlider * volume_slider = new QSlider(Qt::Horizontal);
-    volume_slider->setMinimum(0);
-    volume_slider->setMaximum(100);
-    volume_slider->setValue(m_audio_out.volume() * volume_slider->maximum());
+    Slider * volume_slider = new Slider();
+    volume_slider->set_position(m_audio_out.volume());
     top_bar_layout->addWidget(volume_slider);
 
     Project_widget * project_widget = new Project_widget(m_project_tasks);
@@ -82,13 +81,11 @@ Main_window::Main_window()
     QObject::connect
     (
         volume_slider,
-        &QSlider::sliderMoved,
+        &Slider::moved,
         this,
         [=]()
         {
-            float volume = float(volume_slider->value()) /
-                           float(volume_slider->maximum());
-            m_audio_out.set_volume(volume);
+            m_audio_out.set_volume(volume_slider->position());
         }
     );
 

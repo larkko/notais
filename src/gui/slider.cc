@@ -10,7 +10,7 @@ Slider::Slider()
     QObject::connect
     (
         this,
-        &QSlider::sliderMoved,
+        &QSlider::valueChanged,
         this,
         &Slider::moved
     );
@@ -24,4 +24,9 @@ void Slider::set_upper_limit(float limit)
 void Slider::set_position(float position)
 {
     setValue(maximum_position * position);
+}
+
+float Slider::position() const
+{
+    return float(value()) / float(maximum());
 }
