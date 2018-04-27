@@ -18,7 +18,7 @@ Slider::Slider()
 
 void Slider::set_upper_limit(float limit)
 {
-    setMaximum(maximum_position / limit);
+    setMaximum(maximum_position * limit);
 }
 
 void Slider::set_position(float position)
@@ -28,5 +28,5 @@ void Slider::set_position(float position)
 
 float Slider::position() const
 {
-    return float(value()) / float(maximum());
+    return float(value()) / float(maximum_position);
 }

@@ -66,6 +66,8 @@ Main_window::Main_window()
     top_bar_layout->addWidget(volume_label);
 
     Slider * volume_slider = new Slider();
+    /*Exact upper limit irrelevant, just limiting it to ~20% volume here.*/
+    volume_slider->set_upper_limit(0.2f);
     volume_slider->set_position(m_audio_out.volume());
     top_bar_layout->addWidget(volume_slider);
 
