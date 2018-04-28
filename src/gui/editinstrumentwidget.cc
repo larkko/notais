@@ -16,6 +16,7 @@
 #include <QColor>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QFileDialog>
 
 #include "../lib/util/util.hh"
 #include "effectlistwidget.hh"
@@ -256,6 +257,9 @@ Edit_sequence_widget::Edit_sequence_widget
     bpm_layout->addWidget(bpm_input);
     QPushButton * bpm_button = new QPushButton("Set BPM");
     bpm_layout->addWidget(bpm_button);
+    
+    QPushButton * export_button = new QPushButton("Export");
+    top_bar_layout->addWidget(export_button);
 
     auto editor = new Edit_sequence_pattern_widget(sequence, task_queue);
     editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -298,6 +302,23 @@ Edit_sequence_widget::Edit_sequence_widget
             catch (...) {}
             set_bpm_text();
             update();
+        }
+    );
+    
+    QObject::connect
+    (
+        export_button,
+        &QPushButton::pressed,
+        this,
+        [=]()
+        {
+            QString filename = QFileDialog::getSaveFileName
+            (
+                this,
+                "Save exported sequence",
+                "sequence.wav",
+                "Audio files (*.wav)"
+            );
         }
     );
 }
