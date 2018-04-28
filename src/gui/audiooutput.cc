@@ -166,7 +166,7 @@ Audio_output::Audio_output
       m_channel_count(channel_count),
       m_active(false),
       m_buffer(Audio_data(m_sample_rate, m_channel_count)),
-      m_volume(0.1f),
+      m_volume(0.05f),
       m_out
       (
           std::make_unique<ALSA_audio_output_implementation>
