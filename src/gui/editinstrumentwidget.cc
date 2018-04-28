@@ -328,6 +328,8 @@ void Edit_sequence_widget::update_instruments
     std::vector<std::shared_ptr<Adjustable_audio_source>> instruments
 )
 {
+    auto instrument_count_before = m_instrument_selector->count();
+    
     disconnect(m_instrument_selector);
     m_instrument_selector->disconnect(this);
     m_instrument_selector->clear();
@@ -344,6 +346,18 @@ void Edit_sequence_widget::update_instruments
             return !(source->contains(*m_sequence));
         }
     );
+    
+    if(instrument_count_before == 0 && other_instruments.size() > 0)
+    {
+        atomic_perform
+        (
+            m_task_queue,
+            [=]()
+            {
+                m_sequence->set_instrument(other_instruments[0]);
+            }
+        );
+    }
     
     for(auto & instrument : other_instruments)
     {
@@ -382,6 +396,17 @@ void Edit_sequence_widget::update_tunings
     std::vector<std::shared_ptr<Tuning>> tunings
 )
 {
+    if(m_tuning_selector->count() == 0 && tunings.size() > 0)
+    {
+        atomic_perform
+        (
+            m_task_queue,
+            [=]()
+            {
+                m_sequence->set_tuning(tunings[0]);
+            }
+        );
+    }
     disconnect(m_tuning_selector);
     m_tuning_selector->disconnect(this);
     m_tuning_selector->clear();
