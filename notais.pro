@@ -73,6 +73,8 @@ HEADERS += src/gui/slider.hh
 SOURCES += src/gui/slider.cc
 HEADERS += src/gui/audiooutput.hh
 SOURCES += src/gui/audiooutput.cc
+HEADERS += src/gui/style.hh
+SOURCES += src/gui/style.cc
 HEADERS += src/gui/mainwindow.hh
 SOURCES += src/gui/mainwindow.cc
 
