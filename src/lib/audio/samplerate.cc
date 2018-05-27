@@ -5,12 +5,12 @@ Sample_rate::Sample_rate(size_t rate)
 {
 }
 
-size_t Sample_rate::seconds_to_samples(double seconds)
+size_t Sample_rate::seconds_to_samples(double seconds) const
 {
     return size_t(seconds * m_rate);
 }
 
-double Sample_rate::samples_to_seconds(size_t samples)
+double Sample_rate::samples_to_seconds(size_t samples) const
 {
     return double(samples)/double(m_rate);
 }
