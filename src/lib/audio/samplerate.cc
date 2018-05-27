@@ -14,3 +14,8 @@ double Sample_rate::samples_to_seconds(size_t samples)
 {
     return double(samples)/double(m_rate);
 }
+
+size_t Sample_rate::rate() const
+{
+    return m_rate;
+}

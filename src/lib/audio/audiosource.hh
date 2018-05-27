@@ -3,6 +3,7 @@
 #include <string>
 
 #include "audiodata.hh"
+#include "samplerate.hh"
 
 class Audio_source
 {
@@ -39,6 +40,14 @@ class Audio_source
         size_t release_offset,
         size_t offset_in_destination
     ) const;
+
+    Audio_data data_for
+    (
+        float frequency,
+        size_t frame_count,
+        Sample_rate sample_rate,
+        size_t channel_count
+    );
 
     virtual double linger_time() const;
     

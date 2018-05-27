@@ -319,6 +319,16 @@ Edit_sequence_widget::Edit_sequence_widget
                 "sequence.wav",
                 "Audio files (*.wav)"
             );
+            /*Just use 44100 sample rate for now*/
+            size_t sample_rate = 44100;
+            Audio_data data = m_sequence->data_for
+            (
+                1.0f, //frequency, irrelevant for sequences
+                m_sequence->length() * sample_rate,
+                sample_rate,
+                2
+            );
+            data.save(filename.toStdString());
         }
     );
 }

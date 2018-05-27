@@ -245,7 +245,16 @@ Sequence::Pattern const & Sequence::pattern() const
     return m_pattern;
 }
 
-
+double Sequence::length() const
+{
+    double result = 0;
+    for(auto & note : m_pattern.notes())
+    {
+        result = std::max(result, note.end_point());
+    }
+    result = (result > 0) ? result + linger_time() : result;
+    return result;
+}
 
 
 

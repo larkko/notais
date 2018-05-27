@@ -7,7 +7,7 @@ CONFIG += c++14
 CONFIG += optimize_full
 CONFIG += debug
 
-LIBS += -lm -lasound
+LIBS += -lm -lasound -lsndfile
 
 DEPENDPATH += src 
 DEPENDPATH += src/lib

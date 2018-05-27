@@ -82,6 +82,7 @@ class Sequence : public Audio_source
     std::shared_ptr<Tuning> const & tuning() const;
     Pattern & pattern();
     Pattern const & pattern() const;
+    double length() const;
   private:
     std::shared_ptr<Adjustable_audio_source> m_instrument;
     std::shared_ptr<Tuning> m_tuning;

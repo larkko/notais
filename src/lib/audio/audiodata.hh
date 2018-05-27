@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstddef>
+#include <string>
 
 #include "samplerate.hh"
 
@@ -27,6 +28,7 @@ class Audio_data
     size_t sample_count() const;
     /*Number of frames (i.e. samples / channels)*/
     size_t frame_count() const;
+    void save(std::string filename) const;
   private:
     std::vector<Sample> m_samples;
     Sample_rate m_sample_rate;

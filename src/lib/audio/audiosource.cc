@@ -68,6 +68,31 @@ void Audio_source::get_samples
     }
 }
 
+Audio_data Audio_source::data_for
+(
+    float frequency,
+    size_t frame_count,
+    Sample_rate sample_rate,
+    size_t channel_count
+)
+{
+    Audio_data result(sample_rate, channel_count);
+    result.reserve(frame_count);
+    for(size_t f = 0; f < frame_count; ++f)
+    {
+        for(size_t c = 0; c < channel_count; ++c)
+        {
+            result.set_sample
+            (
+                f,
+                c,
+                get_sample(frequency, Offset(sample_rate.samples_to_seconds(f)))
+            );
+        }
+    }
+    return result;
+}
+
 double Audio_source::linger_time() const
 {
     return 0.0;

@@ -1,5 +1,7 @@
 #include "audiodata.hh"
 
+#include <sndfile.hh>
+
 Audio_data::Audio_data(Sample_rate sample_rate, size_t channel_count)
     : m_sample_rate(sample_rate), m_channel_count(channel_count)
 {
@@ -77,6 +79,19 @@ size_t Audio_data::sample_count() const
 size_t Audio_data::frame_count() const
 {
     return sample_count() / channel_count();
+}
+
+void Audio_data::save(std::string filename) const
+{
+    SndfileHandle file
+    (
+        filename,
+        SFM_WRITE,
+        SF_FORMAT_WAV | SF_FORMAT_PCM_32 | SF_FORMAT_FLOAT,
+        int(channel_count()),
+        int(sample_rate().rate())
+    );
+    file.write(m_samples.data(), m_samples.size());
 }
 
 size_t Audio_data::sample_index(size_t nth, size_t channel) const
