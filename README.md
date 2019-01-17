@@ -1,4 +1,4 @@
-This project is a work in progress.
+This project is a work in progress prototype / proof of concept.
 
 # License
 
